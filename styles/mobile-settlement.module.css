@@ -1,0 +1,121 @@
+.settlememt_header {
+    position: relative;
+    z-index: 3;
+    padding: 22px 16px 20px 44px;
+    line-height: 24px;
+    font-size: 16px;
+    font-weight: 700;
+}
+.settlememt_header[aria-label="매출수수료"]::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 16px;
+    width: 22px;
+    height: 22px;
+    margin-top: -11px;
+    background-image: url(../public/images/settlement_title_icon_01.svg);
+}
+.settlememt_header .select_wrap {
+    position: absolute;
+    top: 50%;
+    right: 16px;
+    transform: translateY(-50%);
+    border: 1px solid #c2c1c1;
+}
+.select_wrap .select_box {
+    position: relative;
+    z-index: 3;
+    display: inline-block;
+    margin-right: 4px;
+}
+.select_wrap .select_box>button {
+    position: relative;
+    height: 28px;
+    padding: 0 28px 0 12px;
+    font-size: 16px;
+    font-weight: 700;
+}
+.select_wrap .select_box>button::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    width: 10px;
+    height: 8px;
+    margin-top: -4px;
+    background-image: url(../public/images/arrow_down_icon_01.svg);
+}
+.select_box .select_box_list {
+    position: absolute;
+    display: none;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: #fff;
+    border: 1px solid #ebeaea;
+}
+.select_box>button[aria-selected="true"]+.select_box_list {
+    display: block;
+}
+.select_box .select_box_list li {
+    padding: 4px 12px;
+    line-height: 24px;
+    cursor: pointer;
+}
+.select_box .select_box_list li:not(:first-child) {
+    border-top: 1px solid #ebeaea;
+}
+.select_box .select_box_list li:hover {
+    background-color: #ebeaea;
+}
+.table_summury_wrap .header {
+    position: relative;
+    padding: 21px 0 21px 28px;
+    line-height: 24px;
+    font-size: 16px;
+    font-weight: 700;
+}
+.table_summury_wrap .header[aria-label="이실장영업실적"]::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 22px;
+    height: 22px;
+    margin-top: -11px;
+    background-image: url(../public/images/sales_title_icon_02.svg);
+}
+.table_summury_wrap .header+.table_wrap {
+    padding-top: 10px;
+}
+.table_summury_wrap .table_wrap table {
+    table-layout: fixed;
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0px;
+}
+.table_summury_wrap .table_wrap table th {
+    height: 28px;
+    font-size: 12px;
+    font-weight: 700;
+    background-color: #ebeaea;
+    border-bottom: 1px solid #2e3233;
+}
+.table_summury_wrap .table_wrap table td {
+    height: 28px;
+    font-size: 12px;
+    text-align: center;
+    background-color: #fff;
+    border-bottom: 1px solid #ebeaea;
+}
+.table_summury_wrap .table_wrap table tr:last-child td {
+    border-bottom: 1px solid #707070;
+}
+.table_summury_wrap .table_wrap table .premium td {
+    border-bottom: 1px solid #c2c1c1;
+}
+.table_summury_wrap .table_wrap table .total td {
+    font-weight: 700;
+    border-bottom: 1px solid #555;
+}
