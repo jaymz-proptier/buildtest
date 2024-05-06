@@ -1,9 +1,9 @@
-import style from "@/styles/mobile-member.module.css";
-import { useState } from "react";
+import style from "@/styles/mobile-contract.module.css";
+import { useEffect, useRef, useState } from "react";
 
 export default function MemberItem({ data }: { data: any }) {
-    const [selectBox, setSelectBox] = useState(false);
-    const [selectBox2, setSelectBox2] = useState(false);
+    const [openSelectBox, setOpenSelectBox] = useState<string | null>(null);
+    const selectBoxRef = useRef<HTMLDivElement | null>(null);
     const [expireInfo, setExpireInfo] = useState(data.expireInfo);
     const [cpName, setCpName] = useState(data.cpName);
     const expireCode: {
@@ -31,25 +31,58 @@ export default function MemberItem({ data }: { data: any }) {
         { code: "선방", title: "선방"},
         { code: "기타", title: "기타"},
     ];
+    const sendDataToServer = async (expireContSeq: string, type: string, value: string) => {
+        try {
+            const formData = new FormData();
+            formData.append('expireContSeq', expireContSeq);
+            formData.append(type, value);
+
+            const response = await fetch('/api/mobile/contract/expire/update', {
+                method: "POST",
+                body: formData
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const jsonResponse = await response.json();
+            console.log('Server response:', jsonResponse);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            if (selectBoxRef.current && !selectBoxRef.current.contains(event.target as Node)) {
+                setOpenSelectBox(null);
+            }
+        }
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
     return <>
         <div className={style.item_wrap}>
-            <div className={style.select_wrap}>
+            <div className={style.select_wrap} ref={selectBoxRef}>
                 <div className={style.select_box}>
-                    <button type="button" aria-selected={selectBox} onClick={() => setSelectBox(!selectBox)}>{expireCode.find((item) => item.code===expireInfo)?.title}</button>
+                    <button type="button" aria-selected={openSelectBox==="expire"} onClick={() => setOpenSelectBox("expire")}>{expireCode.find((item) => item.code===expireInfo)?.title}</button>
                     <div className={style.select_box_list}>
                         <ul>
                             {expireCode.map((item: any, index: number) => (
-                            <li key={index} onClick={() => { setSelectBox(false); setExpireInfo(item.code); }}>{item.title}</li>
+                            <li key={index} onClick={() => { setOpenSelectBox(null); setExpireInfo(item.code); sendDataToServer(data.expireContSeq, "expireInfo", item.code); }}>{item.title}</li>
                             ))}
                         </ul>
                     </div>
                 </div>
                 {expireInfo==="타사이동" && <div className={style.select_box}>
-                    <button type="button" aria-selected={selectBox2} onClick={() => setSelectBox2(!selectBox2)}>{cpCode.find((item) => item.code===cpName)?.title}</button>
+                    <button type="button" aria-selected={openSelectBox==="cp"} onClick={() => setOpenSelectBox("cp")}>{cpCode.find((item) => item.code===cpName)?.title}</button>
                     <div className={style.select_box_list}>
                         <ul>
                             {cpCode.map((item: any, index: number) => (
-                            <li key={index} onClick={() => { setSelectBox2(false); setCpName(item.code); }}>{item.title}</li>
+                            <li key={index} onClick={() => { setOpenSelectBox(null); setCpName(item.code);  sendDataToServer(data.expireContSeq, "cpName", item.code); }}>{item.title}</li>
                             ))}
                         </ul>
                     </div>

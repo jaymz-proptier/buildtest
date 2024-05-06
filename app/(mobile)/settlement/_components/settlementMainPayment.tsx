@@ -73,5 +73,30 @@ export default function SettlementMainPayment({ sawonCode }: { sawonCode: number
                 </table>
             </div>
         </div>
+        <div className={style.table_summury_wrap}>
+            <div className={style.header} aria-label="기타수수료">
+                기타수수료
+            </div>
+            <div className={style.table_wrap}>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>지책수당</th>
+                            <th>주차비</th>
+                            <th>지원금</th>
+                            <th>구매지원</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </>
 }

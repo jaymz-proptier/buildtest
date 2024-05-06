@@ -6,7 +6,6 @@ import RQProvider from "../_components/RQProvider";
 import FilterProvider from "../sales/_components/filterProvider";
 import SettlementTitle from "./_components/settlementTitle";
 import SettlementMainPayment from "./_components/settlementMainPayment";
-import SettlementEtcPayment from "./_components/settlementEtcPayment";
 
 export const metadata = {
     title: "정산내역",
@@ -22,7 +21,6 @@ export default async function SalesPage() {
                     <FilterProvider>
                         <SettlementTitle />
                         <SettlementMainPayment sawonCode={userData.user.sawonCode} />
-                        <SettlementEtcPayment sawonCode={userData.user.sawonCode} />
                     </FilterProvider>
                 </div>
             <Footer />

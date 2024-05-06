@@ -7,7 +7,6 @@ export type User = {
     sawonCode: number
     sosok: string
     emailVerified : Date
-<<<<<<< HEAD
 };
 
 export interface Item {
@@ -28,6 +27,3 @@ export interface Item {
     계약전송수: number
     전송수: number
 }
-=======
-};
->>>>>>> 1fea43d3d7ef8fd78d378fe56ad9b90ae264623b

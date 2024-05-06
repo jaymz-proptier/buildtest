@@ -5,7 +5,7 @@ import { useInView } from "react-intersection-observer";
 import { getContracts } from "../_lib/getContracts";
 import MemberItem from "./member-item";
 import { MemberLoading } from "../../_components/member-loading";
-import style from "@/styles/mobile-member.module.css";
+import style from "@/styles/mobile-contract.module.css";
 import { FilterContext } from "./filterProvider";
 import { TabContext } from "./TabProvider";
 interface Item {

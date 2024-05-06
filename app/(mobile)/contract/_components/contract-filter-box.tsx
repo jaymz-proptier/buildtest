@@ -1,5 +1,5 @@
 "use client";
-import style from "@/styles/mobile-member.module.css";
+import style from "@/styles/mobile-contract.module.css";
 import { useContext, useEffect, useState } from "react";
 import { FilterContext } from "./filterProvider";
 import { useQuery } from "@tanstack/react-query";
