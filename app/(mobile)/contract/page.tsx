@@ -16,11 +16,12 @@ export default async function SalesPage() {
     const userData = JSON.parse(JSON.stringify(session));
     
     return <RQProvider>
-        <div id="wrap">
+        <div id="wrap" className="mobile_wrap">
             <MobileHeader />
                 <div className={style.mobile_wrap}>
                     <TabProvider>
                         <Tab />
+                        <ContractFilterBox sawonCode={userData.user.sawonCode} />
                         <ContractQueryProvider sawonCode={userData.user.sawonCode} />
                     </TabProvider>
                 </div>

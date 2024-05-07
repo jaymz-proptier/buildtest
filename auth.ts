@@ -22,18 +22,6 @@ export const { handlers: { GET, POST }, auth, signIn, signOut } = NextAuth({
                 
                 const userData = await res.json();
 
-
-                console.log(res.headers);
-
-                let setCookie = res.headers.get('Set-Cookie');
-                console.log('set-cookie', setCookie);
-                
-                cookies().set('csrftoken', userData,  { httpOnly: true })
-                if (setCookie) {
-                const parsed = cookie.parse(setCookie);
-                cookies().set('csrftoken', userData,  { httpOnly: true })
-                cookies().set('connect.sid', parsed['connect.sid'], parsed);
-                }
                 if (!res.ok) {
                 return null
                 }

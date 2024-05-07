@@ -11,6 +11,9 @@
 .mobile_wrap .home_summary {
     padding: 0 16px;
 }
+.mobile_wrap .home_summary2 {
+    padding: 30px 16px;
+}
 .mobile_wrap .summary_wrap {
     display: flex;
     justify-content: space-between;
@@ -34,9 +37,26 @@
     font-size: 24px;
     font-weight: 700;
 }
-.mobile_wrap .home_summary .info {
+.mobile_wrap .home_summary .info, .mobile_wrap .home_summary2 .info {
     display: block;
     margin-top: 10px;
     color: #999797;
     font-size: 10px;
+}
+.notice_header {
+    position: relative;
+    line-height: 48px;
+    font-size: 20px;
+    font-weight: 700;
+    text-align: center;
+    border-bottom: 1px solid #ebeaea
+}
+.notice_header .close {
+    position: absolute;
+    top: 50%;
+    left: 16px;
+    width: 22px;
+    height: 22px;
+    margin-top: -11px;
+    background-image: url(../public/images/close_icon_01.svg);
 }

@@ -69,6 +69,10 @@
 .select_box .select_box_list li:hover {
     background-color: #ebeaea;
 }
+.table_summury_wrap {
+    position: relative;
+    padding:0 16px;
+}
 .table_summury_wrap .header {
     position: relative;
     padding: 21px 0 21px 28px;
@@ -76,7 +80,7 @@
     font-size: 16px;
     font-weight: 700;
 }
-.table_summury_wrap .header[aria-label="이실장영업실적"]::before {
+.table_summury_wrap .header[aria-label="기타수수료"]::before {
     content: "";
     position: absolute;
     top: 50%;
@@ -84,10 +88,7 @@
     width: 22px;
     height: 22px;
     margin-top: -11px;
-    background-image: url(../public/images/sales_title_icon_02.svg);
-}
-.table_summury_wrap .header+.table_wrap {
-    padding-top: 10px;
+    background-image: url(../public/images/settlement_title_icon_02.svg);
 }
 .table_summury_wrap .table_wrap table {
     table-layout: fixed;
@@ -118,4 +119,28 @@
 .table_summury_wrap .table_wrap table .total td {
     font-weight: 700;
     border-bottom: 1px solid #555;
+}
+.sub_contents {
+    position: relative;
+    padding: 5px 0;
+}
+.message_info h5 {
+    padding: 8px 0 60px;
+    line-height: 24px;
+    font-size: 20px;
+    font-weight: 400;
+    text-align: center;
+}
+.message_info ul {
+    padding: 31px 16px;
+}
+.message_info li {
+    position: relative;
+    line-height: 24px;
+    font-size: 20px;
+    font-weight: 700;
+}
+.message_info li label {
+    margin-right: 10px;
+    font-size: 14px;
 }

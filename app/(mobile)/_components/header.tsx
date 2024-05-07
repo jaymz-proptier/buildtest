@@ -9,7 +9,7 @@ export default function MobileHeader() {
     return <div className={style.header}>
         <div className={style.header_bar}></div>
         <div className={style.gnb_wrap}>
-            <Link href="/home" className={style.home_link}>
+            <Link href="/" className={style.home_link}>
                 <i>프로퍼티파트너스</i>
             </Link>
             <button className={style.logout} onClick={async (e) => { e.preventDefault(); await signOut(); }}><i>로그아웃</i></button>

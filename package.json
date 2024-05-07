@@ -14,6 +14,7 @@
     "@tanstack/react-query": "^5.32.0",
     "@tanstack/react-query-devtools": "^5.32.1",
     "cookie": "^0.6.0",
+    "file-saver": "^2.0.5",
     "formidable": "^3.5.1",
     "multiparty": "^4.2.3",
     "mysql2": "^3.9.3",
@@ -22,16 +23,19 @@
     "react": "^18",
     "react-dom": "^18",
     "react-intersection-observer": "^9.8.2",
+    "react-router-dom": "^6.23.0",
     "xlsx": "^0.18.5",
     "zustand": "^4.5.2"
   },
   "devDependencies": {
+    "@types/file-saver": "^2.0.7",
     "@types/formidable": "^3.4.5",
     "@types/multiparty": "^0.0.36",
     "@types/mysql": "^2.15.26",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/react-router-dom": "^5.3.3",
     "typescript": "^5"
   }
 }

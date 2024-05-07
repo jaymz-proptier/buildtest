@@ -2,14 +2,17 @@
     position: relative;
     padding:0 16px;
 }
-.table_summury_wrap .header {
+.table_summury_wrap .header, .table_summury_wrap .home_header {
     position: relative;
     padding: 21px 0 21px 28px;
     line-height: 24px;
     font-size: 16px;
     font-weight: 700;
 }
-.table_summury_wrap .header[aria-label="상품별매출내역"]::before {
+.table_summury_wrap .home_header {
+    margin-top: 10px;
+}
+.table_summury_wrap .header[aria-label="상품별매출내역"]::before, .table_summury_wrap .home_header[aria-label="상품별매출내역"]::before {
     content: "";
     position: absolute;
     top: 50%;
@@ -31,6 +34,9 @@
 }
 .table_summury_wrap .table_wrap {
     padding-top: 10px;
+}
+.table_summury_wrap .home_header+.table_wrap {
+    padding: 0;
 }
 .table_summury_wrap .table_wrap table {
     table-layout: fixed;

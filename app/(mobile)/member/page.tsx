@@ -16,7 +16,7 @@ export default async function MemberPage() {
     const session = await auth();
     const userData = JSON.parse(JSON.stringify(session));
     //const items = await fetchItems(1, userData.user.sawonCode, {product_type: "", search: "", sorting: ""});
-    return <div id="wrap">
+    return <div id="wrap" className="mobile_wrap">
         <MobileHeader />
             <div className={style.mobile_wrap}>
                 <MemberSearchFilter />
