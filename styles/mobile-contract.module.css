@@ -53,6 +53,9 @@
     font-weight: 700;
     text-align: left;
 }
+.select_wrap .select_box>button {
+    border: 1px solid #c2c1c1;
+}
 .select_box>button::after {
     content: "";
     position: absolute;
@@ -64,9 +67,11 @@
     background-image: url(../public/images/arrow_down_icon_01.svg);
 }
 .select_wrap {
-    position: absolute;
-    top: 14px;
-    right: 14px;
+    display: flex;
+    padding-top: 12px;
+}
+.select_wrap .select_box:not(:first-child) {
+    margin-left: 10px;
 }
 .select_box .select_box_list {
     position: absolute;
@@ -74,7 +79,8 @@
     display: none;
     top: 100%;
     left: 0;
-    width: 100%;
+    width: auto;
+    white-space: nowrap;
     background-color: #fff;
     border: 1px solid #ebeaea;
 }
@@ -96,6 +102,14 @@
     position: relative;
     padding: 20px 16px;
     background-color: #fafafa;
+}
+.list_contents .no_data {
+    padding: 20px 0;
+    text-align: center;
+    font-size: 14px;
+    background-color: #fff;
+    border: 1px solid #ebeaea;
+    border-radius: 6px;
 }
 .list_contents .item_wrap {
     position: relative;

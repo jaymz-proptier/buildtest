@@ -8,7 +8,7 @@ export default async function Home() {
   const session = await auth();
   const getdata = JSON.parse(JSON.stringify(session));
   //console.log("ffffff",getdata.user);
-  redirect(`/${getdata.user.sosok==="직원" ? "notice" : "member"}`);
+  redirect(`/${getdata.user.sosok==="직원" ? "notice" : "home"}`);
   //router.replace(`/${getdata.user.sosok==="직원" ? "notice" : "member"}`);
   //return getdata.user.sosok==="직원" ? <PcLayout /> : <MobileHome userData={getdata.user} />
 }

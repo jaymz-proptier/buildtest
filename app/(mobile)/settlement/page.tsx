@@ -19,7 +19,7 @@ export default async function SalesPage() {
             <MobileHeader />
                 <div className={style.mobile_wrap}>
                     <FilterProvider>
-                        <SettlementTitle />
+                        <SettlementTitle sawonCode={userData.user.sawonCode} />
                         <SettlementMainPayment sawonCode={userData.user.sawonCode} />
                     </FilterProvider>
                 </div>

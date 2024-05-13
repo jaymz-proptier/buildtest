@@ -3,10 +3,21 @@ import style from "@/styles/login.module.css";
 import { authenticate } from "@/lib/actions";
 import { useFormState } from "react-dom";
 import Footer from "../components/footer";
+import { useEffect, useState } from "react";
 
 export default function Page() {
   	// 추후에 추가될 로그인 메소드
     const [errorMsg, dispatch] = useFormState(authenticate, undefined);
+    const [alertShown, setAlertShown] = useState(false);
+
+    useEffect(() => {
+    if (errorMsg && !alertShown) {
+        alert(errorMsg);
+        setAlertShown(true);
+    } else if (!errorMsg) {
+        setAlertShown(false);
+    }
+    }, [errorMsg, alertShown]);
     return (
         <div id="wrap" className={style.login_wrap}>
             <div className={style.container}>

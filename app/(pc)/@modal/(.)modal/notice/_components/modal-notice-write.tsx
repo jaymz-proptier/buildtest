@@ -35,7 +35,6 @@ export default function NoticeWrite({ data, me }: { data: any, me: any }) {
 
     const handleFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files.length > 0) {
-        console.log(e.target.files[0]);
         setSelectedFile(e.target.files[0]);
         }
     }, []);
@@ -140,9 +139,9 @@ export default function NoticeWrite({ data, me }: { data: any, me: any }) {
                 <label className={style.input_label}>제목</label>
                 {data?.title}
             </div>
-            <div className={style.input_div}>
+            <div className={`${style.input_div} ${style.detail}`}>
                 <label className={style.input_label}>내용</label>
-                {data?.contents}
+                <div className={style.detail_contents} dangerouslySetInnerHTML={{ __html: data.contents.replace(/\n/g, '<br />') }} />
             </div>
             {data.fileYn==="Y" && data.filePath ? (
             <div className={style.input_div}>

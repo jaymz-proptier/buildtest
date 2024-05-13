@@ -22,7 +22,7 @@ export default function ContractFilterBox({ sawonCode }: { sawonCode: number }) 
     }[] = [
         { code: "", title: "종합"},
         { code: "이실장", title: "이실장"},
-        { code: "포커스", title: "매경포커스"},
+        { code: "포커스", title: "매경"},
     ];
     const { data: totalCount } = useQuery<Item, Object, Item, [_1: string, _2:string, _3: number, _4: string, _5: string]>({
         queryKey: ['member', 'salesCount', sawonCode, tab, filter],

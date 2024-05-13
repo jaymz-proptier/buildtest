@@ -51,7 +51,8 @@
     display: none;
     top: 100%;
     left: 0;
-    width: 100%;
+    width: auto;
+    white-space: nowrap;
     background-color: #fff;
     border: 1px solid #ebeaea;
 }
@@ -142,5 +143,10 @@
 }
 .message_info li label {
     margin-right: 10px;
+    font-size: 14px;
+}
+.no_data {
+    padding: 100px 0;
+    text-align: center;
     font-size: 14px;
 }

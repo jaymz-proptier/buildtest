@@ -11,7 +11,7 @@ export const metadata = {
 export default async function authPage({ searchParams }: { searchParams: any }) {  
     const session = await auth();
     const userData = JSON.parse(JSON.stringify(session));
-    return <div id="wrap" className="pc_wrap">
+    if(userData.user.sosok==="직원") return <div id="wrap" className="pc_wrap">
         <PcHeader me={userData} />
         <div className={style.list_wrap}>
             <div className={style.list_title}>

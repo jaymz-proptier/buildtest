@@ -2,30 +2,28 @@
 import { InfiniteData, useInfiniteQuery } from "@tanstack/react-query";
 import { useContext, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
-import { getContracts } from "../_lib/getContracts";
+import { getMembers } from "../_lib/getMembers";
 import MemberItem from "./member-item";
 import { MemberLoading } from "../../_components/member-loading";
-import style from "@/styles/mobile-contract.module.css";
+import style from "@/styles/mobile-member.module.css";
 import { FilterContext } from "./filterProvider";
-import { TabContext } from "./TabProvider";
 interface Item {
     page: number;
     data: any;
 }
-export default function NewContractList({ sawonCode }: { sawonCode: number }) {
-    const { tab } = useContext(TabContext);
-    const { filter } = useContext(FilterContext);
+export default function MembersList({ sawonCode }: { sawonCode: number }) {
+    const { filter, search, sort } = useContext(FilterContext);
     const { 
         data,
         fetchNextPage,
         hasNextPage,
         isFetching,
-    } = useInfiniteQuery<Item[], Object, InfiniteData<Item[]>, [_1: string, _2: string, _3: number, _4: string, _5: string], number>({
-        queryKey: ["member", "sales", sawonCode, tab, filter],
-        queryFn: getContracts,
+    } = useInfiniteQuery<Item[], Object, InfiniteData<Item[]>, [_1: string, _2: string, _3: number, _4: string, _5: string, _6: string], number>({
+        queryKey: ["member", "member", sawonCode, filter, search, sort],
+        queryFn: getMembers,
         initialPageParam: 0,
         getNextPageParam: (lastPage) => {
-            return lastPage.at(-1)?.page;
+            return lastPage?.at(-1)?.page;
         },
         staleTime: 60 * 1000, // fresh -> stale, 5분이라는 기준
         gcTime: 300 * 1000,

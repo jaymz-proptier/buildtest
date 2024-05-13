@@ -21,7 +21,6 @@ export default async function SalesPage() {
                 <div className={style.mobile_wrap}>
                     <TabProvider>
                         <Tab />
-                        <ContractFilterBox sawonCode={userData.user.sawonCode} />
                         <ContractQueryProvider sawonCode={userData.user.sawonCode} />
                     </TabProvider>
                 </div>

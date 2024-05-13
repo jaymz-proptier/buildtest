@@ -28,6 +28,7 @@ export default function UploadWrite({ data, me, searchParams }: { data: any, me:
     const [title, setTitle] = useState(data.title || "");
     const [contents, setContents] = useState(data.contents || "");
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
+    const [fileName, setFileName] = useState(data?.fileName || "선택된 파일이 없습니다.");
     const router = useRouter();
 
     const handleSelectBox = (value: string) => {
@@ -42,8 +43,9 @@ export default function UploadWrite({ data, me, searchParams }: { data: any, me:
 
     const handleFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files.length > 0) {
-        console.log(e.target.files[0]);
-        setSelectedFile(e.target.files[0]);
+            console.log(e.target.files[0]);
+            setSelectedFile(e.target.files[0]);
+            setFileName(e.target.files[0].name);
         }
     }, []);
 
@@ -107,6 +109,8 @@ export default function UploadWrite({ data, me, searchParams }: { data: any, me:
                         </ul>
                     </div>
                 </div>
+                {!(dataGubun==="1" || dataGubun==="2") && 
+                <>
                 <div className={style.select_box}>
                     <button type="button" aria-selected={selectBox2} onClick={() => setSelectBox2(!selectBox2)}>{year}</button>
                     <div className={style.select_box_list}>
@@ -127,6 +131,7 @@ export default function UploadWrite({ data, me, searchParams }: { data: any, me:
                         </ul>
                     </div>
                 </div>
+                </> }
             </div>
             <div className={style.input_div}>
                 <label className={style.input_label}>제목</label>
@@ -141,7 +146,7 @@ export default function UploadWrite({ data, me, searchParams }: { data: any, me:
                 <div className={style.file_box}>
                     <input type="file" onChange={handleFileChange} />
                     <label className={style.file_label}>파일선택</label>
-                    <span className={style.file_name}>선택된 파일이 없습니다.</span>
+                    <span className={style.file_name}>{fileName}</span>
                 </div>
             </div>
         </div>

@@ -12,7 +12,6 @@ interface Item {
 }
 export default function AuthWrite({ data, me, searchParams }: { data: any, me: any, searchParams?: any }) {
     
-    
     const {data: jojikCenter, isLoading, error} = useQuery<Item, Object, Item, [_1: string]>({
         queryKey: ['jojikCenter'],
         queryFn: getJojikCenter,
@@ -32,17 +31,17 @@ export default function AuthWrite({ data, me, searchParams }: { data: any, me: a
     const [selectBox, setSelectBox] = useState(false);
     const [selectBox2, setSelectBox2] = useState(false);
     const [selectBox3, setSelectBox3] = useState(false);
-    const [centerCode, setCenterCode] = useState(data.jojikCode ? data.jojikCode : jojikCenter?.data[0].code);
+    const [centerCode, setCenterCode] = useState(data.centerCode ? data.centerCode : jojikCenter?.data[0].code);
     const [partCode, setPartCode] = useState<any | []>([]);
-    const [jojikCode, setJojikCode] = useState(data.jojikCode ? data.jojikCode : 1);
-    const [jobCode, setJobCode] = useState(data.jobCode ? data.jobCode : jobCodeList?.data[0].code);
+    const [jojikCode, setJojikCode] = useState(data.jojikCode ? data.jojikCode : `${jojikCenter?.data[0].code}1`);
+    const [jobCode, setJobCode] = useState(data.jobCode ? Number(data.jobCode) : jobCodeList?.data[0].code);
     const [swId, setSwId] = useState(data?.swId || "");
     const [swPwd, setSwPwd] = useState(data?.swPwd || "");
     const [name, setName] = useState(data.name || "");
     const router = useRouter();
 
     const {data: centerPartData, isLoading: isCenterPartDataLoading} = useQuery<Item, Object, Item, [_1: string, _2: string]>({
-        queryKey: ['centerPart', centerCode],
+        queryKey: ['centerPart', centerCode ? centerCode : jojikCenter?.data[0].code],
         queryFn: getCenterPart,
         staleTime: 60 * 1000, // fresh -> stale, 5분이라는 기준
         gcTime: 300 * 1000,
@@ -99,19 +98,17 @@ export default function AuthWrite({ data, me, searchParams }: { data: any, me: a
         router.back();
     }
     useEffect(() => {
-        setCenterCode(jojikCenter?.data[0].code);
+        setCenterCode(data.centerCode ? data.centerCode : jojikCenter?.data[0].code);
         setPartCode(centerPartData?.data);
-        console.log(centerPartData?.data);
     }, [jojikCenter]);
     useEffect(() => {
         if(!isCenterPartDataLoading && centerPartData?.data) {
-            setPartCode(centerPartData?.data);
-            setJojikCode(centerPartData?.data[0]?.code);
-            console.log(centerPartData?.data);
+            if(centerPartData?.data.length > 0 ) setPartCode(centerPartData?.data);
+            setJojikCode(jojikCode ? jojikCode : centerPartData?.data[0]?.code);
         }
     }, [centerCode, isCenterPartDataLoading, centerPartData]);
     useEffect(() => {
-        setJobCode(jobCodeList?.data[0]?.code);
+        setJobCode(data.jobCode ? Number(data.jobCode) : jobCodeList?.data[0]?.code);
     }, [jobCodeList]);
     return <div className={style.contents}>
         { modify ? (
@@ -132,18 +129,20 @@ export default function AuthWrite({ data, me, searchParams }: { data: any, me: a
                         </ul>
                     </div>
                 </div>
+                {partCode && partCode.length > 0 && 
                 <div className={style.select_box}>
-                    <button type="button" aria-selected={selectBox2} onClick={() => setSelectBox2(!selectBox2)}>{partCode?.find((item: any) => item.code===jojikCode)?.title}</button>
+                    <button type="button" aria-selected={selectBox2} onClick={() => setSelectBox2(!selectBox2)}>{partCode?.find((item: any) => item.code===jojikCode)?.title || "-"}</button>
                     <div className={style.select_box_list}>
                         <ul>
+                            <li onClick={() => { setSelectBox2(false); setJojikCode(`${centerCode}0`); }}>-</li>
                             {partCode && partCode?.map((item: any, index: number) => (
                             <li key={index} onClick={() => { setSelectBox2(false); setJojikCode(item.code); }}>{item.title}</li>
                             ))}
                         </ul>
                     </div>
-                </div>
+                </div>}
                 <div className={style.select_box}>
-                    <button type="button" aria-selected={selectBox3} onClick={() => setSelectBox3(!selectBox3)}>{jobCodeList?.data.find((item: any) => item.code===jobCode)?.title}</button>
+                    <button type="button" aria-selected={selectBox3} onClick={() => setSelectBox3(!selectBox3)}>{jobCodeList?.data.find((item: any) => item.code===jobCode)?.title || "-"}</button>
                     <div className={style.select_box_list}>
                         <ul>
                             {jobCodeList?.data.map((item: any, index: number) => (
@@ -159,18 +158,18 @@ export default function AuthWrite({ data, me, searchParams }: { data: any, me: a
             </div>
             <div className={style.input_div}>
                 <label className={style.input_label}>비밀번호</label>
-                <input type="text" name="swPwd" className={style.input_title} value={swPwd || ""} onChange={handleInputChange} />
+                <input type="text" name="swPwd" className={style.input_title} onChange={handleInputChange} />
             </div>
         </div>
         ) : (            
         <div className={style.write_form}>
+            <div className={style.view_div}>
+                <h5>{data?.name} {data?.jobName}</h5>
+                {data?.centerName} {data?.partName}
+            </div>
             <div className={style.input_div}>
                 <label className={style.input_label}>아이디</label>
                 {data?.swId}
-            </div>
-            <div className={style.input_div}>
-                <label className={style.input_label}>비밀번호</label>
-                {data?.swPwd}
             </div>
         </div>                    
         )}

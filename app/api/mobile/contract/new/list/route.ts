@@ -12,8 +12,8 @@ export async function GET(req: NextRequest) {
         let sqlWhere = " sawonCode = ?";
         const paramsArray = [searchParams.get("sawonCode")];
         if (searchParams.has("type") && searchParams.get("type")!=="") {
-            sqlWhere += " and 상품유형 = ? ";
-            paramsArray.push(searchParams.get("type"));
+            sqlWhere += ` and 상품유형 ${searchParams.get("type")==="이실장" ? "=" : "<>"} ? `;
+            paramsArray.push("이실장");
         }
         const countSql = `select count(*) as count from tb_data_newcontracts where ${sqlWhere} and useYn = 'Y'`;
         const countResult = await executeQuery(countSql, paramsArray) as unknown[];

@@ -66,28 +66,6 @@ export default function MemberItem({ data }: { data: any }) {
     }, []);
     return <>
         <div className={style.item_wrap}>
-            <div className={style.select_wrap} ref={selectBoxRef}>
-                <div className={style.select_box}>
-                    <button type="button" aria-selected={openSelectBox==="expire"} onClick={() => setOpenSelectBox("expire")}>{expireCode.find((item) => item.code===expireInfo)?.title}</button>
-                    <div className={style.select_box_list}>
-                        <ul>
-                            {expireCode.map((item: any, index: number) => (
-                            <li key={index} onClick={() => { setOpenSelectBox(null); setExpireInfo(item.code); sendDataToServer(data.expireContSeq, "expireInfo", item.code); }}>{item.title}</li>
-                            ))}
-                        </ul>
-                    </div>
-                </div>
-                {expireInfo==="타사이동" && <div className={style.select_box}>
-                    <button type="button" aria-selected={openSelectBox==="cp"} onClick={() => setOpenSelectBox("cp")}>{cpCode.find((item) => item.code===cpName)?.title}</button>
-                    <div className={style.select_box_list}>
-                        <ul>
-                            {cpCode.map((item: any, index: number) => (
-                            <li key={index} onClick={() => { setOpenSelectBox(null); setCpName(item.code);  sendDataToServer(data.expireContSeq, "cpName", item.code); }}>{item.title}</li>
-                            ))}
-                        </ul>
-                    </div>
-                </div>}
-            </div>
             <div className={style.company}>{data.상호명}({data.회원번호})</div>
             <div className={style.user}>
                 {data.대표자명}
@@ -111,6 +89,28 @@ export default function MemberItem({ data }: { data: any }) {
                         </tr>
                     </tbody>
                 </table>
+            </div>
+            <div className={style.select_wrap} ref={selectBoxRef}>
+                <div className={style.select_box}>
+                    <button type="button" aria-selected={openSelectBox==="expire"} onClick={() => setOpenSelectBox("expire")}>{expireCode.find((item) => item.code===expireInfo)?.title}</button>
+                    <div className={style.select_box_list}>
+                        <ul>
+                            {expireCode.map((item: any, index: number) => (
+                            <li key={index} onClick={() => { setOpenSelectBox(null); setExpireInfo(item.code); sendDataToServer(data.expireContSeq, "expireInfo", item.code); }}>{item.title}</li>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
+                <div className={style.select_box}>
+                    <button type="button" aria-selected={openSelectBox==="cp"} onClick={() => setOpenSelectBox("cp")}>{cpCode.find((item) => item.code===cpName)?.title}</button>
+                    <div className={style.select_box_list}>
+                        <ul>
+                            {cpCode.map((item: any, index: number) => (
+                            <li key={index} onClick={() => { setOpenSelectBox(null); setCpName(item.code);  sendDataToServer(data.expireContSeq, "cpName", item.code); }}>{item.title}</li>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </>

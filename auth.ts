@@ -2,8 +2,6 @@ import NextAuth from 'next-auth';
 import { authConfig } from './auth.config';
 import Credentials from 'next-auth/providers/credentials';
 import { User } from '@/lib/definitions';
-import cookie from "cookie";
-import { cookies } from 'next/headers';
 
 
 export const { handlers: { GET, POST }, auth, signIn, signOut } = NextAuth({
@@ -21,9 +19,10 @@ export const { handlers: { GET, POST }, auth, signIn, signOut } = NextAuth({
                 });
                 
                 const userData = await res.json();
-
-                if (!res.ok) {
-                return null
+                console.log("userData",userData, userData?.data);
+                if (!userData?.data) {
+                    console.log("로그인 정보가 올바르지 않습니다.");
+                    return null;
                 }
                 console.log(userData);
                 /* const sql = "select swId, name, sawonCode, sosok from tb_pptn_sawon where swId = ? and swPwd = SHA2(CONCAT(CONCAT('*', UPPER(SHA1(UNHEX(SHA1(?))))), 'ribo20240408!@'),256) and isStatus='재직' and useYn='Y'";
@@ -42,7 +41,9 @@ export const { handlers: { GET, POST }, auth, signIn, signOut } = NextAuth({
                     }
                 }
                 // 로그인 실패 처리
-                if (!loginRes.success) return null;
+                if (!loginRes.success) {
+                    return null;
+                }
                 // 로그인 성공 처리
                 const user = {
                     profileUrl: "",

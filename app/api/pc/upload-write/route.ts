@@ -108,11 +108,13 @@ export async function POST(req: NextRequest) {
 
                 await executeQuery(`update tb_upload_log_test set succeseCount = ( select count(*) from tb_upload_sales_log_test where upchaSeq = ?) where upchaSeq = ?`, [lastInsertId, lastInsertId]);
 
+            } else if(body.dataGubun==="3") {
+                console.log(jsonData);
             }
 
 
 
-            return NextResponse.json({ status: "OK", message: "정상적으로 등록했습니다." });
+            //return NextResponse.json({ status: "OK", message: "정상적으로 등록했습니다." });
         } catch (error) {
         console.error('데이터 업로드 오류:', error);
         return NextResponse.json({ status: "Fail", message: '데이터 업로드 중 오류가 발생했습니다.' });

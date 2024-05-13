@@ -25,7 +25,6 @@ export default function ExpireContractList({ sawonCode }: { sawonCode: number })
         queryFn: getContracts,
         initialPageParam: 0,
         getNextPageParam: (lastPage) => {
-            console.log("lastPage", lastPage);
             return lastPage.at(-1)?.page;
         },
         staleTime: 60 * 1000, // fresh -> stale, 5분이라는 기준
@@ -37,12 +36,12 @@ export default function ExpireContractList({ sawonCode }: { sawonCode: number })
     });
     useEffect(() => {
         if(inView) {
-            console.log(data);
             !isFetching && hasNextPage && fetchNextPage();
         }
     }, [inView, isFetching, hasNextPage, fetchNextPage, filter]);
     return <>
         <div className={style.list_contents}>
+            {data?.pages[0].length===0 && <div className={style.no_data}>검색 결과가 없습니다.</div>}
             {data?.pages.flatMap(page => page).map((item: any, index: number) => (
             <MemberItem key={index} data={item} /> 
             ))}

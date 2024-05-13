@@ -95,3 +95,7 @@
     border: 1px solid #ebeaea;
     border-radius: 6px;
 }
+.list_wrap .no_data {
+    padding: 50px 0;
+    text-align: center;
+}

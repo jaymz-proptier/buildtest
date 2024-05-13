@@ -69,6 +69,14 @@
     padding: 20px 16px;
     background-color: #fafafa;
 }
+.list_contents .no_data {
+    padding: 20px 0;
+    text-align: center;
+    font-size: 14px;
+    background-color: #fff;
+    border: 1px solid #ebeaea;
+    border-radius: 6px;
+}
 .list_contents .item_wrap {
     position: relative;
     padding: 14px;
