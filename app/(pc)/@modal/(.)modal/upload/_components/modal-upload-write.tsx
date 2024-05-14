@@ -18,15 +18,15 @@ export default function UploadWrite({ data, me, searchParams }: { data: any, me:
     ];
     const currentYear = new Date().getFullYear();
     const currentMonth = new Date().getMonth() + 1;
-    const [modify, setModify] = useState(data?.bnSeq ? false :true);
+    const [modify, setModify] = useState(data?.upchaSeq ? false :true);
     const [selectBox, setSelectBox] = useState(false);
     const [selectBox2, setSelectBox2] = useState(false);
     const [selectBox3, setSelectBox3] = useState(false);
     const [dataGubun, setDataGubun] = useState(data?.dataGubun ? data?.dataGubun : dataCode[0].code);
     const [year, setYear] = useState(data?.calYm?.substr(0, 4) || currentYear);
     const [month, setMonth] = useState(data?.calYm?.substr(4, 2) || currentMonth.toString().padStart(2, "0"));
-    const [title, setTitle] = useState(data.title || "");
-    const [contents, setContents] = useState(data.contents || "");
+    const [title, setTitle] = useState(data?.title || "");
+    const [contents, setContents] = useState(data?.contents || "");
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [fileName, setFileName] = useState(data?.fileName || "선택된 파일이 없습니다.");
     const router = useRouter();
@@ -152,6 +152,10 @@ export default function UploadWrite({ data, me, searchParams }: { data: any, me:
         </div>
         ) : (            
         <div className={style.write_form}>
+            <div className={style.input_div}>
+                <label className={style.input_label}>구분</label>
+                {dataCode.find((item) => item.code===dataGubun)?.title}
+            </div>
             <div className={style.input_div}>
                 <label className={style.input_label}>제목</label>
                 {data?.title}

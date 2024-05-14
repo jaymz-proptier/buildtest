@@ -3,8 +3,7 @@ import { useRouter } from "next/navigation";
 
 export default function UploadItem({ item }: { item: any }) {
     const router = useRouter();
-    return <tr onClick={() => router.push(`/modal/notice/${item.bnSeq}`)}>
-        <td key={item.bnSeq}>{item.bnSeq}</td>
+    return <tr onClick={() => router.push(`/modal/notice/${item.upchaSeq}`)}>
         <td>{item.noticeGubun}</td>
         <td className={style.title}>{item.title}</td>
         <td>{item.regDate}</td>
