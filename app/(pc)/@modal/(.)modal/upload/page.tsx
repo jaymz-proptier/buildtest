@@ -16,8 +16,8 @@ export default function Page() {
         };
     }, []);
     return <>
-        <div className={style.modal_wrap} onClick={() => { console.log("back"); router.back(); }}>
-            <div className={style.modal_body}>
+        <div className={style.modal_wrap} onClick={() => { router.back(); }}>
+            <div className={style.modal_body} onClick={(e) => e.stopPropagation()}>
                 <div className={style.header}>자료업로드</div>
                 <UploadWrite data={data} me={me} />
             </div>
