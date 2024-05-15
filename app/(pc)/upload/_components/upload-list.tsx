@@ -17,7 +17,7 @@ export default function UploadList({ searchParams }: { searchParams: any }) {
 
     const queryClient = useQueryClient();
     const page = Number(searchParams?.page ?? 1);
-    const { data } = useQuery<Item[], Object, Item[], [_1: string, _2: string, Props['searchParams']]>({
+    const { data, isLoading } = useQuery<Item[], Object, Item[], [_1: string, _2: string, Props['searchParams']]>({
         queryKey: ["posts", "search", searchParams],
         queryFn: getList,
         staleTime: 60 * 1000, // fresh -> stale, 5분이라는 기준
@@ -50,6 +50,10 @@ export default function UploadList({ searchParams }: { searchParams: any }) {
                             data?.data.map((item: any) => (
                             <UploadItem key={item.upchaSeq} item={item} />
                             ))
+                        ) : isLoading ? (
+                        <tr>
+                            <td colSpan={4} className={style.no_data}>데이터를 불러오는 중입니다.</td>
+                        </tr>
                         ) : (
                         <tr>
                             <td colSpan={4} className={style.no_data}>등록된 자료가 없습니다.</td>

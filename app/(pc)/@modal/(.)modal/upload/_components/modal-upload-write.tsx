@@ -154,7 +154,7 @@ export default function UploadWrite({ data, me, searchParams }: { data: any, me:
         <div className={style.write_form}>
             <div className={style.input_div}>
                 <label className={style.input_label}>구분</label>
-                {dataCode.find((item) => item.code===dataGubun)?.title}
+                {dataCode.find((item) => item.code===dataGubun)?.title} {data?.calYm ? `${data?.calYm.substr(0, 4)}년 ${data?.calYm.substr(4, 2)}월` : ""}
             </div>
             <div className={style.input_div}>
                 <label className={style.input_label}>제목</label>
@@ -163,6 +163,16 @@ export default function UploadWrite({ data, me, searchParams }: { data: any, me:
             <div className={style.input_div}>
                 <label className={style.input_label}>내용</label>
                 {data?.contents}
+            </div>
+            <div className={style.input_div}>
+                <label className={style.input_label}>첨부파일</label>
+                {data?.fileName}
+            </div>
+            <div className={style.input_div}>
+                <label className={style.input_label}>처리결과</label>
+                <span className={style.item}>자료총건수: {data?.totalCount.toLocaleString()}</span> 
+                <span className={style.item}>성공건수: {data?.succeseCount.toLocaleString()}</span>
+                <span className={style.item}>진행상태: {data?.statusGubun}</span>
             </div>
         </div>                    
         )}

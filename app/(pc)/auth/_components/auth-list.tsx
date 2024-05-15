@@ -18,7 +18,7 @@ export default function AuthList({ searchParams }: { searchParams: any}) {
     const router = useRouter();
     const queryClient = useQueryClient();
     const page = Number(searchParams?.page ?? 1);
-    const { data } = useQuery<Item[], Object, Item[], [_1: string, _2: string, Props['searchParams']]>({
+    const { data, isLoading } = useQuery<Item[], Object, Item[], [_1: string, _2: string, Props['searchParams']]>({
         queryKey: ["admin", "auth", searchParams],
         queryFn: getList,
         staleTime: 60 * 1000, // fresh -> stale, 5분이라는 기준
@@ -63,6 +63,10 @@ export default function AuthList({ searchParams }: { searchParams: any}) {
                                 <td>{item.regDate ? item.regDate : "-"}</td>
                             </tr>
                             ))
+                        ) : isLoading ? (
+                        <tr>
+                            <td colSpan={6} className={style.no_data}>데이터를 불러오는 중입니다.</td>
+                        </tr>
                         ) : (
                         <tr>
                             <td colSpan={6} className={style.no_data}>등록된 계정이 없습니다.</td>

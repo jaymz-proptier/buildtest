@@ -9,8 +9,8 @@ const pump = promisify(pipeline);
 
 export async function POST(req: NextRequest) {
     const getIp = (req.headers.get('x-forwarded-for') ?? '127.0.0.1').trim().split(',')
-    const ipCheck =  getIp.length > 1 ? getIp[getIp.length - 1].trim() : getIp
-    const ip = ipCheck
+    const ipCheck = getIp[getIp.length - 1].trim();
+    const ip = ipCheck.replace("::ffff:", "");
     const formData = await req.formData();
     const body = Object.fromEntries(formData);
     const files = formData.getAll('file') as File[];

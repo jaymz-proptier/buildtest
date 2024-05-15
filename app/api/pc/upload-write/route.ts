@@ -8,8 +8,8 @@ export async function POST(req: NextRequest) {
     const formData = await req.formData();
     const body = Object.fromEntries(formData);
     const getIp = (req.headers.get('x-forwarded-for') ?? '127.0.0.1').trim().split(',')
-    const ipCheck =  getIp.length > 1 ? getIp[getIp.length - 1].trim() : getIp
-    const ip = ipCheck
+    const ipCheck = getIp[getIp.length - 1].trim();
+    const ip = ipCheck.replace("::ffff:", "");
 
     if(req.method === "POST") {
         try {
@@ -54,8 +54,8 @@ export async function POST(req: NextRequest) {
                     ]);
                 }
                 await executeQuery("UPDATE tb_upload_log SET statusGubun='D', useYn='N' WHERE dataGubun='1' AND statusGubun='W' AND useYn='Y';", []);
-                await executeQuery("TRUNCATE TABLE tb_upload_member_log;", []);
-                await executeQuery("UPDATE tb_upload_member_log SET useYn='N' WHERE useYn='Y';", []);
+                await executeQuery("TRUNCATE TABLE tb_upload_member_log_test;", []);
+                //await executeQuery("UPDATE tb_upload_member_log SET useYn='N' WHERE useYn='Y';", []);
                 const uploadSql = `insert into tb_upload_log_test (dataGubun, calYm, title, contents, fileName, filePath, totalCount, succeseCount, statusGubun, resultMessage, regDate, modDate, useYn, workSawonNo, workIp) values (?, ?, ?, ?, ?, '', ?, 0, 'W', '', sysdate(), SYSDATE(), 'Y', ?, ?)`;
                 await executeQuery(uploadSql, [body.dataGubun, `${body.year}${body.month}`, body.title, body.contents, fileToStorage.name, insertData.length, body.sawonCode, ip]);
                 const rows = await executeQuery("SELECT LAST_INSERT_ID()",[]) as any[];
@@ -108,7 +108,6 @@ export async function POST(req: NextRequest) {
                 await executeQuery(`update tb_upload_log_test set succeseCount = ( select count(*) from tb_upload_sales_log_test where upchaSeq = ?) where upchaSeq = ?`, [lastInsertId, lastInsertId]);
 
             } else if(body.dataGubun==="3") {
-                console.log(jsonData[38], jsonData[36], jsonData[41], jsonData.length);
                 let centerName = "";
                 let partName = "";
                 for (let i = 2; i < jsonData.length; i++) {

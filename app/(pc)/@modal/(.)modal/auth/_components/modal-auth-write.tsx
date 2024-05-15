@@ -31,13 +31,13 @@ export default function AuthWrite({ data, me, searchParams }: { data: any, me: a
     const [selectBox, setSelectBox] = useState(false);
     const [selectBox2, setSelectBox2] = useState(false);
     const [selectBox3, setSelectBox3] = useState(false);
-    const [centerCode, setCenterCode] = useState(data.centerCode ? data.centerCode : jojikCenter?.data[0].code);
+    const [centerCode, setCenterCode] = useState(data?.centerCode ? data.centerCode : jojikCenter?.data[0].code);
     const [partCode, setPartCode] = useState<any | []>([]);
-    const [jojikCode, setJojikCode] = useState(data.jojikCode ? data.jojikCode : `${jojikCenter?.data[0].code}1`);
-    const [jobCode, setJobCode] = useState(data.jobCode ? Number(data.jobCode) : jobCodeList?.data[0].code);
+    const [jojikCode, setJojikCode] = useState(data?.jojikCode ? data.jojikCode : `${jojikCenter?.data[0].code}1`);
+    const [jobCode, setJobCode] = useState(data?.jobCode ? Number(data.jobCode) : jobCodeList?.data[0].code);
     const [swId, setSwId] = useState(data?.swId || "");
-    const [swPwd, setSwPwd] = useState(data?.swPwd || "");
-    const [name, setName] = useState(data.name || "");
+    const [swPwd, setSwPwd] = useState("");
+    const [name, setName] = useState(data?.name || "");
     const router = useRouter();
 
     const {data: centerPartData, isLoading: isCenterPartDataLoading} = useQuery<Item, Object, Item, [_1: string, _2: string]>({
@@ -59,10 +59,11 @@ export default function AuthWrite({ data, me, searchParams }: { data: any, me: a
         mutationFn: (e:any) => {
             e.preventDefault();
             const formData = new FormData();
-            formData.append("sawonCode", data.sawonCode || "");
+            formData.append("sawonCode", data?.sawonCode || "");
             formData.append("swId", swId || "");
             formData.append("swPwd", swPwd);
             formData.append("jojikCode", jojikCode);
+            formData.append("jobCode", jobCode);
             formData.append("name", name);
             return fetch(`/api/pc/auth-write`, {
                 method: 'post',
@@ -81,7 +82,7 @@ export default function AuthWrite({ data, me, searchParams }: { data: any, me: a
             alert("이름을 입력해주세요.");
         } else if(swId===undefined || swId==="") {
             alert("아이디를 입력해주세요.");
-        } else if(swPwd===undefined || swPwd==="") {
+        } else if(data?.sawonCode==="" && (swPwd===undefined || swPwd==="")) {
             alert("비밀번호를 입력해주세요.");
         } else {
             mutation.mutate(e);
@@ -98,7 +99,7 @@ export default function AuthWrite({ data, me, searchParams }: { data: any, me: a
         router.back();
     }
     useEffect(() => {
-        setCenterCode(data.centerCode ? data.centerCode : jojikCenter?.data[0].code);
+        setCenterCode(data?.centerCode ? data.centerCode : jojikCenter?.data[0].code);
         setPartCode(centerPartData?.data);
     }, [jojikCenter]);
     useEffect(() => {
@@ -108,7 +109,7 @@ export default function AuthWrite({ data, me, searchParams }: { data: any, me: a
         }
     }, [centerCode, isCenterPartDataLoading, centerPartData]);
     useEffect(() => {
-        setJobCode(data.jobCode ? Number(data.jobCode) : jobCodeList?.data[0]?.code);
+        setJobCode(data?.jobCode ? Number(data.jobCode) : jobCodeList?.data[0]?.code);
     }, [jobCodeList]);
     return <div className={style.contents}>
         { modify ? (

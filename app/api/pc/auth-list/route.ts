@@ -19,7 +19,7 @@ export async function GET(req: NextRequest) {
         const countResult = await executeQuery(countSql, paramsArray) as unknown[];
         const totalCount = JSON.parse(JSON.stringify(countResult));
         paramsArray.push(((Number(searchParams.get("page") ? searchParams.get("page") : 1) - 1) * 10))
-        const sql = `select a.sawonCode, a.name, b.centerName, b.partName, b.centerCode, b.partCode, c.jobName, a.swId, DATE_FORMAT(a.regDate, '%y.%m.%d') as regDate from tb_pptn_sawon a inner join tb_pptn_jojikcode b on a.jojikCode = b.jojikCode inner join tb_pptn_jobcode c on a.jobCode = c.jobCode where a.useYn = 'Y'${sqlWhere} limit ?, 10`;
+        const sql = `select a.sawonCode, a.name, b.centerName, b.partName, b.centerCode, b.partCode, c.jobName, a.swId, DATE_FORMAT(a.regDate, '%y.%m.%d') as regDate from tb_pptn_sawon a inner join tb_pptn_jojikcode b on a.jojikCode = b.jojikCode left outer join tb_pptn_jobcode c on a.jobCode = c.jobCode where a.useYn = 'Y'${sqlWhere} limit ?, 10`;
         const result = await executeQuery(sql, paramsArray) as unknown[];
         return NextResponse.json({ status: "OK", data: result, total: totalCount[0].count });
 

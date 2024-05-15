@@ -7,7 +7,7 @@ export async function GET(req: NextRequest) {
 
     try {
         
-        const sql = `select a.sawonCode, a.swId, a.swPwd, a.jojikCode, a.jobCode, a.name, b.centerName, b.partName, b.centerCode, b.partCode, c.jobName from tb_pptn_sawon a inner join tb_pptn_jojikcode b on a.jojikCode = b.jojikCode inner join tb_pptn_jobcode c on a.jobCode = c.jobCode where a.sawonCode = ?`;
+        const sql = `select a.sawonCode, a.swId, a.swPwd, a.jojikCode, a.jobCode, a.name, b.centerName, b.partName, b.centerCode, b.partCode, c.jobName from tb_pptn_sawon a inner join tb_pptn_jojikcode b on a.jojikCode = b.jojikCode left outer join tb_pptn_jobcode c on a.jobCode = c.jobCode where a.sawonCode = ?`;
         const result = await executeQuery(sql, [searchParams.get("sawonCode")]) as unknown[];
         
         return NextResponse.json({ status: "OK", data: result[0] });

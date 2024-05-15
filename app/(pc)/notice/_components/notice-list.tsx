@@ -16,7 +16,7 @@ type Props = {
 export default function NoticeList({ searchParams }: { searchParams: any }) {
     const queryClient = useQueryClient();
     const page = Number(searchParams?.page ?? 1);
-    const { data } = useQuery<Item[], Object, Item[], [_1: string, _2: string, Props['searchParams']]>({
+    const { data, isLoading } = useQuery<Item[], Object, Item[], [_1: string, _2: string, Props['searchParams']]>({
         queryKey: ["admin", "notice", searchParams],
         queryFn: getList,
         staleTime: 60 * 1000, // fresh -> stale, 5분이라는 기준
@@ -51,6 +51,10 @@ export default function NoticeList({ searchParams }: { searchParams: any }) {
                             data?.data.map((item: any) => (
                             <NoticeItem key={item.bnSeq} item={item} />
                             ))
+                        ) : isLoading ? (
+                        <tr>
+                            <td colSpan={5} className={style.no_data}>데이터를 불러오는 중입니다.</td>  
+                        </tr>
                         ) : (
                         <tr>
                             <td colSpan={5} className={style.no_data}>등록된 공지사항이 없습니다.</td>

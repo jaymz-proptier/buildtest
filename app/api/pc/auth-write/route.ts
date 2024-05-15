@@ -8,8 +8,8 @@ const pump = promisify(pipeline);
 
 export async function POST(req: NextRequest) {
     const getIp = (req.headers.get('x-forwarded-for') ?? '127.0.0.1').trim().split(',')
-    const ipCheck =  getIp.length > 1 ? getIp[getIp.length - 1].trim() : getIp
-    const ip = ipCheck
+    const ipCheck = getIp[getIp.length - 1].trim();
+    const ip = ipCheck.replace("::ffff:", "");
     const formData = await req.formData();
     const body = Object.fromEntries(formData);
 
@@ -25,17 +25,17 @@ export async function POST(req: NextRequest) {
             setArray.push(body.jobCode);
             sqlSet += " swId = ?,";
             setArray.push(body.swId);            
-            sqlSet += " swPwd = ?,";
-            setArray.push(body.swPwd);     
+            //sqlSet += " swPwd = SHA2(CONCAT(CONCAT('*', UPPER(SHA1(UNHEX(SHA1(?))))),'ribo20240408!@'),256),";
+            //setArray.push(body.swPwd);     
             setArray.push(body.sawonCode);
             
-            const query = `update tb_pptn_sawon set ${sqlSet}, modDate = now() where bnSeq = ?`;
+            const query = `update tb_pptn_sawon set ${sqlSet} modDate = now() where sawonCode = ?`;
             await executeQuery(query, setArray);
     
             return NextResponse.json({ status: "OK", message: "정상적으로 등록했습니다." });
 
         } else {
-            const query = `INSERT INTO tb_board_notice (swId, swPwd, jojikCode, jobCode, name, regDate) VALUES (?, ?, ?, ?, ?, now())`;
+            const query = `INSERT INTO tb_pptn_sawon (swId, swPwd, jojikCode, jobCode, name, regDate) VALUES (?, SHA2(CONCAT(CONCAT('*', UPPER(SHA1(UNHEX(SHA1(?))))),'ribo20240408!@'),256), ?, ?, ?, now())`;
             await executeQuery(query, [body.swId, body.swPwd, body.jojikCode, body.jobCode, body.name]);
 
             return NextResponse.json({ status: "OK", message: "정상적으로 등록했습니다." });
