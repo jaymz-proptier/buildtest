@@ -1,5 +1,5 @@
 "use client";
-import NoticeWrite from "./_components/modal-notice-write";
+import NoticeWrite from "@/app/(pc)/@modal/(.)modal/notice/_components/modal-notice-write";
 import style from "@/styles/pc-modal.module.css";
 import { useSession } from "next-auth/react";
 import { useEffect } from "react";
