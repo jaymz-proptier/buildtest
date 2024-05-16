@@ -97,8 +97,8 @@ export default function MemberItem({ data }: { data: any }) {
                 </table>
             </div>
             
-            <div className={style.select_wrap} ref={selectBoxRef}>
-                <div className={style.select_box}>
+            <div className={style.select_wrap}>
+                <div className={style.select_box} ref={selectBoxRef}>
                     <button type="button" aria-selected={openSelectBox==="cp"} onClick={() => setOpenSelectBox("cp")}>{cpCode.find((item) => item.code===cpName)?.title}</button>
                     <div className={style.select_box_list}>
                         <ul>

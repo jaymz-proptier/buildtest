@@ -33,8 +33,8 @@ export default function Page({params}: Props) {
         };
     }, []);
     return <>
-        <div className={style.modal_wrap}>
-            <div className={style.modal_body}>
+        <div className={style.modal_wrap} onClick={() => router.back()}>
+            <div className={style.modal_body} onClick={(e) => e.stopPropagation()}>
                 <div className={style.header}>계정관리</div>
                 {(!isLoading && data?.status==="OK") && <AuthWrite data={data?.data} me={me} />}
             </div>

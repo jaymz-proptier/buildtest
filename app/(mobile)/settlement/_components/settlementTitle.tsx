@@ -1,5 +1,5 @@
 "use client";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { FilterContext } from "./filterProvider";
 import style from "@/styles/mobile-settlement.module.css";
 import { useQuery } from "@tanstack/react-query";
@@ -25,23 +25,43 @@ export default function SettlementTitle({ sawonCode }: { sawonCode: number }) {
         gcTime: 300 * 1000,
     });
     const { year, setYear, month, setMonth } = useContext(FilterContext); 
-    const [selectBox2, setSelectBox2] = useState(false);
-    const [selectBox3, setSelectBox3] = useState(false);
+    const selectBoxRef = useRef<HTMLDivElement | null>(null);
+    const [selectBox, setSelectBox] = useState(false);
 
-    const monthHandler = (item: string) => {
-        setSelectBox3(false);
-        setMonth(item);
-    }
     useEffect(() => {
         if(data?.data[0].max_month) {
-            console.log(data?.data[0]);
             setMonth(data.data[0].max_month);
         }
     }, [data]);
+    
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            if (selectBoxRef.current && !selectBoxRef.current.contains(event.target as Node)) {
+                setSelectBox(false);
+            }
+        }
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
     return data?.data[0] && (
         <div className={style.settlememt_header} aria-label="매출수수료">
-            {year}년 {month}월분 정산지급 내역
-            <div className={style.select_wrap}>
+            <span className={style.calendar_wrap} ref={selectBoxRef} aria-selected={selectBox} onClick={() => setSelectBox(!selectBox)}><label className={style.date}>{year}년 {month}월분 
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" style={{flexShrink: 0, verticalAlign: "middle"}}>
+                    <path fill="currentColor" d="M11.48 14.095a.7.7 0 0 0 1.04 0l2.929-3.254a.7.7 0 0 0-.52-1.168H9.071a.7.7 0 0 0-.52 1.168l2.928 3.254Z"></path>
+                </svg></label>
+                <div className={style.calendar_box}>
+                    <div className={style.year_select}>{year}</div>
+                    <div className={style.month_select}>
+                        {Array.from({ length: 12 }, (_, index) => (index + 1).toString().padStart(2, "0")).map((item) => (
+                        <div key={item} className={style.month_item} onClick={() => {  setSelectBox(false); setMonth(item); }}>{item}</div>
+                        ))}
+                    </div>
+                </div>
+            </span> 정산지급 내역
+            {/* <div className={style.select_wrap}>
                 <div className={style.select_box}>
                     <button type="button" aria-selected={selectBox2} onClick={() => setSelectBox2(!selectBox2)}>{year}</button>
                     <div className={style.select_box_list}>
@@ -62,7 +82,7 @@ export default function SettlementTitle({ sawonCode }: { sawonCode: number }) {
                         </ul>
                     </div>
                 </div>
-            </div>
+            </div> */}
         </div>
     )
 }

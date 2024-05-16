@@ -46,7 +46,8 @@
     display: none;
     top: 100%;
     left: 0;
-    width: 100%;
+    width: auto;
+    white-space: nowrap;
     background-color: #fff;
     border: 1px solid #ebeaea;
 }

@@ -67,7 +67,7 @@
     background-image: url(../public/images/arrow_down_icon_01.svg);
 }
 .select_wrap {
-    display: flex;
+    display: inline-flex;
     padding-top: 12px;
 }
 .select_wrap .select_box:not(:first-child) {

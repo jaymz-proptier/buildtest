@@ -1,5 +1,5 @@
 import style from "@/styles/pc-modal.module.css";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
@@ -14,10 +14,12 @@ export default function NoticeWrite({ data, me }: { data: any, me: any }) {
         { code: "PPTN", title: "PPTN"},
     ];
     const [modify, setModify] = useState(data?.bnSeq ? false :true);
+    const [openSelectBox, setOpenSelectBox] = useState<string | null>(null);
+    const selectBoxRef = useRef<HTMLDivElement | null>(null);
     const [selectBox, setSelectBox] = useState(false);
     const [noticeGubun, setNoticeGubun] = useState(data?.noticeGubun ? data?.noticeGubun : noticeCode[0].code);
-    const [title, setTitle] = useState(data.title || "");
-    const [contents, setContents] = useState(data.contents || "");
+    const [title, setTitle] = useState(data?.title || "");
+    const [contents, setContents] = useState(data?.contents || "");
     const [dispYn, setDispYn] = useState(data?.dispYn==="Y" ? true : false);
     const [topYn, setTopYn] = useState(data?.topYn==="0" ? true : false);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -84,19 +86,31 @@ export default function NoticeWrite({ data, me }: { data: any, me: any }) {
     const handleClose = () => {
         router.back();
     }
+    
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            if (selectBoxRef.current && !selectBoxRef.current.contains(event.target as Node)) {
+                setOpenSelectBox(null);
+            }
+        }
 
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
 
     return <div className={style.contents}>
         { modify ? (
         <div className={style.write_form}>
             <div className={style.input_div}>
                 <label className={style.input_label}>구분</label>
-                <div className={style.select_box}>
-                    <button type="button" aria-selected={selectBox} onClick={() => setSelectBox(!selectBox)}>{noticeCode.find((item) => item.code===noticeGubun)?.title}</button>
+                <div className={style.select_box} ref={selectBoxRef}>
+                    <button type="button" aria-selected={openSelectBox==="noticeGubun"} onClick={() => setOpenSelectBox(openSelectBox==="noticeGubun" ? null : "noticeGubun")}>{noticeCode.find((item) => item.code===noticeGubun)?.title}</button>
                     <div className={style.select_box_list}>
                         <ul>
                             {noticeCode.map((item, index) => (
-                            <li key={index} onClick={() => handleSelectBox(item.code)}>{item.title}</li>
+                            <li key={index} onClick={() => { setOpenSelectBox(null); setNoticeGubun(item.code); }}>{item.title}</li>
                             ))}
                         </ul>
                     </div>
@@ -128,7 +142,7 @@ export default function NoticeWrite({ data, me }: { data: any, me: any }) {
                 <label className={style.input_label}>파일첨부</label>
                 <div className={style.file_box}>
                     <input type="file" id="file1" onChange={handleFileChange} />
-                    <label htmlFor="file1" className={style.file_name}>{data.fileYn==="Y" && data.filePath ? `${data.filePath}(${data.fileName})` : "선택된 파일이 없습니다."}</label>
+                    <label htmlFor="file1" className={style.file_name}>{data?.fileYn==="Y" && data?.filePath ? `${data?.filePath}(${data?.fileName})` : "선택된 파일이 없습니다."}</label>
                     <label className={style.file_label}>파일선택</label>
                 </div>
             </div>
@@ -143,7 +157,7 @@ export default function NoticeWrite({ data, me }: { data: any, me: any }) {
                 <label className={style.input_label}>내용</label>
                 <div className={style.detail_contents} dangerouslySetInnerHTML={{ __html: data.contents.replace(/\n/g, '<br />') }} />
             </div>
-            {data.fileYn==="Y" && data.filePath ? (
+            {data?.fileYn==="Y" && data?.filePath ? (
             <div className={style.input_div}>
                 <label className={style.input_label}>첨부파일</label>
                 <a href={`${data?.filePath}`} download={data?.filePath}>{data?.filePath}</a>

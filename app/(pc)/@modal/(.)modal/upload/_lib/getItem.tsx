@@ -2,11 +2,11 @@ import {QueryFunction} from "@tanstack/query-core";
 interface Item {
   bnSeq: number;
 }
-export const getItem = async ({ queryKey }: { queryKey: [string, string ]}) => {
-  const [_1, id] = queryKey;
+export const getItem = async ({ queryKey }: { queryKey: [string, string, string ]}) => {
+  const [_1, id, _3] = queryKey;
   const res = await fetch(`/api/pc/upload-view?upchaSeq=${id}`, {
     next: {
-      tags: ["noticeLoad", id],
+      tags: ["uploadLoad", id, ""],
     },
     credentials: 'include',
   });

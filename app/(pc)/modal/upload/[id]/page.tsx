@@ -3,9 +3,9 @@ import style from "@/styles/pc-modal.module.css";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { getItem } from "../_lib/getItem";
+import { getItem } from "@/app/(pc)/@modal/(.)modal/upload/_lib/getItem";
 import { useSession } from "next-auth/react";
-import UploadWrite from "../_components/modal-upload-write";
+import UploadWrite from "@/app/(pc)/@modal/(.)modal/upload/_components/modal-upload-write";
 interface Item {
     data: any,
     status: string,

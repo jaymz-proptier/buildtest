@@ -1,11 +1,11 @@
 "use client";
+import NoticeWrite from "@/app/(pc)/@modal/(.)modal/notice/_components/modal-notice-write";
 import style from "@/styles/pc-modal.module.css";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { getItem } from "../_lib/getItem";
+import { getItem } from "@/app/(pc)/@modal/(.)modal/notice/_lib/getItem";
 import { useSession } from "next-auth/react";
-import UploadWrite from "../_components/modal-upload-write";
 interface Item {
     data: any,
     status: string,
@@ -18,8 +18,8 @@ export default function Page({params}: Props) {
     const { data: me } = useSession();
     const router = useRouter();
     const { id } = params;
-    const {data, isLoading, error} = useQuery<Item, Object, Item, [_1: string, _2: string, _3: string]>({
-        queryKey: ["uploadLoad", id, ""],
+    const {data, isLoading, error} = useQuery<Item, Object, Item, [_1: string, _2: string]>({
+        queryKey: ['noticeLoad', id],
         queryFn: getItem,
         staleTime: 60 * 1000, // fresh -> stale, 5분이라는 기준
         gcTime: 300 * 1000,
@@ -33,10 +33,10 @@ export default function Page({params}: Props) {
         };
     }, []);
     return <>
-        <div className={style.modal_wrap} onClick={() => router.back()}>
-            <div className={style.modal_body} onClick={(e) => e.stopPropagation()}>
-                <div className={style.header}>자료업로드</div>
-                {(!isLoading && data?.status==="OK") && <UploadWrite data={data?.data} me={me} />}
+        <div className={style.modal_wrap}>
+            <div className={style.modal_body}>
+                <div className={style.header}>공지관리</div>
+                {(!isLoading && data?.status==="OK") && <NoticeWrite data={data?.data} me={me} />}
             </div>
         </div>
     </>

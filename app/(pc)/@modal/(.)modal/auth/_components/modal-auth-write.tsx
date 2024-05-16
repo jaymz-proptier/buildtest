@@ -1,5 +1,5 @@
 import style from "@/styles/pc-modal.module.css";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getJojikCenter } from "../_lib/getJojikCenter";
@@ -28,9 +28,8 @@ export default function AuthWrite({ data, me, searchParams }: { data: any, me: a
     }) as any;
 
     const [modify, setModify] = useState(data?.sawonCode ? false :true);
-    const [selectBox, setSelectBox] = useState(false);
-    const [selectBox2, setSelectBox2] = useState(false);
-    const [selectBox3, setSelectBox3] = useState(false);
+    const [openSelectBox, setOpenSelectBox] = useState<string | null>(null);
+    const selectBoxRef = useRef<HTMLDivElement | null>(null);
     const [centerCode, setCenterCode] = useState(data?.centerCode ? data.centerCode : jojikCenter?.data[0].code);
     const [partCode, setPartCode] = useState<any | []>([]);
     const [jojikCode, setJojikCode] = useState(data?.jojikCode ? data.jojikCode : `${jojikCenter?.data[0].code}1`);
@@ -47,11 +46,6 @@ export default function AuthWrite({ data, me, searchParams }: { data: any, me: a
         gcTime: 300 * 1000,
     }) as any;
 
-
-    const handleSelectBox = (value: string) => {
-        setSelectBox(false);
-        setCenterCode(value);
-    }
 
     const queryClient = useQueryClient();
 
@@ -111,6 +105,18 @@ export default function AuthWrite({ data, me, searchParams }: { data: any, me: a
     useEffect(() => {
         setJobCode(data?.jobCode ? Number(data.jobCode) : jobCodeList?.data[0]?.code);
     }, [jobCodeList]);
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            if (selectBoxRef.current && !selectBoxRef.current.contains(event.target as Node)) {
+                setOpenSelectBox(null);
+            }
+        }
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
     return <div className={style.contents}>
         { modify ? (
         <div className={style.write_form}>
@@ -120,38 +126,40 @@ export default function AuthWrite({ data, me, searchParams }: { data: any, me: a
             </div>
             <div className={style.input_div}>
                 <label className={style.input_label}>구분</label>
-                <div className={style.select_box}>
-                    <button type="button" aria-selected={selectBox} onClick={() => setSelectBox(!selectBox)}>{jojikCenter?.data.find((item: any) => item.code===centerCode)?.title}</button>
-                    <div className={style.select_box_list}>
-                        <ul>
-                            {jojikCenter?.data.map((item: any, index: number) => (
-                            <li key={index} onClick={() => handleSelectBox(item.code)}>{item.title}</li>
-                            ))}
-                        </ul>
+                <span ref={selectBoxRef}>
+                    <div className={style.select_box}>
+                        <button type="button" aria-selected={openSelectBox==="jojikCenter"} onClick={() => setOpenSelectBox(openSelectBox==="jojikCenter" ? null : "jojikCenter")}>{jojikCenter?.data.find((item: any) => item.code===centerCode)?.title}</button>
+                        <div className={style.select_box_list}>
+                            <ul>
+                                {jojikCenter?.data.map((item: any, index: number) => (
+                                <li key={index} onClick={() => { setOpenSelectBox(null); setCenterCode(item.code); }}>{item.title}</li>
+                                ))}
+                            </ul>
+                        </div>
                     </div>
-                </div>
-                {partCode && partCode.length > 0 && 
-                <div className={style.select_box}>
-                    <button type="button" aria-selected={selectBox2} onClick={() => setSelectBox2(!selectBox2)}>{partCode?.find((item: any) => item.code===jojikCode)?.title || "-"}</button>
-                    <div className={style.select_box_list}>
-                        <ul>
-                            <li onClick={() => { setSelectBox2(false); setJojikCode(`${centerCode}0`); }}>-</li>
-                            {partCode && partCode?.map((item: any, index: number) => (
-                            <li key={index} onClick={() => { setSelectBox2(false); setJojikCode(item.code); }}>{item.title}</li>
-                            ))}
-                        </ul>
+                    {partCode && partCode.length > 0 && 
+                    <div className={style.select_box}>
+                        <button type="button" aria-selected={openSelectBox==="jojikCode"} onClick={() => setOpenSelectBox(openSelectBox==="jojikCode" ? null : "jojikCode")}>{partCode?.find((item: any) => item.code===jojikCode)?.title || "-"}</button>
+                        <div className={style.select_box_list}>
+                            <ul>
+                                <li onClick={() => { setOpenSelectBox(null); setJojikCode(`${centerCode}0`); }}>-</li>
+                                {partCode && partCode?.map((item: any, index: number) => (
+                                <li key={index} onClick={() => { setOpenSelectBox(null); setJojikCode(item.code); }}>{item.title}</li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>}
+                    <div className={style.select_box}>
+                        <button type="button" aria-selected={openSelectBox==="jobCode"} onClick={() => setOpenSelectBox(openSelectBox==="jobCode" ? null : "jobCode")}>{jobCodeList?.data.find((item: any) => item.code===jobCode)?.title || "-"}</button>
+                        <div className={style.select_box_list}>
+                            <ul>
+                                {jobCodeList?.data.map((item: any, index: number) => (
+                                <li key={index} onClick={() => { setOpenSelectBox(null); setJobCode(item.code); }}>{item.title}</li>
+                                ))}
+                            </ul>
+                        </div>
                     </div>
-                </div>}
-                <div className={style.select_box}>
-                    <button type="button" aria-selected={selectBox3} onClick={() => setSelectBox3(!selectBox3)}>{jobCodeList?.data.find((item: any) => item.code===jobCode)?.title || "-"}</button>
-                    <div className={style.select_box_list}>
-                        <ul>
-                            {jobCodeList?.data.map((item: any, index: number) => (
-                            <li key={index} onClick={() => { setSelectBox3(false); setJobCode(item.code); }}>{item.title}</li>
-                            ))}
-                        </ul>
-                    </div>
-                </div>
+                </span>
             </div>
             <div className={style.input_div}>
                 <label className={style.input_label}>아이디</label>

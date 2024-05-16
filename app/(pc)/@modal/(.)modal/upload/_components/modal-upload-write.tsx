@@ -1,7 +1,9 @@
 import style from "@/styles/pc-modal.module.css";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { saveAs } from "file-saver";
+import * as XLSX from "xlsx";
 
 export default function UploadWrite({ data, me, searchParams }: { data: any, me: any, searchParams?: any }) {
     
@@ -19,9 +21,8 @@ export default function UploadWrite({ data, me, searchParams }: { data: any, me:
     const currentYear = new Date().getFullYear();
     const currentMonth = new Date().getMonth() + 1;
     const [modify, setModify] = useState(data?.upchaSeq ? false :true);
-    const [selectBox, setSelectBox] = useState(false);
-    const [selectBox2, setSelectBox2] = useState(false);
-    const [selectBox3, setSelectBox3] = useState(false);
+    const [openSelectBox, setOpenSelectBox] = useState<string | null>(null);
+    const selectBoxRef = useRef<HTMLDivElement | null>(null);
     const [dataGubun, setDataGubun] = useState(data?.dataGubun ? data?.dataGubun : dataCode[0].code);
     const [year, setYear] = useState(data?.calYm?.substr(0, 4) || currentYear);
     const [month, setMonth] = useState(data?.calYm?.substr(4, 2) || currentMonth.toString().padStart(2, "0"));
@@ -29,12 +30,9 @@ export default function UploadWrite({ data, me, searchParams }: { data: any, me:
     const [contents, setContents] = useState(data?.contents || "");
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [fileName, setFileName] = useState(data?.fileName || "선택된 파일이 없습니다.");
+    const [status, setStatus] = useState(data?.statusGubun || "");
     const router = useRouter();
 
-    const handleSelectBox = (value: string) => {
-        setSelectBox(false);
-        setDataGubun(value)
-    }
 
     const handleInputChange = (e: any) => {
         if(e.target.type==="text") setTitle(e.target.value);
@@ -89,49 +87,120 @@ export default function UploadWrite({ data, me, searchParams }: { data: any, me:
         }
     }, [dataGubun, title, contents, year, month, selectedFile]);
 
+    const statusMutation = useMutation({        
+        mutationFn: (e:any) => {
+            e.preventDefault();
+            const formData = new FormData();
+            formData.append("sawonCode", me.user.sawonCode || "");
+            formData.append("upchaSeq", data.upchaSeq || "");
+            formData.append("dataGubun", dataGubun);
+            formData.append("year", year);
+            formData.append("month", month);
+            formData.append("status", status);
+            return fetch(`/api/pc/upload-status`, {
+                method: "post",
+                credentials: "include",
+                body: formData,
+            });
+        },
+        async onSuccess() {   
+            //queryClient.invalidateQueries({ queryKey: ["uploadLoad", data.upchaSeq, status] }); 
+            queryClient.invalidateQueries({ queryKey: ["posts", "search"] });
+            router.back();
+        },
+    });
+    const handleStatus = useCallback(async (e: any) => {
+        if(confirm("처리를 진행하시겠습니까?")) {
+            if(status==="") {
+                alert("처리상태를 선택주세요.");
+            } else {
+                statusMutation.mutate(e);
+            }
+        }
+    }, [status]);
+
     const handleClose = () => {
         router.back();
     }
 
+    async function handleButtonClick() {
+        try {
+            const response1 = await fetch(`/api/pc/saveAs/sheet1`);
+            const sheet1 = await response1.json();
+            const response2 = await fetch(`/api/pc/saveAs/sheet2`);
+            const sheet2 = await response2.json();
+
+            const wb = XLSX.utils.book_new();
+            const ws1 = XLSX.utils.json_to_sheet(sheet1?.data);
+            const ws2 = XLSX.utils.json_to_sheet(sheet2?.data);
+        
+            XLSX.utils.book_append_sheet(wb, ws1, "매출");
+            XLSX.utils.book_append_sheet(wb, ws2, "기타");
+        
+            const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
+            const buf = new ArrayBuffer(wbout.length);
+            const view = new Uint8Array(buf);
+            for (let i = 0; i < wbout.length; i++) view[i] = wbout.charCodeAt(i) & 0xFF;
+        
+            saveAs(new Blob([buf], { type: 'application/octet-stream' }), `정산내역_${year}년${month}월.xlsx`);
+
+        } catch (error) {
+            console.error('Failed to download data', error);
+        }
+    }
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            if (selectBoxRef.current && !selectBoxRef.current.contains(event.target as Node)) {
+                setOpenSelectBox(null);
+            }
+        }
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
 
     return <div className={style.contents}>
         { modify ? (
         <div className={style.write_form}>
             <div className={style.input_div}>
                 <label className={style.input_label}>구분</label>
-                <div className={style.select_box}>
-                    <button type="button" aria-selected={selectBox} onClick={() => setSelectBox(!selectBox)}>{dataCode.find((item) => item.code===dataGubun)?.title}</button>
-                    <div className={style.select_box_list}>
-                        <ul>
-                            {dataCode.map((item, index) => (
-                            <li key={index} onClick={() => handleSelectBox(item.code)}>{item.title}</li>
-                            ))}
-                        </ul>
+                <span ref={selectBoxRef}>
+                    <div className={style.select_box}>
+                        <button type="button" aria-selected={openSelectBox==="dataGubun"} onClick={() => setOpenSelectBox("dataGubun")}>{dataCode.find((item) => item.code===dataGubun)?.title}</button>
+                        <div className={style.select_box_list}>
+                            <ul>
+                                {dataCode.map((item, index) => (
+                                <li key={index} onClick={() => { setOpenSelectBox(null); setDataGubun(item.code); }}>{item.title}</li>
+                                ))}
+                            </ul>
+                        </div>
                     </div>
-                </div>
-                {!(dataGubun==="1" || dataGubun==="2") && 
-                <>
-                <div className={style.select_box}>
-                    <button type="button" aria-selected={selectBox2} onClick={() => setSelectBox2(!selectBox2)}>{year}</button>
-                    <div className={style.select_box_list}>
-                        <ul>
-                            {Array.from({ length: currentYear - 2019 }, (_, index) => currentYear - index).map((item) => (
-                            <li key={item} onClick={() => { setSelectBox2(false); setYear(item); }}>{item}</li>
-                            ))}
-                        </ul>
+                    {!(dataGubun==="1" || dataGubun==="2") && 
+                    <>
+                    <div className={style.select_box}>
+                        <button type="button" aria-selected={openSelectBox==="year"} onClick={() => setOpenSelectBox("year")}>{year}</button>
+                        <div className={style.select_box_list}>
+                            <ul>
+                                {Array.from({ length: currentYear - 2019 }, (_, index) => currentYear - index).map((item) => (
+                                <li key={item} onClick={() => { setOpenSelectBox(null); setYear(item); }}>{item}</li>
+                                ))}
+                            </ul>
+                        </div>
                     </div>
-                </div>
-                <div className={style.select_box}>
-                    <button type="button" aria-selected={selectBox3} onClick={() => setSelectBox3(!selectBox3)}>{month}</button>
-                    <div className={style.select_box_list}>
-                        <ul>
-                            {Array.from({ length: 12 }, (_, index) => (index + 1).toString().padStart(2, "0")).map((item) => (
-                            <li key={item} onClick={() => { setSelectBox3(false); setMonth(item); }}>{item}</li>
-                            ))}
-                        </ul>
+                    <div className={style.select_box}>
+                        <button type="button" aria-selected={openSelectBox==="month"} onClick={() => setOpenSelectBox("month")}>{month}</button>
+                        <div className={style.select_box_list}>
+                            <ul>
+                                {Array.from({ length: 12 }, (_, index) => (index + 1).toString().padStart(2, "0")).map((item) => (
+                                <li key={item} onClick={() => { setOpenSelectBox(null); setMonth(item); }}>{item}</li>
+                                ))}
+                            </ul>
+                        </div>
                     </div>
-                </div>
-                </> }
+                    </> }
+                </span>
             </div>
             <div className={style.input_div}>
                 <label className={style.input_label}>제목</label>
@@ -155,6 +224,7 @@ export default function UploadWrite({ data, me, searchParams }: { data: any, me:
             <div className={style.input_div}>
                 <label className={style.input_label}>구분</label>
                 {dataCode.find((item) => item.code===dataGubun)?.title} {data?.calYm ? `${data?.calYm.substr(0, 4)}년 ${data?.calYm.substr(4, 2)}월` : ""}
+                {data?.dataGubun==="3" && <button type="button" className={style.download} onClick={handleButtonClick}>{year}년{month}월 정산내역 다운로드</button>}
             </div>
             <div className={style.input_div}>
                 <label className={style.input_label}>제목</label>
@@ -172,7 +242,22 @@ export default function UploadWrite({ data, me, searchParams }: { data: any, me:
                 <label className={style.input_label}>처리결과</label>
                 <span className={style.item}>자료총건수: {data?.totalCount.toLocaleString()}</span> 
                 <span className={style.item}>성공건수: {data?.succeseCount.toLocaleString()}</span>
-                <span className={style.item}>진행상태: {data?.statusGubun}</span>
+                <span className={style.item}>진행상태: {data?.statusGubunName}</span>
+                <div className={style.function_wrap} ref={selectBoxRef}>
+                    <button type="button" className={style.function} aria-selected={openSelectBox==="function"} onClick={() => setOpenSelectBox("function")}>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" style={{flexShrink: 0}}>
+                            <path fill="currentColor" d="M6 11h2v2H6v-2Zm5 0h2v2h-2v-2Zm7 0h-2v2h2v-2Z" fillRule="evenodd" clipRule="evenodd"></path>
+                        </svg>
+                    </button>
+                    <div className={style.function_list}>
+                        <ul>
+                            <li onClick={(e) => { setOpenSelectBox(null); setStatus("W"); handleStatus(e); }}>처리대기</li>
+                            <li onClick={(e) => { setOpenSelectBox(null); setStatus("Y"); handleStatus(e); }}>처리완료</li>
+                            <li onClick={(e) => { setOpenSelectBox(null); setStatus("N"); handleStatus(e); }}>처리실패</li>
+                            <li onClick={(e) => { setOpenSelectBox(null); setStatus("D"); handleStatus(e); }}>삭제</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>                    
         )}

@@ -1,6 +1,6 @@
 "use client";
 import style from "@/styles/mobile-member.module.css";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { FilterContext } from "./filterProvider";
 import { useQuery } from "@tanstack/react-query";
 import { getSalesCounts } from "../_lib/getSalesCount";
@@ -14,6 +14,7 @@ interface Item {
 export default function SalesFilterBox({ sawonCode }: { sawonCode: number }) {
     const { filter, setFilter } = useContext(FilterContext);
     const [ selectBox, setSelectBox ] = useState(false);
+    const selectBoxRef = useRef<HTMLDivElement | null>(null);
     const filterCode: {
         code: string,
         title: string
@@ -29,12 +30,25 @@ export default function SalesFilterBox({ sawonCode }: { sawonCode: number }) {
         staleTime: 60 * 1000, // fresh -> stale, 5분이라는 기준
         gcTime: 300 * 1000,
     });
+    
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            if (selectBoxRef.current && !selectBoxRef.current.contains(event.target as Node)) {
+                setSelectBox(false);
+            }
+        }
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
     return <>
         <div className={style.sorting_wrap}>
             <div className={style.reponse_count}>
                 매출내역  {totalCount ? totalCount.total : 0}개
             </div> 
-            <div className={style.select_box}>
+            <div className={style.select_box} ref={selectBoxRef}>
                 <button type="button" aria-selected={selectBox} onClick={() => setSelectBox(!selectBox)}>{filterCode.find((item) => item.code===filter)?.title}</button>
                 <div className={style.select_box_list}>
                     <ul>

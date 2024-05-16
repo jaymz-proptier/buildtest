@@ -90,7 +90,7 @@ export default function MemberItem({ data }: { data: any }) {
                     </tbody>
                 </table>
             </div>
-            <div className={style.select_wrap} ref={selectBoxRef}>
+            <span className={style.select_wrap} ref={selectBoxRef}>
                 <div className={style.select_box}>
                     <button type="button" aria-selected={openSelectBox==="expire"} onClick={() => setOpenSelectBox("expire")}>{expireCode.find((item) => item.code===expireInfo)?.title}</button>
                     <div className={style.select_box_list}>
@@ -111,7 +111,7 @@ export default function MemberItem({ data }: { data: any }) {
                         </ul>
                     </div>
                 </div>
-            </div>
+            </span>
         </div>
     </>
 }
