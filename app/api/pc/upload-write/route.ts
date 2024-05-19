@@ -164,16 +164,7 @@ export async function POST(req: NextRequest) {
                         jsonData[i]["37"] || 0,
                         jsonData[i]["38"] || 0,
                         jsonData[i]["39"] || 0,
-                        jsonData[i]["40"] || 0,
-                        jsonData[i]["41"] || 0,
-                        jsonData[i]["42"] || 0,
-                        jsonData[i]["44"],
-                        jsonData[i]["45"] || 0,
-                        jsonData[i]["46"] || 0,
-                        jsonData[i]["47"] || 0,
-                        jsonData[i]["48"] || 0,
-                        jsonData[i]["48_1"] || 0,
-                        jsonData[i]["48_2"] || 0,
+                        jsonData[i]["41"],
                         centerName,
                         partName
                     ]);
@@ -211,7 +202,7 @@ export async function POST(req: NextRequest) {
 
                 const valuePlaceholders = insertData.map(row => `(${lastInsertId}, '${body.year}${body.month}', '${body.title}', ${row.map(() => '?').join(',')})`).join(',');
 
-                const query = `INSERT INTO tb_upload_calculate_log (upchaSeq, calYm, title, 담당자, 월매출액, 매출_이실장, 매출_포커스, 매출_프리미엄, 매출_enote, 매출_동기화, 매출_네이버검색광고, 매출_네이트검색광고, 매출_홈페이지, 매출_e분양, 매출_입주탐방, 매출_도메인, 관리자_이실장, 관리자_이실장외, 영업_이실장, 영업_포커스, 영업_프리미엄, 영업_enote, 영업_동기화, 영업_네이버검색광고, 영업_네이트검색광고, 영업_홈페이지, 영업_e분양, 영업_입주탐방, 영업_도메인, 지원금_주차비, 지원금_디바이스구매지원, 지원금_영업지원금, 지원금_기타, 정산액, 입금예정액, 선지급금, 실입금액, 인센티트_세액공제전, 인센티브_세액공제후, 지원금_기타사항, 지원금_반반쿠폰, 로켓등록수익쉐어, 이실장순증, 이실장구간, 거점지역, 취약지역, 센터, 파트) value ${valuePlaceholders}`;
+                const query = `INSERT INTO tb_upload_calculate_log (upchaSeq, calYm, title, 담당자, 월매출액, 매출_이실장, 매출_포커스, 매출_프리미엄, 매출_enote, 매출_동기화, 매출_네이버검색광고, 매출_네이트검색광고, 매출_홈페이지, 매출_e분양, 매출_입주탐방, 매출_도메인, 관리자_이실장, 관리자_이실장외, 영업_이실장, 영업_포커스, 영업_프리미엄, 영업_enote, 영업_동기화, 영업_네이버검색광고, 영업_네이트검색광고, 영업_홈페이지, 영업_e분양, 영업_입주탐방, 영업_도메인, 지원금_주차비, 지원금_디바이스구매지원, 지원금_영업지원금, 지원금_기타, 지원금_반반쿠폰, 정산액, 입금예정액, 지원금_기타사항, 센터, 파트) value ${valuePlaceholders}`;
                 await executeQuery(query, insertData.flat());
 
                 await executeQuery(`update tb_upload_log set succeseCount = ( select count(*) from tb_upload_sales_log_test where upchaSeq = ?) where upchaSeq = ?`, [lastInsertId, lastInsertId]);
