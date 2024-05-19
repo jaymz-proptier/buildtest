@@ -170,8 +170,8 @@ export async function POST(req: NextRequest) {
                     ]);
                 }
                 let lastInsertId = 0;
-                if(body.modifyId) {
-                    lastInsertId = Number(body.modifyId);
+                if(body.modifyId || body.upchaSeq) {
+                    lastInsertId = body.modifyId ? Number(body.modifyId) : body.upchaSeq ? Number(body.upchaSeq) : 0;
 
                     let sqlSet = " title = ?,";
                     const setArray = [body.title];
@@ -184,7 +184,7 @@ export async function POST(req: NextRequest) {
                     sqlSet += " workSawonNo = ?,";
                     setArray.push(userData.sawonCode);          
                     sqlSet += " workIp = ? ";
-                    setArray.push(body.ip);
+                    setArray.push(ip);
                     setArray.push(lastInsertId.toString());
                     
                     const query = `update tb_upload_log set ${sqlSet}, modDate = now() where upchaSeq = ?`;
