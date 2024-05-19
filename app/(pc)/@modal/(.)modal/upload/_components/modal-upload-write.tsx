@@ -4,9 +4,11 @@ import { useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { saveAs } from "file-saver";
 import * as XLSX from "xlsx";
+import { checkItem } from "../_lib/checkItem";
+import { postItem } from "../_lib/postItem";
+import { postStatus } from "../_lib/postStatus";
 
-export default function UploadWrite({ data, me, searchParams }: { data: any, me: any, searchParams?: any }) {
-    
+export default function UploadWrite({ data, me, searchParams }: { data: any, me: any, searchParams?: any }) {    
     const dataCode: {
         code: string,
         title: string
@@ -21,6 +23,7 @@ export default function UploadWrite({ data, me, searchParams }: { data: any, me:
     const currentYear = new Date().getFullYear();
     const currentMonth = new Date().getMonth() + 1;
     const [modify, setModify] = useState(data?.upchaSeq ? false :true);
+    const [modifyId, setModifyId] = useState("");
     const [openSelectBox, setOpenSelectBox] = useState<string | null>(null);
     const selectBoxRef = useRef<HTMLDivElement | null>(null);
     const [dataGubun, setDataGubun] = useState(data?.dataGubun ? data?.dataGubun : dataCode[0].code);
@@ -31,6 +34,7 @@ export default function UploadWrite({ data, me, searchParams }: { data: any, me:
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [fileName, setFileName] = useState(data?.fileName || "선택된 파일이 없습니다.");
     const [status, setStatus] = useState(data?.statusGubun || "");
+    const [tostMessage, setTostMessage] = useState(false);
     const router = useRouter();
 
 
@@ -40,10 +44,12 @@ export default function UploadWrite({ data, me, searchParams }: { data: any, me:
     };
 
     const handleFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+        setTostMessage(true);
         if (e.target.files && e.target.files.length > 0) {
             console.log(e.target.files[0]);
             setSelectedFile(e.target.files[0]);
             setFileName(e.target.files[0].name);
+            setTostMessage(false);
         }
     }, []);
 
@@ -56,18 +62,14 @@ export default function UploadWrite({ data, me, searchParams }: { data: any, me:
             if(selectedFile) {
                 formData.append("file", selectedFile);
             }
-            formData.append("sawonCode", me.user.sawonCode || "");
+            formData.append("modifyId", modifyId);
             formData.append("upchaSeq", data.upchaSeq || "");
             formData.append("dataGubun", dataGubun);
             formData.append("year", year);
             formData.append("month", month);
             formData.append("title", title);
             formData.append("contents", contents);
-            return fetch(`/api/pc/upload-write`, {
-                method: 'post',
-                credentials: 'include',
-                body: formData,
-            });
+            return postItem(formData);
         },
         async onSuccess() {   
             queryClient.invalidateQueries({ queryKey: ["posts", "search"] });
@@ -91,17 +93,12 @@ export default function UploadWrite({ data, me, searchParams }: { data: any, me:
         mutationFn: (e:any) => {
             e.preventDefault();
             const formData = new FormData();
-            formData.append("sawonCode", me.user.sawonCode || "");
             formData.append("upchaSeq", data.upchaSeq || "");
             formData.append("dataGubun", dataGubun);
             formData.append("year", year);
             formData.append("month", month);
             formData.append("status", status);
-            return fetch(`/api/pc/upload-status`, {
-                method: "post",
-                credentials: "include",
-                body: formData,
-            });
+            return postStatus(formData);
         },
         async onSuccess() {   
             //queryClient.invalidateQueries({ queryKey: ["uploadLoad", data.upchaSeq, status] }); 
@@ -148,6 +145,26 @@ export default function UploadWrite({ data, me, searchParams }: { data: any, me:
             console.error('Failed to download data', error);
         }
     }
+    const checkMutation = useMutation({        
+        mutationFn: () => {
+            return checkItem(dataGubun, year, month);
+        },
+        async onSuccess(data: any) {  
+            if(data?.status==="Fail") {
+                alert(data?.message);
+            } else {
+                if(data?.data.length>0) {
+                    alert(`이미 ${year}년${month}월 ${data.data.map((item: any) => `${item.statusGubun}(업로드차수: ${item.upchaSeq})`).join(", ")}인 자료가 있습니다.\n\r계속진행하면 기존 자료에 덮어씌워집니다.`);
+                    setModifyId(data?.data[0].upchaSeq);
+                } else setModifyId("");
+            }
+        },
+    });
+    useEffect(() => {
+        if(modify && dataGubun==="3") {
+            checkMutation.mutate();
+        }
+    }, [dataGubun, year, month]);
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
             if (selectBoxRef.current && !selectBoxRef.current.contains(event.target as Node)) {
@@ -162,6 +179,9 @@ export default function UploadWrite({ data, me, searchParams }: { data: any, me:
     }, []);
 
     return <div className={style.contents}>
+        {tostMessage && <div className={style.tost_message_wrap}>
+            <div className={style.tost_message}>테스트중</div>
+        </div>}
         { modify ? (
         <div className={style.write_form}>
             <div className={style.input_div}>
@@ -263,7 +283,7 @@ export default function UploadWrite({ data, me, searchParams }: { data: any, me:
         )}
         { modify ? (
         <div className={style.btn_wrap}>
-            <button type="button" className={style.submit} onClick={handleSubmit}>완료</button>
+            <button type="button" className={style.submit} onClick={handleSubmit} disabled={!mutation.isIdle && !mutation.isError && !mutation.isSuccess}>완료</button>
             <button type="button" className={style.cancel} onClick={() => { if(data?.bnSeq) setModify(false); else handleClose(); }}>취소</button>
         </div>
         ) : ( 

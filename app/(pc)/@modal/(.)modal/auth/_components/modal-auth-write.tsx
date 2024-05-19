@@ -184,7 +184,7 @@ export default function AuthWrite({ data, me, searchParams }: { data: any, me: a
         )}
         { modify ? (
         <div className={style.btn_wrap}>
-            <button type="button" className={style.submit} onClick={handleSubmit}>완료</button>
+            <button type="button" className={style.submit} onClick={handleSubmit} disabled={!mutation.isIdle && !mutation.isError && !mutation.isSuccess}>완료</button>
             <button type="button" className={style.cancel} onClick={() => { if(data?.bnSeq) setModify(false); else handleClose(); }}>취소</button>
         </div>
         ) : ( 

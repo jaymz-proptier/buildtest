@@ -1,11 +1,18 @@
+import { getSession } from "next-auth/react";
+
 interface Item {
     bnSeq: number;
 }
 export const getExcelSheet2 = async ({ queryKey }: { queryKey: [string, string, number, string ]}) => {
+  const session = await getSession();
+  const token = session?.accessToken;
     const [_1, _2, sawonCode, calYm] = queryKey;
     const res = await fetch(`/api/mobile/saveAs/sheet2?sawonCode=${sawonCode}`, {
       next: {
         tags: ["member", "saveAs"],
+      },
+      headers: {
+          Authorization: `Bearer ${token}`,
       },
       credentials: 'include',
     });

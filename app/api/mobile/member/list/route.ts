@@ -1,16 +1,21 @@
 import executeQuery from "@/lib/mysql";
 import { NextRequest, NextResponse } from "next/server";
+import jwt from "jsonwebtoken";
 
 
 export async function GET(req: NextRequest) {
+    const getToken = req.headers.get("authorization")?.split(' ')[1];
     
     const { searchParams } = new URL(req.url);
-
+    if(getToken===null || getToken===undefined) return NextResponse.json({ status: "Fail", message: "로그인이 필요합니다." });
     try {
+        const token = process.env.AUTH_SECRET ? jwt.verify(getToken, process.env.AUTH_SECRET) : "";
+        const userData = token as jwt.JwtPayload;
+
         const page = (Number(searchParams.get("page") && searchParams.get("page")!=="0" ? searchParams.get("page") : 1) - 1) * 10;
         
         let sqlWhere = " and sawonCode = ? ";
-        const paramsArray = [searchParams.get("sawonCode")];
+        const paramsArray = [userData.sawonCode];
         if(searchParams.has("product_type") && searchParams.get("product_type")!=="") {
             sqlWhere += " and 상품유형 = ? ";
             paramsArray.push(searchParams.get("product_type"));

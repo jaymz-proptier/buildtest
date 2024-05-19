@@ -9,7 +9,7 @@ export const metadata = {
 };
 
 export default async function UploadPage({ searchParams }: { searchParams: any }) {    
-    const session = await auth();
+    const session = await auth();  
     const userData = JSON.parse(JSON.stringify(session));
     if(userData.user.sosok==="직원") return <div id="wrap" className="pc_wrap">
         <PcHeader me={userData} />

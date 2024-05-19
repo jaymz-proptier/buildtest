@@ -13,7 +13,7 @@ export default function PcHeader({ me }: { me: any }) {
                     <i>프로퍼티파트너스</i>
                 </Link>
                 <ul className={style.menu}>
-                    <li aria-selected={path==="/" ? true : false}>
+                    <li aria-selected={path==="/" || path==="/notice" ? true : false}>
                         <Link href="/" className={style.link}>공지관리</Link>
                     </li>
                     <li aria-selected={path==="/upload" ? true : false}>

@@ -1,15 +1,19 @@
 import executeQuery from "@/lib/mysql";
 import { NextRequest, NextResponse } from "next/server";
+import jwt from "jsonwebtoken";
 
 export async function GET(req: NextRequest) {
+    const getToken = req.headers.get("authorization")?.split(' ')[1];
+    if(getToken===null || getToken===undefined) return NextResponse.json({ status: "Fail", message: "로그인이 필요합니다." });
     
     const { searchParams } = new URL(req.url);
 
     try {
+        const token = process.env.AUTH_SECRET ? jwt.verify(getToken, process.env.AUTH_SECRET) : "";
+        const userData = token as jwt.JwtPayload;
         
-        const sql = `select 상품유형 as '상품구분', 상품명, 계약구분, 상호명 as '중개사명', date_format(결제일, '%y.%m.%d') as '결제일자', 결제금액 as '매출액', 0 as '수수료율', 0 as '정산수수료'
-        from tb_data_sales where sawonCode = ? and useYn = 'Y'`;
-        const result = await executeQuery(sql, [searchParams.get("sawonCode")]) as any[];
+        const sql = `select 상품구분, 상품명, 계약단지, 계약구분, 중개사명, 결제일자, 매출액, 유치수수료, 관리수수료, 추가수수료, 결제수수료, 쿠폰원가, 정산수수료, 담당자, 소속1, 소속2, 관리자메모 from tb_data_calculate_sales where sawonCode = ? and useYn = 'Y'`;
+        const result = await executeQuery(sql, [userData.sawonCode]) as any[];
         return NextResponse.json({ status: "OK", data: result });
 
     } catch (error) {

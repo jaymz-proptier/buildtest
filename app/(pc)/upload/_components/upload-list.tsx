@@ -5,6 +5,7 @@ import Pagination from "@/app/(pc)/components/pagination";
 import { InfiniteData, useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getList } from "../_lib/getList";
 import UploadItem from "./upload-item";
+import LoadingSpinner from "../../_components/loading";
 
 interface Item {
     page: number;
@@ -52,7 +53,7 @@ export default function UploadList({ searchParams }: { searchParams: any }) {
                             ))
                         ) : isLoading ? (
                         <tr>
-                            <td colSpan={4} className={style.no_data}>데이터를 불러오는 중입니다.</td>
+                            <td colSpan={4} className={style.no_data}><LoadingSpinner /></td>
                         </tr>
                         ) : (
                         <tr>
@@ -62,7 +63,7 @@ export default function UploadList({ searchParams }: { searchParams: any }) {
                     </tbody>
                 </table>
             </div>
-            <Pagination page={page} total={data?.total} />
+            {!isLoading && <Pagination page={page} total={data?.total} />}
         </div>
     </>
 }

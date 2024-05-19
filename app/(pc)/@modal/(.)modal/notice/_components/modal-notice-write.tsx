@@ -83,6 +83,33 @@ export default function NoticeWrite({ data, me }: { data: any, me: any }) {
         }
     }, [noticeGubun, title, contents, dispYn, topYn, selectedFile]);
 
+    const deleteMutation = useMutation({        
+        mutationFn: (e: any) => {
+            e.preventDefault();
+            const formData = new FormData();
+            formData.append("sawonCode", me?.user?.sawonCode || "");
+            formData.append("bnSeq", data?.bnSeq || "");
+            formData.append("fileName", data?.fileName || "");
+            return fetch(`/api/pc/notice-delete`, {
+                method: 'post',
+                credentials: 'include',
+                body: formData,
+            });
+        },
+        async onSuccess(response) {              
+            const req = await response.json(); 
+            if(req.status==="Fail") alert(req.message);
+            queryClient.invalidateQueries({ queryKey: ["admin", "notice"] });
+            queryClient.invalidateQueries({ queryKey: ["noticeLoad"] });
+            router.back();
+        },
+    });
+    const handleDelete = useCallback(async (e: any) => {
+        if(confirm("처리를 진행하시겠습니까?")) {
+            deleteMutation.mutate(e);
+        }
+    }, []);
+
     const handleClose = () => {
         router.back();
     }
@@ -167,13 +194,14 @@ export default function NoticeWrite({ data, me }: { data: any, me: any }) {
         )}
         { modify ? (
         <div className={style.btn_wrap}>
-            <button type="button" className={style.submit} onClick={handleSubmit}>완료</button>
+            <button type="button" className={style.submit} onClick={handleSubmit} disabled={!mutation.isIdle && !mutation.isError && !mutation.isSuccess}>완료</button>
             <button type="button" className={style.cancel} onClick={() => { if(data?.bnSeq) setModify(false); else handleClose(); }}>취소</button>
         </div>
         ) : ( 
         <div className={style.btn_wrap}>
             <button type="button" className={style.list} onClick={handleClose}>목록</button>
             <button type="button" className={style.modify} onClick={() => setModify(true)}>수정</button>
+            <button type="button" className={style.cancel} onClick={handleDelete}>삭제</button>
             <button type="button" className={style.cancel} onClick={handleClose}>취소</button>
         </div>    
         )}

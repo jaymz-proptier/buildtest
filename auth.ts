@@ -1,4 +1,5 @@
 import NextAuth from 'next-auth';
+import jwt from "jsonwebtoken";
 import { authConfig } from './auth.config';
 import Credentials from 'next-auth/providers/credentials';
 import { User } from '@/lib/definitions';
@@ -19,16 +20,12 @@ export const { handlers: { GET, POST }, auth, signIn, signOut } = NextAuth({
                 });
                 
                 const userData = await res.json();
-                console.log("userData",userData, userData?.data);
+                //console.log("userData",userData, userData?.data);
                 if (!userData?.data) {
                     console.log("로그인 정보가 올바르지 않습니다.");
                     return null;
                 }
-                console.log(userData);
-                /* const sql = "select swId, name, sawonCode, sosok from tb_pptn_sawon where swId = ? and swPwd = SHA2(CONCAT(CONCAT('*', UPPER(SHA1(UNHEX(SHA1(?))))), 'ribo20240408!@'),256) and isStatus='재직' and useYn='Y'";
-                const result = await executeQuery(sql, [credentials.swId, credentials.swPwd]) as unknown[];
-                const row = result[0] as any[];
-                const userData = JSON.parse(JSON.stringify(row)); */
+                
                 let loginRes = {
                     success : true,
                     data : {
@@ -60,13 +57,14 @@ export const { handlers: { GET, POST }, auth, signIn, signOut } = NextAuth({
     ],
     callbacks: {
         async session({ session, token, user }) {
-        console.log("session");
-        session.user = token.user as User
+        session.user = token.user as User;
+        session.accessToken = token.accessToken as string;
         return session;
         },
         async jwt({ token, user, trigger, session }) {
-        if (user) {
+        if(user) {
             token.user = user;
+            if(process.env.AUTH_SECRET) token.accessToken = jwt.sign(user, process.env.AUTH_SECRET);
         }
         return token;
         },

@@ -1,10 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/auth";
-import * as XLSX from "xlsx";
 import executeQuery from "@/lib/mysql";
-import { headers } from "next/headers";
+import jwt from "jsonwebtoken";
 
 export async function POST(req: NextRequest) {
+    const getToken = req.headers.get("authorization")?.split(' ')[1];
+    if(getToken===null || getToken===undefined) return NextResponse.json({ status: "Fail", message: "로그인이 필요합니다." });
+    const token = process.env.AUTH_SECRET ? jwt.verify(getToken, process.env.AUTH_SECRET) : "";
+    const userData = token as jwt.JwtPayload;
+    if(userData.sosok!=="직원") return NextResponse.json({ status: "Fail", message: "관리자만 접근 가능합니다." });
+
     const formData = await req.formData();
     const body = Object.fromEntries(formData);
     const getIp = (req.headers.get('x-forwarded-for') ?? '127.0.0.1').trim().split(',')

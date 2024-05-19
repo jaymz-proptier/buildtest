@@ -191,6 +191,7 @@ input:-internal-autofill-selected {
 
 input:focus, button:focus {
 	outline: none;
+	color: #2e3233;
 }
 footer {
 	position: relative;

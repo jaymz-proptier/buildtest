@@ -6,6 +6,7 @@ import AuthSearchFilter from "./auth-search-filter";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getList } from "../_lib/getList";
 import { useRouter } from "next/navigation";
+import LoadingSpinner from "../../_components/loading";
 
 interface Item {
     page: number;
@@ -65,7 +66,7 @@ export default function AuthList({ searchParams }: { searchParams: any}) {
                             ))
                         ) : isLoading ? (
                         <tr>
-                            <td colSpan={6} className={style.no_data}>데이터를 불러오는 중입니다.</td>
+                            <td colSpan={6} className={style.no_data}><LoadingSpinner /></td>
                         </tr>
                         ) : (
                         <tr>
@@ -75,7 +76,7 @@ export default function AuthList({ searchParams }: { searchParams: any}) {
                     </tbody>
                 </table>
             </div>
-            <Pagination page={page} total={data?.total} />
+            {!isLoading && <Pagination page={page} total={data?.total} />}
         </div>
     </>
 }

@@ -5,6 +5,7 @@ import { useContext } from "react";
 import { FilterContext } from "./filterProvider";
 import { useQuery } from "@tanstack/react-query";
 import { getSettlementPayment } from "../_lib/getSettlementPayment";
+import { DownloadIcon } from "@/app/(mobile)/_components/downloadIcon"
 import { getExcelSheet1 } from "../_lib/getExcelSheet1";
 import { getExcelSheet2 } from "../_lib/getExcelSheet2";
 import { saveAs } from "file-saver";
@@ -30,39 +31,39 @@ export default function SettlementMainPayment({ sawonCode }: { sawonCode: number
         staleTime: 60 * 1000, // fresh -> stale, 5분이라는 기준
         gcTime: 300 * 1000,
     });
+    const { data: sheet1 } = useQuery<Item, Object, Item, [_1: string, _2:string, _3: number, _4: string]>({
+        queryKey: ['member', 'settlement', sawonCode, (year +""+ month)],
+        queryFn: getExcelSheet1,
+        staleTime: 60 * 1000, // fresh -> stale, 5분이라는 기준
+        gcTime: 300 * 1000,
+    });
+    
+    const { data: sheet2 } = useQuery<Item, Object, Item, [_1: string, _2:string, _3: number, _4: string]>({
+        queryKey: ['member', 'settlement', sawonCode, (year +""+ month)],
+        queryFn: getExcelSheet2,
+        staleTime: 60 * 1000, // fresh -> stale, 5분이라는 기준
+        gcTime: 300 * 1000,
+    });
     async function handleButtonClick() {
         try {
-            /* const { data: sheet1 } = useQuery<Item, Object, Item, [_1: string, _2:string, _3: number, _4: string]>({
-                queryKey: ['member', 'settlement', sawonCode, (year +""+ month)],
-                queryFn: getExcelSheet1,
-                staleTime: 60 * 1000, // fresh -> stale, 5분이라는 기준
-                gcTime: 300 * 1000,
-            });
-            
-            const { data: sheet2 } = useQuery<Item, Object, Item, [_1: string, _2:string, _3: number, _4: string]>({
-                queryKey: ['member', 'settlement', sawonCode, (year +""+ month)],
-                queryFn: getExcelSheet2,
-                staleTime: 60 * 1000, // fresh -> stale, 5분이라는 기준
-                gcTime: 300 * 1000,
-            }); */
-            const response1 = await fetch(`/api/mobile/saveAs/sheet1?sawonCode=${sawonCode}`);
+            /* const response1 = await fetch(`/api/mobile/saveAs/sheet1?sawonCode=${sawonCode}`);
             const sheet1 = await response1.json();
             const response2 = await fetch(`/api/mobile/saveAs/sheet2?sawonCode=${sawonCode}`);
-            const sheet2 = await response2.json();
+            const sheet2 = await response2.json(); */
 
             const wb = XLSX.utils.book_new();
             const ws1 = XLSX.utils.json_to_sheet(sheet1?.data);
             const ws2 = XLSX.utils.json_to_sheet(sheet2?.data);
         
-            XLSX.utils.book_append_sheet(wb, ws1, "매출원장");
-            XLSX.utils.book_append_sheet(wb, ws2, "감사쿠폰지급");
+            XLSX.utils.book_append_sheet(wb, ws1, "매출");
+            XLSX.utils.book_append_sheet(wb, ws2, "기타");
         
             const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
             const buf = new ArrayBuffer(wbout.length);
             const view = new Uint8Array(buf);
             for (let i = 0; i < wbout.length; i++) view[i] = wbout.charCodeAt(i) & 0xFF;
         
-            saveAs(new Blob([buf], { type: 'application/octet-stream' }), '상품별_내역서.xlsx');
+            saveAs(new Blob([buf], { type: 'application/octet-stream' }), `${year}년${month}월_상품별_내역서.xlsx`);
 
         } catch (error) {
             console.error('Failed to download data', error);
@@ -158,7 +159,10 @@ export default function SettlementMainPayment({ sawonCode }: { sawonCode: number
                 </table>
             </div>
             <div className={style.sub_contents}>
-                <button type="button" onClick={handleButtonClick}>상품별 내역서 다운로드</button>
+                <button type="button" className={style.download} onClick={handleButtonClick}>
+                    <DownloadIcon />
+                    상품별 내역서 다운로드
+                </button>
             </div>
         </div>}
         {data?.data[0] &&<div className={style.table_summury_wrap}>
@@ -186,13 +190,13 @@ export default function SettlementMainPayment({ sawonCode }: { sawonCode: number
                     <thead>
                         <tr>
                             <th>기타</th>
-                            <th colSpan={3}>기타사항</th>
+                            <th colSpan={3}>반반쿠폰(차감)</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td>{Number(data?.data[0]?.지원금_기타).toLocaleString()}</td>
-                            <td colSpan={3}>{data?.data[0]?.지원금_기타사항 ? data?.data[0]?.지원금_기타사항 : "-"}</td>
+                            <td colSpan={3}>{Number(data?.data[0]?.지원금_반반쿠폰).toLocaleString()}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -201,20 +205,16 @@ export default function SettlementMainPayment({ sawonCode }: { sawonCode: number
         {data?.data[0] ? <div className={style.message_info}>
             <ul>
                 <li>
-                    <label>당월 정산액</label>
+                    <label>기타사항</label>
+                    {data?.data[0]?.지원금_기타사항 ? data?.data[0]?.지원금_기타사항 : "-"}
+                </li>
+                <li>
+                    <label>당월 총정산액</label>
                     {Number(data?.data[0]?.정산액).toLocaleString()}
                 </li>
                 <li>
-                    <label>지급 예정액(세금공제후)</label>
+                    <label>입금 예정액</label>
                     {Number(data?.data[0]?.입금예정액).toLocaleString()}
-                </li>
-                <li>
-                    <label>선지급액</label>
-                    {Number(data?.data[0]?.선지급금).toLocaleString()}
-                </li>
-                <li>
-                    <label>실지급 예정액</label>
-                    {Number(data?.data[0]?.실입금액).toLocaleString()}
                 </li>
             </ul>
             <h5>귀하의 노고에 감사드립니다.</h5>

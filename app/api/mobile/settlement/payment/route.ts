@@ -1,15 +1,19 @@
 import executeQuery from "@/lib/mysql";
 import { NextRequest, NextResponse } from "next/server";
-
+import jwt from "jsonwebtoken";
 
 export async function GET(req: NextRequest) {
+    const getToken = req.headers.get("authorization")?.split(' ')[1];
+    if(getToken===null || getToken===undefined) return NextResponse.json({ status: "Fail", message: "로그인이 필요합니다." });
     
     const { searchParams } = new URL(req.url);
 
     try {
+        const token = process.env.AUTH_SECRET ? jwt.verify(getToken, process.env.AUTH_SECRET) : "";
+        const userData = token as jwt.JwtPayload;
         
         let sqlWhere = " sawonCode = ?";
-        const paramsArray = [searchParams.get("sawonCode")];
+        const paramsArray = [userData.sawonCode];
         if (searchParams.has("type") && searchParams.get("type")!=="") {
             sqlWhere += " and 상품유형 = ? ";
             paramsArray.push(searchParams.get("type"));
@@ -25,8 +29,8 @@ export async function GET(req: NextRequest) {
         매출_입주탐방, round((영업_입주탐방 / 매출_입주탐방) * 100, 1) as 입주탐방_수수료율, 영업_입주탐방, 
         매출_도메인, round((영업_도메인 / 매출_도메인) * 100, 1) as 도메인_수수료율, 영업_도메인,  
         (관리자_이실장 + 관리자_이실장외) as 직책수당,
-        지원금_주차비, 지원금_디바이스구매지원, 지원금_영업지원금, 지원금_기타, 지원금_기타사항, 정산액, 입금예정액, 선지급금, 실입금액 from tb_data_calculate where sawonCode = ? and calYm = ? and useYn = 'Y'`;
-        const result = await executeQuery(countSql, [searchParams.get("sawonCode"), searchParams.get("calYm")]) as unknown[];
+        지원금_주차비, 지원금_디바이스구매지원, 지원금_영업지원금, 지원금_기타, 지원금_기타사항, 지원금_반반쿠폰, 정산액, 입금예정액, 선지급금, 실입금액 from tb_data_calculate where sawonCode = ? and calYm = ? and useYn = 'Y'`;
+        const result = await executeQuery(countSql, [userData.sawonCode, searchParams.get("calYm")]) as unknown[];
         
         return NextResponse.json({ status: "OK", data: result });
 

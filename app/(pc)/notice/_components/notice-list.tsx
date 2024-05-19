@@ -5,6 +5,7 @@ import Pagination from "@/app/(pc)/components/pagination";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getList } from "../_lib/getList";
 import NoticeItem from "./notice-item";
+import LoadingSpinner from "../../_components/loading";
 
 interface Item {
     page: number;
@@ -53,7 +54,7 @@ export default function NoticeList({ searchParams }: { searchParams: any }) {
                             ))
                         ) : isLoading ? (
                         <tr>
-                            <td colSpan={5} className={style.no_data}>데이터를 불러오는 중입니다.</td>  
+                            <td colSpan={5} className={style.no_data}><LoadingSpinner /></td>  
                         </tr>
                         ) : (
                         <tr>
@@ -63,7 +64,7 @@ export default function NoticeList({ searchParams }: { searchParams: any }) {
                     </tbody>
                 </table>
             </div>
-            <Pagination page={page} total={data?.total} />
+            {!isLoading && <Pagination page={page} total={data?.total} />}
         </div>
     </>
 }

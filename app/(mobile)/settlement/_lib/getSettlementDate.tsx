@@ -1,11 +1,18 @@
+import { getSession } from "next-auth/react";
+
 interface Item {
   bnSeq: number;
 }
 export const getSettlementDate = async ({ queryKey }: { queryKey: [string, string, number ]}) => {
+  const session = await getSession();
+  const token = session?.accessToken;
   const [_1, _2, sawonCode] = queryKey;
-  const res = await fetch(`/api/mobile/settlement/date?sawonCode=${sawonCode}`, {
+  const res = await fetch(`/api/mobile/settlement/date`, {
     next: {
       tags: ["member", "settlement"],
+    },
+    headers: {
+        Authorization: `Bearer ${token}`,
     },
     credentials: 'include',
   });
