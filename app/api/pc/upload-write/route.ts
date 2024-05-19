@@ -103,7 +103,7 @@ export async function POST(req: NextRequest) {
                 await executeQuery("UPDATE tb_upload_log SET statusGubun='D', useYn='N' WHERE dataGubun='2' AND statusGubun='W' AND useYn='Y';", []);
                 await executeQuery("TRUNCATE TABLE tb_upload_sales_log;", []);
                 await executeQuery("UPDATE tb_upload_sales_log SET useYn='N' WHERE useYn='Y';", []);
-                const uploadSql = `insert into tb_upload_log (dataGubun, title, contents, fileName, filePath, totalCount, succeseCount, statusGubun, resultMessage, regDate, modDate, useYn, workSawonNo, workIp) values (?, ?, ?, ?, ?, '', ?, 0, 'W', '', sysdate(), SYSDATE(), 'Y', ?, ?)`;
+                const uploadSql = `insert into tb_upload_log (dataGubun, title, contents, fileName, filePath, totalCount, succeseCount, statusGubun, resultMessage, regDate, modDate, useYn, workSawonNo, workIp) values (?, ?, ?, ?, '', ?, 0, 'W', '', sysdate(), SYSDATE(), 'Y', ?, ?)`;
                 await executeQuery(uploadSql, [body.dataGubun, body.title, body.contents, fileToStorage.name, insertData.length, userData.sawonCode, ip]);
                 const rows = await executeQuery("SELECT LAST_INSERT_ID()",[]) as any[];
                 const lastInsertId = rows[0]["LAST_INSERT_ID()"];
