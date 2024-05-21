@@ -33,30 +33,30 @@ export async function POST(req: NextRequest) {
                 for (let i = 0; i < jsonData.length; i++) {
                     insertData.push([
                         jsonData[i]["상품유형"],
-                        //jsonData[i]["상품명"],
-                        jsonData[i]["멤버십 종류"],
-                        jsonData[i]["이실장회원번호"],
-                        //jsonData[i]['회원번호'],
+                        jsonData[i]["상품명"],
+                        //jsonData[i]["멤버십 종류"],
+                        //jsonData[i]["이실장회원번호"],
+                        jsonData[i]['회원번호'],
                         jsonData[i]['상호명'],
                         jsonData[i]['사업자번호'],
                         jsonData[i]['대표자명'],
-                        jsonData[i]['휴대폰 번호'],
+                        jsonData[i]['휴대폰'],
                         jsonData[i]['시도'],
-                        jsonData[i]['구시군'],
+                        jsonData[i]['시군구'],
                         jsonData[i]['읍면동'],
                         jsonData[i]['상세주소'],
                         jsonData[i]['계약구분'],
                         jsonData[i]['결제일'],
-                        //jsonData[i]['시작일'],
-                        jsonData[i]['멤버십시작일'],
-                        //jsonData[i]['종료일'],
-                        jsonData[i]['멤버십종료일'],
+                        jsonData[i]['시작일'],
+                        //jsonData[i]['멤버십시작일'],
+                        jsonData[i]['종료일'],
+                        //jsonData[i]['멤버십종료일'],
                         jsonData[i]['담당자'],
-                        jsonData[i]['멤버십상태'],
-                        //jsonData[i]['상태'],
+                        //jsonData[i]['멤버십상태'],
+                        jsonData[i]['상태'],
                         jsonData[i]['계약전송수'],
-                        jsonData[i]['전송수'],
-                        jsonData[i]['계약단지']
+                        jsonData[i]['전송수']
+                        //jsonData[i]['계약상품']
                     ]);
                 }
                 await executeQuery("UPDATE tb_upload_log SET statusGubun='D', useYn='N' WHERE dataGubun='1' AND statusGubun='W' AND useYn='Y';", []);
@@ -69,7 +69,7 @@ export async function POST(req: NextRequest) {
 
                 const placeholders = Array.from({ length: 20 }, () => '?').join(',');
                 const valuePlaceholders = insertData.map(row => `(${lastInsertId}, ${row.map(() => '?').join(',')}, now(), 'Y')`).join(',');
-                const query = `INSERT INTO tb_upload_member_log (upchaSeq, 상품유형, 상품명, 회원번호, 상호명, 사업자번호, 대표자명, 휴대폰, 시도, 시군구, 읍면동, 상세주소, 계약구분, 결제일, 시작일, 종료일, 담당자, 상태, 계약전송수, 전송수, 계약단지명, regDate, useYn) VALUES ${valuePlaceholders}`;
+                const query = `INSERT INTO tb_upload_member_log (upchaSeq, 상품유형, 상품명, 회원번호, 상호명, 사업자번호, 대표자명, 휴대폰, 시도, 시군구, 읍면동, 상세주소, 계약구분, 결제일, 시작일, 종료일, 담당자, 상태, 계약전송수, 전송수, regDate, useYn) VALUES ${valuePlaceholders}`;
                 await executeQuery(query, insertData.flat());
                 
                 await executeQuery(`update tb_upload_log set succeseCount = ( select count(*) from tb_upload_member_log_test where upchaSeq = ?) where upchaSeq = ?`, [lastInsertId, lastInsertId]);
@@ -85,7 +85,7 @@ export async function POST(req: NextRequest) {
                         jsonData[i]['대표자명'],
                         jsonData[i]['휴대폰'],
                         jsonData[i]['시도'],
-                        jsonData[i]['구시군'],
+                        jsonData[i]['시군구'],
                         jsonData[i]['읍면동'],
                         jsonData[i]['상세주소'],
                         jsonData[i]['계약구분'],
@@ -94,10 +94,9 @@ export async function POST(req: NextRequest) {
                         jsonData[i]['시작일'],
                         jsonData[i]['종료일'],
                         jsonData[i]['환불일'],
-                        jsonData[i]['환불액'],
+                        jsonData[i]['환불금액'],
                         jsonData[i]['담당자'],
-                        jsonData[i]['상태'],
-                        jsonData[i]['계약단지']
+                        jsonData[i]['상태']
                     ]);
                 }
                 await executeQuery("UPDATE tb_upload_log SET statusGubun='D', useYn='N' WHERE dataGubun='2' AND statusGubun='W' AND useYn='Y';", []);
@@ -108,10 +107,9 @@ export async function POST(req: NextRequest) {
                 const rows = await executeQuery("SELECT LAST_INSERT_ID()",[]) as any[];
                 const lastInsertId = rows[0]["LAST_INSERT_ID()"];
 
-                const placeholders = Array.from({ length: 22 }, () => '?').join(',');
                 const valuePlaceholders = insertData.map(row => `(${lastInsertId}, ${row.map(() => '?').join(',')}, sysdate(), SYSDATE())`).join(',');
 
-                const query = `INSERT INTO tb_upload_sales_log (upchaSeq, 상품유형, 상품명, 회원번호, 상호명, 사업자번호, 대표자명, 휴대폰, 시도, 시군구, 읍면동, 상세주소, 계약구분, 결제일, 결제금액, 시작일, 종료일, 환불일, 환불금액, 담당자, 상태, 계약단지,regDate, modDate) VALUES ${valuePlaceholders}`;
+                const query = `INSERT INTO tb_upload_sales_log (upchaSeq, 상품유형, 상품명, 회원번호, 상호명, 사업자번호, 대표자명, 휴대폰, 시도, 시군구, 읍면동, 상세주소, 계약구분, 결제일, 결제금액, 시작일, 종료일, 환불일, 환불금액, 담당자, 상태, regDate, modDate) VALUES ${valuePlaceholders}`;
                 await executeQuery(query, insertData.flat());
 
                 await executeQuery(`update tb_upload_log set succeseCount = ( select count(*) from tb_upload_sales_log_test where upchaSeq = ?) where upchaSeq = ?`, [lastInsertId, lastInsertId]);
@@ -265,8 +263,8 @@ export async function POST(req: NextRequest) {
 
             return NextResponse.json({ status: "OK", message: "정상적으로 등록했습니다." });
         } catch (error) {
-        console.error('데이터 업로드 오류:', error);
-        return NextResponse.json({ status: "Fail", message: error });
+            console.error('데이터 업로드 오류:', error);
+            return NextResponse.json({ status: "Fail", message: error });
         }
   } else {
     console.log(req.method);
