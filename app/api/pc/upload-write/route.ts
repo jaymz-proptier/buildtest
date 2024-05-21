@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
             const fileToStorage = files[0];
             const fileName = Buffer.from(fileToStorage.name, "latin1").toString("utf8");
             const data = new Uint8Array(await new Response(file).arrayBuffer());
-            const workbook = XLSX.read(data, { type: "buffer" });
+            const workbook = XLSX.read(data, { type: "buffer", cellDates: true, dateNF: "YYYY-MM-DD" });
             const sheetName = workbook.SheetNames[0];
             const sheet = workbook.Sheets[sheetName];
             const jsonData = XLSX.utils.sheet_to_json(sheet) as any;
