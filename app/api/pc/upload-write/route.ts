@@ -100,8 +100,8 @@ export async function POST(req: NextRequest) {
                 }
 
                 const placeholders = Array.from({ length: 20 }, () => '?').join(',');
-                const valuePlaceholders = insertData.map(row => `(${lastInsertId}, ${row.map(() => '?').join(',')}, now(), 'Y')`).join(',');
-                const query = `INSERT INTO tb_upload_member_log (upchaSeq, 상품유형, 상품명, 회원번호, 상호명, 사업자번호, 대표자명, 휴대폰, 시도, 시군구, 읍면동, 상세주소, 계약구분, 결제일, 시작일, 종료일, 담당자, 상태, 계약전송수, 전송수, regDate, useYn) VALUES ${valuePlaceholders}`;
+                const valuePlaceholders = insertData.map(row => `(${lastInsertId}, ${row.map(() => '?').join(',')})`).join(',');
+                const query = `INSERT INTO tb_upload_member_log (upchaSeq, 상품유형, 상품명, 회원번호, 상호명, 사업자번호, 대표자명, 휴대폰, 시도, 시군구, 읍면동, 상세주소, 계약구분, 결제일, 시작일, 종료일, 담당자, 상태, 계약전송수, 전송수) VALUES ${valuePlaceholders}`;
                 await executeQuery(query, insertData.flat());
                 
                 await executeQuery(`update tb_upload_log set succeseCount = ( select count(*) from tb_upload_member_log_test where upchaSeq = ?) where upchaSeq = ?`, [lastInsertId, lastInsertId]);
@@ -172,9 +172,9 @@ export async function POST(req: NextRequest) {
                     lastInsertId = rows[0]["LAST_INSERT_ID()"];
                 }
 
-                const valuePlaceholders = insertData.map(row => `(${lastInsertId}, ${row.map(() => '?').join(',')}, sysdate(), SYSDATE())`).join(',');
+                const valuePlaceholders = insertData.map(row => `(${lastInsertId}, ${row.map(() => '?').join(',')})`).join(',');
 
-                const query = `INSERT INTO tb_upload_sales_log (upchaSeq, 상품유형, 상품명, 회원번호, 상호명, 사업자번호, 대표자명, 휴대폰, 시도, 시군구, 읍면동, 상세주소, 계약구분, 결제일, 결제금액, 시작일, 종료일, 환불일, 환불금액, 담당자, 상태, regDate, modDate) VALUES ${valuePlaceholders}`;
+                const query = `INSERT INTO tb_upload_sales_log (upchaSeq, 상품유형, 상품명, 회원번호, 상호명, 사업자번호, 대표자명, 휴대폰, 시도, 시군구, 읍면동, 상세주소, 계약구분, 결제일, 결제금액, 시작일, 종료일, 환불일, 환불금액, 담당자, 상태) VALUES ${valuePlaceholders}`;
                 await executeQuery(query, insertData.flat());
 
                 await executeQuery(`update tb_upload_log set succeseCount = ( select count(*) from tb_upload_sales_log_test where upchaSeq = ?) where upchaSeq = ?`, [lastInsertId, lastInsertId]);
