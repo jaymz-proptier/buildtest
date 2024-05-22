@@ -16,9 +16,7 @@ export default function UploadWrite({ data, me, searchParams }: { data: any, me:
         { code: "1", title: "회원내역"},
         { code: "2", title: "매출내역"},
         { code: "3", title: "정산내역"},
-        { code: "4", title: "신규리스트"},
-        { code: "5", title: "만기리스트"},
-        { code: "9", title: "기타"},
+        { code: "4", title: "계약관리"},
     ];
     const currentYear = new Date().getFullYear();
     const currentMonth = new Date().getMonth() + 1;
@@ -197,7 +195,7 @@ export default function UploadWrite({ data, me, searchParams }: { data: any, me:
                             </ul>
                         </div>
                     </div>
-                    {!(dataGubun==="1" || dataGubun==="2") && 
+                    {(dataGubun==="3") && 
                     <>
                     <div className={style.select_box}>
                         <button type="button" aria-selected={openSelectBox==="year"} onClick={() => setOpenSelectBox("year")}>{year}</button>

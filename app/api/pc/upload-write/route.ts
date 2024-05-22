@@ -47,9 +47,9 @@ export async function POST(req: NextRequest) {
                         jsonData[i]['상세주소'],
                         jsonData[i]['계약구분'],
                         jsonData[i]['결제일'],
-                        jsonData[i]['시작일'].toString().substring(0, 10),
+                        jsonData[i]['시작일'],
                         //jsonData[i]['멤버십시작일'],
-                        jsonData[i]['종료일'].toString().substring(0, 10),
+                        jsonData[i]['종료일'],
                         //jsonData[i]['멤버십종료일'],
                         jsonData[i]['담당자'],
                         //jsonData[i]['멤버십상태'],
@@ -59,13 +59,45 @@ export async function POST(req: NextRequest) {
                         //jsonData[i]['계약상품']
                     ]);
                 }
-                await executeQuery("UPDATE tb_upload_log SET statusGubun='D', useYn='N' WHERE dataGubun='1' AND statusGubun='W' AND useYn='Y';", []);
+                /* await executeQuery("UPDATE tb_upload_log SET statusGubun='D', useYn='N' WHERE dataGubun='1' AND statusGubun='W' AND useYn='Y';", []);
                 await executeQuery("TRUNCATE TABLE tb_upload_member_log;", []);
                 await executeQuery("UPDATE tb_upload_member_log SET useYn='N' WHERE useYn='Y';", []);
                 const uploadSql = `insert into tb_upload_log (dataGubun, title, contents, fileName, filePath, totalCount, succeseCount, statusGubun, resultMessage, regDate, modDate, useYn, workSawonNo, workIp) values (?, ?, ?, ?, '', ?, 0, 'W', '', sysdate(), SYSDATE(), 'Y', ?, ?)`;
                 await executeQuery(uploadSql, [body.dataGubun, body.title, body.contents, fileToStorage.name, insertData.length, userData.sawonCode, ip]);
                 const rows = await executeQuery("SELECT LAST_INSERT_ID()",[]) as any[];
-                const lastInsertId = rows[0]["LAST_INSERT_ID()"];
+                const lastInsertId = rows[0]["LAST_INSERT_ID()"]; */
+
+                let lastInsertId = 0;
+                if(body.modifyId || body.upchaSeq) {
+                    lastInsertId = body.modifyId ? Number(body.modifyId) : body.upchaSeq ? Number(body.upchaSeq) : 0;
+
+                    let sqlSet = " title = ?,";
+                    const setArray = [body.title];
+                    sqlSet += " contents = ?,";
+                    setArray.push(body.contents);            
+                    sqlSet += " fileName = ?,";
+                    setArray.push(fileToStorage.name);
+                    sqlSet += " totalCount = ?,";
+                    setArray.push(insertData.length.toString());     
+                    sqlSet += " workSawonNo = ?,";
+                    setArray.push(userData.sawonCode);          
+                    sqlSet += " workIp = ? ";
+                    setArray.push(ip);
+                    setArray.push(lastInsertId.toString());
+                    
+                    const query = `update tb_upload_log set ${sqlSet}, modDate = now() where upchaSeq = ?`;
+                    await executeQuery(query, setArray);
+                    await executeQuery("TRUNCATE TABLE tb_upload_member_log;", []);
+                    await executeQuery("UPDATE tb_upload_member_log SET useYn='N' WHERE useYn='Y';", []);
+                } else {
+                    await executeQuery("UPDATE tb_upload_log SET statusGubun='D', useYn='N' WHERE dataGubun='1' AND statusGubun='W' AND useYn='Y';", []);
+                    await executeQuery("TRUNCATE TABLE tb_upload_member_log;", []);
+                    await executeQuery("UPDATE tb_upload_member_log SET useYn='N' WHERE useYn='Y';", []);
+                    const uploadSql = `insert into tb_upload_log (dataGubun, calYm, title, contents, fileName, filePath, totalCount, succeseCount, statusGubun, resultMessage, regDate, modDate, useYn, workSawonNo, workIp) values (?, ?, ?, ?, ?, '', ?, 0, 'W', '', sysdate(), SYSDATE(), 'Y', ?, ?)`;
+                    await executeQuery(uploadSql, [body.dataGubun, `${body.year}${body.month}`, body.title, body.contents, fileToStorage.name, insertData.length, userData.sawonCode, ip]);
+                    const rows = await executeQuery("SELECT LAST_INSERT_ID()",[]) as any[];
+                    lastInsertId = rows[0]["LAST_INSERT_ID()"];
+                }
 
                 const placeholders = Array.from({ length: 20 }, () => '?').join(',');
                 const valuePlaceholders = insertData.map(row => `(${lastInsertId}, ${row.map(() => '?').join(',')}, now(), 'Y')`).join(',');
@@ -91,21 +123,54 @@ export async function POST(req: NextRequest) {
                         jsonData[i]['계약구분'],
                         jsonData[i]['결제일'],
                         jsonData[i]['결제금액'],
-                        jsonData[i]['시작일'],
-                        jsonData[i]['종료일'],
+                        new Date(jsonData[i]['시작일']).toLocaleDateString('en-CA'),
+                        jsonData[i]['종료일'].toString().split(" ")[0],
                         jsonData[i]['환불일'],
                         jsonData[i]['환불금액'],
                         jsonData[i]['담당자'],
                         jsonData[i]['상태']
                     ]);
                 }
-                await executeQuery("UPDATE tb_upload_log SET statusGubun='D', useYn='N' WHERE dataGubun='2' AND statusGubun='W' AND useYn='Y';", []);
+                /* await executeQuery("UPDATE tb_upload_log SET statusGubun='D', useYn='N' WHERE dataGubun='2' AND statusGubun='W' AND useYn='Y';", []);
                 await executeQuery("TRUNCATE TABLE tb_upload_sales_log;", []);
                 await executeQuery("UPDATE tb_upload_sales_log SET useYn='N' WHERE useYn='Y';", []);
                 const uploadSql = `insert into tb_upload_log (dataGubun, title, contents, fileName, filePath, totalCount, succeseCount, statusGubun, resultMessage, regDate, modDate, useYn, workSawonNo, workIp) values (?, ?, ?, ?, '', ?, 0, 'W', '', sysdate(), SYSDATE(), 'Y', ?, ?)`;
                 await executeQuery(uploadSql, [body.dataGubun, body.title, body.contents, fileToStorage.name, insertData.length, userData.sawonCode, ip]);
                 const rows = await executeQuery("SELECT LAST_INSERT_ID()",[]) as any[];
-                const lastInsertId = rows[0]["LAST_INSERT_ID()"];
+                const lastInsertId = rows[0]["LAST_INSERT_ID()"]; */
+
+
+                let lastInsertId = 0;
+                if(body.modifyId || body.upchaSeq) {
+                    lastInsertId = body.modifyId ? Number(body.modifyId) : body.upchaSeq ? Number(body.upchaSeq) : 0;
+
+                    let sqlSet = " title = ?,";
+                    const setArray = [body.title];
+                    sqlSet += " contents = ?,";
+                    setArray.push(body.contents);            
+                    sqlSet += " fileName = ?,";
+                    setArray.push(fileToStorage.name);
+                    sqlSet += " totalCount = ?,";
+                    setArray.push(insertData.length.toString());     
+                    sqlSet += " workSawonNo = ?,";
+                    setArray.push(userData.sawonCode);          
+                    sqlSet += " workIp = ? ";
+                    setArray.push(ip);
+                    setArray.push(lastInsertId.toString());
+                    
+                    const query = `update tb_upload_log set ${sqlSet}, modDate = now() where upchaSeq = ?`;
+                    await executeQuery(query, setArray);
+                    await executeQuery("TRUNCATE TABLE tb_upload_sales_log;", []);
+                    await executeQuery("UPDATE tb_upload_sales_log SET useYn='N' WHERE useYn='Y';", []);
+                } else {
+                    await executeQuery("UPDATE tb_upload_log SET statusGubun='D', useYn='N' WHERE dataGubun='2' AND statusGubun='W' AND useYn='Y';", []);
+                    await executeQuery("TRUNCATE TABLE tb_upload_sales_log;", []);
+                    await executeQuery("UPDATE tb_upload_sales_log SET useYn='N' WHERE useYn='Y';", []);
+                    const uploadSql = `insert into tb_upload_log (dataGubun, calYm, title, contents, fileName, filePath, totalCount, succeseCount, statusGubun, resultMessage, regDate, modDate, useYn, workSawonNo, workIp) values (?, ?, ?, ?, ?, '', ?, 0, 'W', '', sysdate(), SYSDATE(), 'Y', ?, ?)`;
+                    await executeQuery(uploadSql, [body.dataGubun, `${body.year}${body.month}`, body.title, body.contents, fileToStorage.name, insertData.length, userData.sawonCode, ip]);
+                    const rows = await executeQuery("SELECT LAST_INSERT_ID()",[]) as any[];
+                    lastInsertId = rows[0]["LAST_INSERT_ID()"];
+                }
 
                 const valuePlaceholders = insertData.map(row => `(${lastInsertId}, ${row.map(() => '?').join(',')}, sysdate(), SYSDATE())`).join(',');
 
@@ -257,6 +322,98 @@ export async function POST(req: NextRequest) {
                 const query3 = `insert into tb_upload_calculate_etc_log (upchaSeq, calYm, 구분, 내용, 상품구분, 계약구분, 중개사명, 결제일, 매출액, 본인부담금, 담당자, 소속1, 소속2, 관리자메모) value ${valuePlaceholders3}`;
                 await executeQuery(query3, insertData3.flat());
                 
+            } else if(body.dataGubun==="4") {
+                const sheetName2 = workbook.SheetNames[1];
+                const sheet2 = workbook.Sheets[sheetName2];
+                const jsonData2 = XLSX.utils.sheet_to_json(sheet2) as any;
+
+                for (let i = 0; i < jsonData.length; i++) {
+                    insertData.push([
+                        jsonData[i]["상품유형"],
+                        jsonData[i]["상품명"],
+                        jsonData[i]['회원번호'],
+                        jsonData[i]['상호명'],
+                        jsonData[i]['사업자번호'],
+                        jsonData[i]['대표자명'],
+                        jsonData[i]['휴대폰'],
+                        jsonData[i]['시도'],
+                        jsonData[i]['시군구'],
+                        jsonData[i]['읍면동'],
+                        jsonData[i]['상세주소'],
+                        jsonData[i]['계약구분'],
+                        jsonData[i]['결제일'],
+                        jsonData[i]['결제금액'],
+                        jsonData[i]['시작일'],
+                        jsonData[i]['종료일'],
+                        jsonData[i]['담당자'],
+                        jsonData[i]['상태']
+                    ]);
+                }
+                let lastInsertId = 0;
+                if(body.modifyId || body.upchaSeq) {
+                    lastInsertId = body.modifyId ? Number(body.modifyId) : body.upchaSeq ? Number(body.upchaSeq) : 0;
+
+                    let sqlSet = " title = ?,";
+                    const setArray = [body.title];
+                    sqlSet += " contents = ?,";
+                    setArray.push(body.contents);            
+                    sqlSet += " fileName = ?,";
+                    setArray.push(fileToStorage.name);
+                    sqlSet += " totalCount = ?,";
+                    setArray.push(insertData.length.toString());     
+                    sqlSet += " workSawonNo = ?,";
+                    setArray.push(userData.sawonCode);          
+                    sqlSet += " workIp = ? ";
+                    setArray.push(ip);
+                    setArray.push(lastInsertId.toString());
+                    
+                    const query = `update tb_upload_log set ${sqlSet}, modDate = now() where upchaSeq = ?`;
+                    await executeQuery(query, setArray);
+                    await executeQuery("delete from tb_upload_newcontracts_log where upchaSeq = ? ", [lastInsertId]);
+                    await executeQuery("delete from tb_upload_expirecontracts_log where upchaSeq = ? ", [lastInsertId]);
+                } else {
+                    const uploadSql = `insert into tb_upload_log (dataGubun, calYm, title, contents, fileName, filePath, totalCount, succeseCount, statusGubun, resultMessage, regDate, modDate, useYn, workSawonNo, workIp) values (?, ?, ?, ?, ?, '', ?, 0, 'W', '', sysdate(), SYSDATE(), 'Y', ?, ?)`;
+                    await executeQuery(uploadSql, [body.dataGubun, `${body.year}${body.month}`, body.title, body.contents, fileToStorage.name, insertData.length, userData.sawonCode, ip]);
+                    const rows = await executeQuery("SELECT LAST_INSERT_ID()",[]) as any[];
+                    lastInsertId = rows[0]["LAST_INSERT_ID()"];
+                }    
+                
+                const valuePlaceholders = insertData.map(row => `(${lastInsertId}, ${row.map(() => '?').join(',')})`).join(',');
+
+                const query = `insert into tb_upload_newcontracts_log (upchaSeq, 상품유형, 상품명, 회원번호, 상호명, 사업자번호, 대표자명, 휴대폰, 시도, 시군구, 읍면동, 상세주소, 계약구분, 결제일, 결제금액, 시작일, 종료일, 담당자, 상태) value ${valuePlaceholders}`;
+                await executeQuery(query, insertData.flat());
+
+                await executeQuery(`update tb_upload_log set succeseCount = ( select count(*) from tb_upload_sales_log_test where upchaSeq = ?) where upchaSeq = ?`, [lastInsertId, lastInsertId]);
+
+                
+                const insertData2 = [];
+                for(let i = 0; i < jsonData2.length; i++) {
+                    insertData2.push([
+                        jsonData2[i]["상품유형"],
+                        jsonData2[i]["상품명"],
+                        jsonData2[i]['회원번호'],
+                        jsonData2[i]['상호명'],
+                        jsonData2[i]['사업자번호'],
+                        jsonData2[i]['대표자명'],
+                        jsonData2[i]['휴대폰'],
+                        jsonData2[i]['시도'],
+                        jsonData2[i]['시군구'],
+                        jsonData2[i]['읍면동'],
+                        jsonData2[i]['상세주소'],
+                        jsonData2[i]['계약구분'],
+                        jsonData2[i]['결제일'],
+                        jsonData2[i]['결제금액'],
+                        jsonData2[i]['시작일'],
+                        jsonData2[i]['종료일'],
+                        jsonData2[i]['담당자'],
+                        jsonData2[i]['상태']
+                    ]);
+                }
+                const valuePlaceholders2 = insertData2.map(row => `(${lastInsertId}, ${row.map(() => '?').join(',')})`).join(',');
+
+                const query2 = `insert into tb_upload_calculate_sales_log (upchaSeq, 상품유형, 상품명, 회원번호, 상호명, 사업자번호, 대표자명, 휴대폰, 시도, 시군구, 읍면동, 상세주소, 계약구분, 결제일, 결제금액, 시작일, 종료일, 담당자, 상태) value ${valuePlaceholders2}`;
+                await executeQuery(query2, insertData2.flat());
+
             }
 
 
