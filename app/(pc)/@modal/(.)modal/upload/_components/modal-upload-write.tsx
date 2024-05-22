@@ -159,7 +159,7 @@ export default function UploadWrite({ data, me, searchParams }: { data: any, me:
         },
     });
     useEffect(() => {
-        if(modify && dataGubun==="3") {
+        if(modify && (dataGubun==="3" || dataGubun==="4")) {
             checkMutation.mutate();
         }
     }, [dataGubun, year, month]);
@@ -195,7 +195,7 @@ export default function UploadWrite({ data, me, searchParams }: { data: any, me:
                             </ul>
                         </div>
                     </div>
-                    {(dataGubun==="3") && 
+                    {(dataGubun==="3" || dataGubun==="4") && 
                     <>
                     <div className={style.select_box}>
                         <button type="button" aria-selected={openSelectBox==="year"} onClick={() => setOpenSelectBox("year")}>{year}</button>

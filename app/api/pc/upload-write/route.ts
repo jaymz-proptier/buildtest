@@ -383,7 +383,7 @@ export async function POST(req: NextRequest) {
                 const query = `insert into tb_upload_newcontracts_log (upchaSeq, 상품유형, 상품명, 회원번호, 상호명, 사업자번호, 대표자명, 휴대폰, 시도, 시군구, 읍면동, 상세주소, 계약구분, 결제일, 결제금액, 시작일, 종료일, 담당자, 상태) value ${valuePlaceholders}`;
                 await executeQuery(query, insertData.flat());
 
-                await executeQuery(`update tb_upload_log set succeseCount = ( select count(*) from tb_upload_sales_log_test where upchaSeq = ?) where upchaSeq = ?`, [lastInsertId, lastInsertId]);
+                await executeQuery(`update tb_upload_log set succeseCount = ( select count(*) from tb_upload_newcontracts_log where upchaSeq = ?) where upchaSeq = ?`, [lastInsertId, lastInsertId]);
 
                 
                 const insertData2 = [];
@@ -403,15 +403,15 @@ export async function POST(req: NextRequest) {
                         jsonData2[i]['계약구분'],
                         jsonData2[i]['결제일'],
                         jsonData2[i]['결제금액'],
-                        jsonData2[i]['시작일'],
-                        jsonData2[i]['종료일'],
+                        new Date(jsonData[i]['시작일']).toLocaleDateString('en-CA'),
+                        new Date(jsonData[i]['종료일']).toLocaleDateString('en-CA'),
                         jsonData2[i]['담당자'],
                         jsonData2[i]['상태']
                     ]);
                 }
                 const valuePlaceholders2 = insertData2.map(row => `(${lastInsertId}, ${row.map(() => '?').join(',')})`).join(',');
 
-                const query2 = `insert into tb_upload_calculate_sales_log (upchaSeq, 상품유형, 상품명, 회원번호, 상호명, 사업자번호, 대표자명, 휴대폰, 시도, 시군구, 읍면동, 상세주소, 계약구분, 결제일, 결제금액, 시작일, 종료일, 담당자, 상태) value ${valuePlaceholders2}`;
+                const query2 = `insert into tb_data_expirecontracts (upchaSeq, 상품유형, 상품명, 회원번호, 상호명, 사업자번호, 대표자명, 휴대폰, 시도, 시군구, 읍면동, 상세주소, 계약구분, 결제일, 결제금액, 시작일, 종료일, 담당자, 상태) value ${valuePlaceholders2}`;
                 await executeQuery(query2, insertData2.flat());
 
             }
