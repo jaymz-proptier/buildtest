@@ -75,6 +75,44 @@ export async function POST(req: NextRequest) {
                 }
                 
             } else if(body.dataGubun==="2") {
+                if(body.status==="Y") {
+
+                    await executeQuery("truncate table tb_data_sales;", []);
+                    
+                    const query = `insert into tb_data_sales (upchaSeq, uploadSeq, 상품유형, 상품명, 회원번호, 상호명, 사업자번호, 대표자명, 휴대폰, 시도, 시군구, 읍면동, 상세주소, 계약구분, 결제일, 결제금액, 시작일, 종료일, 환불일, 환불금액, 담당자, 상태, 계약단지, regDate, modDate, useYn, sawonCode)
+                    select b.upchaSeq, b.uploadSeq,
+                        b.상품유형, b.상품명, 
+                        b.회원번호, b.상호명, b.사업자번호, b.대표자명, b.휴대폰, 
+                        b.시도, b.시군구, b.읍면동, b.상세주소, 
+                        b.계약구분, b.결제일, b.결제금액, b.시작일, b.종료일, b.환불일, b.환불금액, 
+                        b.담당자, b.상태, b.계약단지, 
+                        SYSDATE() '등록일', 
+                        SYSDATE() '수정일',
+                        'Y' AS '사용여부',
+                        ifnull((select s1.sawonCode from tb_pptn_sawon s1 where s1.sosok='컨설턴트' and s1.name=b.담당자 and s1.isStatus='재직' and s1.useYn='Y' limit 1),0) as '사원번호'
+                    from tb_upload_log a
+                        inner join tb_upload_sales_log b ON (b.upchaSeq=a.upchaSeq and b.useYn='Y')
+                    where  a.dataGubun='2' and a.statusGubun='W' and a.useYn='Y' and not exists (select 'Y' from tb_data_sales where upchaSeq=a.upchaSeq and uploadSeq=b.uploadSeq and useYn='Y')`;
+                    await executeQuery(query, [body.upchaSeq]);
+                    
+                    await executeQuery(`UPDATE tb_upload_log
+                    SET    statusGubun ='Y',
+                        totalCount  =(SELECT COUNT(uploadSeq) FROM tb_upload_sales_log s1 WHERE s1.upchaSeq=upchaSeq AND s1.useYn='Y'),
+                        succeseCount=(SELECT COUNT(uploadSeq) FROM tb_data_sales s2       WHERE s2.upchaSeq=upchaSeq AND s2.useYn='Y'),
+                        modDate     =SYSDATE()
+                    WHERE  upchaSeq = ?
+                    AND    dataGubun='2'
+                    AND    statusGubun='W'
+                    AND    useYn='Y'`, [body.upchaSeq]);
+
+                } else {
+                    await executeQuery(`UPDATE tb_upload_log
+                    SET    statusGubun = ?,
+                        modDate     =SYSDATE()
+                    WHERE  upchaSeq = ?
+                    AND    dataGubun='2'
+                    AND    useYn='Y'`, [body.status, body.upchaSeq]);
+                }
 
             } else if(body.dataGubun==="3") {
                 let centerName = "";

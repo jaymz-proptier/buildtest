@@ -98,10 +98,13 @@ export default function UploadWrite({ data, me, searchParams }: { data: any, me:
             formData.append("status", status);
             return postStatus(formData);
         },
-        async onSuccess() {   
+        async onSuccess(data: any) {   
             //queryClient.invalidateQueries({ queryKey: ["uploadLoad", data.upchaSeq, status] }); 
-            queryClient.invalidateQueries({ queryKey: ["posts", "search"] });
-            router.back();
+            if(data.status==="Fail") alert(`오류: ${data.message.sqlMessage}`);
+            else {
+                queryClient.invalidateQueries({ queryKey: ["posts", "search"] });
+                router.back();
+            }
         },
     });
     const handleStatus = useCallback(async (e: any) => {
