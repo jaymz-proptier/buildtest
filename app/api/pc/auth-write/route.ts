@@ -24,7 +24,11 @@ export async function POST(req: NextRequest) {
             sqlSet += " jobCode = ?,";
             setArray.push(body.jobCode);
             sqlSet += " swId = ?,";
-            setArray.push(body.swId);            
+            setArray.push(body.swId);   
+            if(body.swPwd) {
+                sqlSet += " swPwd = SHA2(CONCAT(CONCAT('*', UPPER(SHA1(UNHEX(SHA1(?))))),'ribo20240408!@'),256),";
+                setArray.push(body.swPwd);
+            }         
             //sqlSet += " swPwd = SHA2(CONCAT(CONCAT('*', UPPER(SHA1(UNHEX(SHA1(?))))),'ribo20240408!@'),256),";
             //setArray.push(body.swPwd);     
             setArray.push(body.sawonCode);
