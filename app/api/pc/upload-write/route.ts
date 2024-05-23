@@ -369,8 +369,8 @@ export async function POST(req: NextRequest) {
                     
                     const query = `update tb_upload_log set ${sqlSet}, modDate = now() where upchaSeq = ?`;
                     await executeQuery(query, setArray);
-                    await executeQuery("delete from tb_upload_newcontracts_log where upchaSeq = ? ", [lastInsertId]);
-                    await executeQuery("delete from tb_upload_expirecontracts_log where upchaSeq = ? ", [lastInsertId]);
+                    await executeQuery("delete from tb_upload_newcontracts_log where upchaSeq = ? ", [lastInsertId.toString()]);
+                    await executeQuery("delete from tb_upload_expirecontracts_log where upchaSeq = ? ", [lastInsertId.toString()]);
                 } else {
                     const uploadSql = `insert into tb_upload_log (dataGubun, calYm, title, contents, fileName, filePath, totalCount, succeseCount, statusGubun, resultMessage, regDate, modDate, useYn, workSawonNo, workIp) values (?, ?, ?, ?, ?, '', ?, 0, 'W', '', sysdate(), SYSDATE(), 'Y', ?, ?)`;
                     await executeQuery(uploadSql, [body.dataGubun, `${body.year}${body.month}`, body.title, body.contents, fileToStorage.name, insertData.length, userData.sawonCode, ip]);
