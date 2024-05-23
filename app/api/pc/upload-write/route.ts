@@ -411,7 +411,7 @@ export async function POST(req: NextRequest) {
                 }
                 const valuePlaceholders2 = insertData2.map(row => `(${lastInsertId}, ${row.map(() => '?').join(',')})`).join(',');
 
-                const query2 = `insert into tb_data_expirecontracts (upchaSeq, 상품유형, 상품명, 회원번호, 상호명, 사업자번호, 대표자명, 휴대폰, 시도, 시군구, 읍면동, 상세주소, 계약구분, 결제일, 결제금액, 시작일, 종료일, 담당자, 상태) value ${valuePlaceholders2}`;
+                const query2 = `insert into tb_upload_expirecontracts_log (upchaSeq, 상품유형, 상품명, 회원번호, 상호명, 사업자번호, 대표자명, 휴대폰, 시도, 시군구, 읍면동, 상세주소, 계약구분, 결제일, 결제금액, 시작일, 종료일, 담당자, 상태) value ${valuePlaceholders2}`;
                 await executeQuery(query2, insertData2.flat());
 
             }
