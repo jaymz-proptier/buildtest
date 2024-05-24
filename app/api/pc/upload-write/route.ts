@@ -133,6 +133,7 @@ export async function POST(req: NextRequest) {
                         jsonData[i]['상태']
                     ]);
                 }
+                console.log(jsonData);
                 /* await executeQuery("UPDATE tb_upload_log SET statusGubun='D', useYn='N' WHERE dataGubun='2' AND statusGubun='W' AND useYn='Y';", []);
                 await executeQuery("TRUNCATE TABLE tb_upload_sales_log;", []);
                 await executeQuery("UPDATE tb_upload_sales_log SET useYn='N' WHERE useYn='Y';", []);
@@ -177,7 +178,6 @@ export async function POST(req: NextRequest) {
                 const valuePlaceholders = insertData.map(row => `(${lastInsertId}, ${row.map(() => '?').join(',')})`).join(',');
 
                 const query = `INSERT INTO tb_upload_sales_log (upchaSeq, 상품유형, 상품명, 회원번호, 상호명, 사업자번호, 대표자명, 휴대폰, 시도, 시군구, 읍면동, 상세주소, 계약구분, 결제일, 결제금액, 시작일, 종료일, 환불일, 환불금액, 담당자, 상태) VALUES ${valuePlaceholders}`;
-                console.log(valuePlaceholders);
                 await executeQuery(query, insertData.flat());
 
                 await executeQuery(`update tb_upload_log set succeseCount = ( select count(*) from tb_upload_sales_log_test where upchaSeq = ?) where upchaSeq = ?`, [lastInsertId, lastInsertId]);
