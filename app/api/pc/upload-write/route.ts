@@ -128,7 +128,7 @@ export async function POST(req: NextRequest) {
                         new Date(jsonData[i]['시작일']).toLocaleDateString('en-CA'),
                         new Date(jsonData[i]['종료일']).toLocaleDateString('en-CA'),
                         jsonData[i]['환불일'] ? new Date(jsonData[i]['환불일']).toLocaleDateString('en-CA') : '',
-                        jsonData[i]['환불금액'],
+                        jsonData[i]['환불금액'] || 0,
                         jsonData[i]['담당자'],
                         jsonData[i]['상태']
                     ]);
