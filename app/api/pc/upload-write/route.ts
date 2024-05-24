@@ -422,7 +422,7 @@ export async function POST(req: NextRequest) {
 
             return NextResponse.json({ status: "OK", message: "정상적으로 등록했습니다." });
         } catch (error: any) {
-            console.error('데이터 업로드 오류:', error.sqlMessage);
+            console.error('데이터 업로드 오류:', error.sqlMessage ? error.sqlMessage : error);
             return NextResponse.json({ status: "Fail", message: error });
         }
   } else {
