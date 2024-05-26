@@ -11,17 +11,23 @@ interface Item {
     message: string
 }
 export default function AuthWrite({ data, me, searchParams }: { data: any, me: any, searchParams?: any }) {
+
+    const sosokCode = [
+        { code: "직원", title: "직원" },
+        { code: "컨설턴트", title: "컨설턴트" },
+    ];
     
-    const {data: jojikCenter, isLoading, error} = useQuery<Item, Object, Item, [_1: string]>({
-        queryKey: ['jojikCenter'],
+    const [sosok, setSosok] = useState(data?.sosok || "컨설턴트");  
+    const {data: jojikCenter, isLoading, error} = useQuery<Item, Object, Item, [_1: string, _2: string]>({
+        queryKey: ['jojikCenter', sosok],
         queryFn: getJojikCenter,
         staleTime: 60 * 1000, // fresh -> stale, 5분이라는 기준
         gcTime: 300 * 1000,
     }) as any;
 
     
-    const {data: jobCodeList} = useQuery<Item, Object, Item, [_1: string]>({
-        queryKey: ['jobCode'],
+    const {data: jobCodeList} = useQuery<Item, Object, Item, [_1: string, _2: string]>({
+        queryKey: ['jobCode', sosok],
         queryFn: getJobCode,
         staleTime: 60 * 1000, // fresh -> stale, 5분이라는 기준
         gcTime: 300 * 1000,
@@ -54,6 +60,7 @@ export default function AuthWrite({ data, me, searchParams }: { data: any, me: a
             e.preventDefault();
             const formData = new FormData();
             formData.append("sawonCode", data?.sawonCode || "");
+            formData.append("sosok", sosok || "");
             formData.append("swId", swId || "");
             formData.append("swPwd", swPwd);
             formData.append("jojikCode", jojikCode);
@@ -98,10 +105,13 @@ export default function AuthWrite({ data, me, searchParams }: { data: any, me: a
     }, [jojikCenter]);
     useEffect(() => {
         if(!isCenterPartDataLoading && centerPartData?.data) {
-            if(centerPartData?.data.length > 0 ) setPartCode(centerPartData?.data);
+            //if(centerPartData?.data.length > 0 ) {
+                setPartCode(centerPartData?.data);
+                //console.log(centerPartData?.data);
+            //}
             setJojikCode(jojikCode ? jojikCode : centerPartData?.data[0]?.code);
         }
-    }, [centerCode, isCenterPartDataLoading, centerPartData]);
+    }, [sosok, centerCode, isCenterPartDataLoading, centerPartData]);
     useEffect(() => {
         setJobCode(data?.jobCode ? Number(data.jobCode) : jobCodeList?.data[0]?.code);
     }, [jobCodeList]);
@@ -127,6 +137,17 @@ export default function AuthWrite({ data, me, searchParams }: { data: any, me: a
             <div className={style.input_div}>
                 <label className={style.input_label}>구분</label>
                 <span ref={selectBoxRef}>
+                    
+                    <div className={style.select_box}>
+                        <button type="button" aria-selected={openSelectBox==="sosok"} onClick={() => setOpenSelectBox(openSelectBox==="sosok" ? null : "sosok")}>{sosokCode?.find((item: any) => item.code===sosok)?.title}</button>
+                        <div className={style.select_box_list}>
+                            <ul>
+                                {sosokCode.map((item: any, index: number) => (
+                                <li key={index} onClick={() => { setOpenSelectBox(null); setSosok(item.code); }}>{item.title}</li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
                     <div className={style.select_box}>
                         <button type="button" aria-selected={openSelectBox==="jojikCenter"} onClick={() => setOpenSelectBox(openSelectBox==="jojikCenter" ? null : "jojikCenter")}>{jojikCenter?.data.find((item: any) => item.code===centerCode)?.title}</button>
                         <div className={style.select_box_list}>

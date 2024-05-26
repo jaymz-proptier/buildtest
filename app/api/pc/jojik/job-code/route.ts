@@ -5,8 +5,9 @@ export async function GET(req: NextRequest) {
 
     try {
         
-        const sql = `select jobCode as code, jobName as title from tb_pptn_jobcode where useYn = 'Y' and jobName > ''`;
-        const result = await executeQuery(sql, []) as unknown[];
+        const { searchParams } = new URL(req.url);
+        const sql = `select jobCode as code, jobName as title from tb_pptn_jobcode where useYn = 'Y' and sosok = ? and jobName > ''`;
+        const result = await executeQuery(sql, [searchParams.get("sosok")]) as unknown[];
         
         return NextResponse.json({ status: "OK", data: result });
 
