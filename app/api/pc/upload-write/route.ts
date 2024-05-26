@@ -38,7 +38,7 @@ export async function POST(req: NextRequest) {
                         //jsonData[i]["이실장회원번호"],
                         jsonData[i]['회원번호'],
                         jsonData[i]['상호명'],
-                        jsonData[i]['사업자번호'] ? jsonData[i]['사업자번호'].toString().substring(0, 10) : jsonData[i]['사업자번호'],
+                        jsonData[i]['사업자번호'],
                         jsonData[i]['대표자명'],
                         jsonData[i]['휴대폰'],
                         jsonData[i]['시도'],
@@ -58,7 +58,7 @@ export async function POST(req: NextRequest) {
                         jsonData[i]['상태'],
                         jsonData[i]['계약전송수'],
                         jsonData[i]['전송수']
-                        //jsonData[i]['계약상품']
+                        //jsonData[i]['계약상품'] upchaSeq, 상품유형, 상품명, 회원번호, 상호명, 사업자번호, 대표자명, 휴대폰, 시도, 시군구, 읍면동, 상세주소, 계약구분, 결제일, 시작일, 종료일, 담당자, 상태, 계약전송수, 전송수
                     ]);
                 }
                 /* await executeQuery("UPDATE tb_upload_log SET statusGubun='D', useYn='N' WHERE dataGubun='1' AND statusGubun='W' AND useYn='Y';", []);
@@ -106,7 +106,7 @@ export async function POST(req: NextRequest) {
                 const query = `INSERT INTO tb_upload_member_log (upchaSeq, 상품유형, 상품명, 회원번호, 상호명, 사업자번호, 대표자명, 휴대폰, 시도, 시군구, 읍면동, 상세주소, 계약구분, 결제일, 시작일, 종료일, 담당자, 상태, 계약전송수, 전송수) VALUES ${valuePlaceholders}`;
                 await executeQuery(query, insertData.flat());
                 
-                await executeQuery(`update tb_upload_log set succeseCount = ( select count(*) from tb_upload_member_log_test where upchaSeq = ?) where upchaSeq = ?`, [lastInsertId, lastInsertId]);
+                await executeQuery(`update tb_upload_log set succeseCount = ( select count(*) from tb_upload_member_log where upchaSeq = ?) where upchaSeq = ?`, [lastInsertId, lastInsertId]);
                 
             } else if(body.dataGubun==="2") {
                 for (let i = 0; i < jsonData.length; i++) {
@@ -115,7 +115,7 @@ export async function POST(req: NextRequest) {
                         jsonData[i]["상품명"],
                         jsonData[i]['회원번호'],
                         jsonData[i]['상호명'],
-                        jsonData[i]['사업자번호'] ? jsonData[i]['사업자번호'].toString().substring(0, 10) : jsonData[i]['사업자번호'],
+                        jsonData[i]['사업자번호'],
                         jsonData[i]['대표자명'],
                         jsonData[i]['휴대폰'],
                         jsonData[i]['시도'],
@@ -335,7 +335,7 @@ export async function POST(req: NextRequest) {
                         jsonData[i]["상품명"],
                         jsonData[i]['회원번호'],
                         jsonData[i]['상호명'],
-                        jsonData[i]['사업자번호'] ? jsonData[i]['사업자번호'].toString().substring(0, 10) : jsonData[i]['사업자번호'],
+                        jsonData[i]['사업자번호'],
                         jsonData[i]['대표자명'],
                         jsonData[i]['휴대폰'],
                         jsonData[i]['시도'],
@@ -395,7 +395,7 @@ export async function POST(req: NextRequest) {
                         jsonData2[i]["상품명"],
                         jsonData2[i]['회원번호'],
                         jsonData2[i]['상호명'],
-                        jsonData2[i]['사업자번호'] ? jsonData[i]['사업자번호'].toString().substring(0, 10) : jsonData[i]['사업자번호'],
+                        jsonData2[i]['사업자번호'],
                         jsonData2[i]['대표자명'],
                         jsonData2[i]['휴대폰'],
                         jsonData2[i]['시도'],
