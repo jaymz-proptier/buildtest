@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
         const token = process.env.AUTH_SECRET ? jwt.verify(getToken, process.env.AUTH_SECRET) : "";
         const userData = token as jwt.JwtPayload;
         
-        const sql = `select 상품구분, 상품명, 계약단지, 계약구분, 중개사명, 결제일자, 매출액, 유치수수료, 관리수수료, 추가수수료, 결제수수료, 쿠폰원가, 정산수수료, 담당자, 소속1, 소속2, 관리자메모 from tb_data_calculate_sales where sawonCode = ? and useYn = 'Y'`;
+        const sql = `select 상품유형, 상품명, 회원번호, 상호명, 사업자번호, 대표자명, 휴대폰, 시도, 시군구, 읍면동, 상세주소, 계약구분, 결제일, 결제금액, 시작일, 종료일, 담당자, 상태, cpName as '기존CP' from tb_data_newcontracts where sawonCode = ? and useYn = 'Y'`;
         const result = await executeQuery(sql, [userData.sawonCode]) as any[];
         return NextResponse.json({ status: "OK", data: result });
 
