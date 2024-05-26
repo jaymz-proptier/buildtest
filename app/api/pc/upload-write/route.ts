@@ -319,6 +319,7 @@ export async function POST(req: NextRequest) {
                         jsonData3[i]["관리자메모"]
                     ]);
                 }
+                console.log(jsonData3[8]);
                 const valuePlaceholders3 = insertData3.map(row => `(${lastInsertId}, '${body.year}${body.month}', ${row.map(() => '?').join(',')})`).join(',');
 
                 const query3 = `insert into tb_upload_calculate_etc_log (upchaSeq, calYm, 구분, 내용, 상품구분, 계약구분, 중개사명, 결제일, 매출액, 본인부담금, 담당자, 소속1, 소속2, 관리자메모) value ${valuePlaceholders3}`;
