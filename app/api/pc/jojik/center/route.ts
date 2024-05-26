@@ -3,8 +3,8 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
 
+    const { searchParams } = new URL(req.url);
     try {
-        const { searchParams } = new URL(req.url);
         const sql = `select distinct centerName as title, centerCode as code from tb_pptn_jojikcode where useYn = 'Y' order by centerName`;
         const result = await executeQuery(sql, []) as unknown[];
         

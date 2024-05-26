@@ -18,8 +18,8 @@ export default function AuthWrite({ data, me, searchParams }: { data: any, me: a
     ];
     
     const [sosok, setSosok] = useState(data?.sosok || "컨설턴트");  
-    const {data: jojikCenter, isLoading, error} = useQuery<Item, Object, Item, [_1: string]>({
-        queryKey: ['jojikCenter'],
+    const {data: jojikCenter, isLoading, error} = useQuery<Item, Object, Item, [_1: string, _2: string]>({
+        queryKey: ['jojikCenter', sosok ? sosok : "컨설턴트"],
         queryFn: getJojikCenter,
         staleTime: 60 * 1000, // fresh -> stale, 5분이라는 기준
         gcTime: 300 * 1000,

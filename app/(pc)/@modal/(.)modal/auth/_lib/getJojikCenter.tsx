@@ -2,11 +2,11 @@ import {QueryFunction} from "@tanstack/query-core";
 interface Item {
   bnSeq: number;
 }
-export const getJojikCenter = async ({ queryKey }: { queryKey: [_1: string]}) => {
-  const [_1] = queryKey;
-  const res = await fetch(`/api/pc/jojik/center}`, {
+export const getJojikCenter = async ({ queryKey }: { queryKey: [_1: string, _2: string ]}) => {
+  const [_1, _2] = queryKey;
+  const res = await fetch(`/api/pc/jojik/center?sosok=${queryKey[1]}`, {
     next: {
-      tags: ["jojikCenter"],
+      tags: ["jojikCenter", queryKey[1]],
     },
     credentials: 'include',
   });
