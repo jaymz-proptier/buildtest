@@ -18,8 +18,8 @@ export default function AuthWrite({ data, me, searchParams }: { data: any, me: a
     ];
     
     const [sosok, setSosok] = useState(data?.sosok || "컨설턴트");  
-    const {data: jojikCenter, isLoading, error} = useQuery<Item, Object, Item, [_1: string, _2: string]>({
-        queryKey: ['jojikCenter', sosok ? sosok : "컨설턴트"],
+    const {data: jojikCenter, isLoading, error} = useQuery<Item, Object, Item, [_1: string]>({
+        queryKey: ['jojikCenter'],
         queryFn: getJojikCenter,
         staleTime: 60 * 1000, // fresh -> stale, 5분이라는 기준
         gcTime: 300 * 1000,
@@ -102,7 +102,7 @@ export default function AuthWrite({ data, me, searchParams }: { data: any, me: a
     useEffect(() => {
         setCenterCode(data?.centerCode ? data.centerCode : jojikCenter?.data[0]?.code);
         setPartCode(centerPartData?.data);
-    }, [sosok, jojikCenter]);
+    }, [jojikCenter]);
     useEffect(() => {
         if(!isCenterPartDataLoading && centerPartData?.data) {
             //if(centerPartData?.data.length > 0 ) {
