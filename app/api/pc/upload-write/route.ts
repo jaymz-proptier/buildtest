@@ -282,20 +282,19 @@ export async function POST(req: NextRequest) {
                         jsonData2[i]["계약구분"],
                         jsonData2[i]["중개사명"],
                         jsonData2[i]["결제일자"],
-                        jsonData2[i]["매출액"] || 0,
-                        jsonData2[i]["유치수수료"] || 0,
-                        jsonData2[i]["관리수수료"] || 0,
-                        jsonData2[i]["추가수수료"] || 0,
-                        jsonData2[i]["결제수수료"] || 0,
-                        jsonData2[i]["쿠폰원가"] || 0,
-                        jsonData2[i]["정산수수료"] || 0,
+                        jsonData2[i]["매출액"] ? jsonData2[i]["매출액"] : jsonData2[i][" 매출액 "] ? jsonData2[i][" 매출액 "] : 0,
+                        jsonData2[i]["유치수수료"] ? jsonData2[i]["유치수수료"] : jsonData2[i][" 유치수수료 "] ? jsonData2[i][" 유치수수료 "] : 0,
+                        jsonData2[i]["관리수수료"] ? jsonData2[i]["관리수수료"] : jsonData2[i][" 관리수수료 "] ? jsonData2[i][" 관리수수료 "] : 0,
+                        jsonData2[i]["추가수수료"] ? jsonData2[i]["추가수수료"] : jsonData2[i][" 추가수수료 "] ? jsonData2[i][" 추가수수료 "] : 0,
+                        jsonData2[i]["결제수수료"] ? jsonData2[i]["결제수수료"] : jsonData2[i][" 결제수수료 "] ? jsonData2[i][" 결제수수료 "] : 0,
+                        jsonData2[i]["쿠폰원가"] ? jsonData2[i]["쿠폰원가"] : jsonData2[i][" 쿠폰원가 "] ? jsonData2[i][" 쿠폰원가 "] : 0,
+                        jsonData2[i]["정산수수료"] ? jsonData2[i]["정산수수료"] : jsonData2[i][" 정산수수료 "] ? jsonData2[i][" 정산수수료 "] : 0,
                         jsonData2[i]["담당자"],
                         jsonData2[i]["소속1"],
                         jsonData2[i]["소속2"],
                         jsonData2[i]["관리자메모"]
                     ]);
                 }
-                console.log(jsonData2[10]);
                 const valuePlaceholders2 = insertData2.map(row => `(${lastInsertId}, '${body.year}${body.month}', ${row.map(() => '?').join(',')})`).join(',');
 
                 const query2 = `insert into tb_upload_calculate_sales_log (upchaSeq, calYm, 상품구분, 상품명, 계약단지, 계약구분, 중개사명, 결제일자, 매출액, 유치수수료, 관리수수료, 추가수수료, 결제수수료, 쿠폰원가, 정산수수료, 담당자, 소속1, 소속2, 관리자메모) value ${valuePlaceholders2}`;
@@ -312,15 +311,14 @@ export async function POST(req: NextRequest) {
                         jsonData3[i]["계약구분"],
                         jsonData3[i]["중개사명"],
                         jsonData3[i]["결제일"],
-                        jsonData3[i]["매출액"] || 0,
-                        jsonData3[i]["본인부담금"] || 0,
+                        jsonData3[i]["매출액"] ? jsonData2[i]["매출액"] : jsonData2[i][" 매출액 "] ? jsonData2[i][" 매출액 "] : 0,
+                        jsonData3[i]["본인부담금"] ? jsonData2[i]["본인부담금"] : jsonData2[i][" 본인부담금 "] ? jsonData2[i][" 본인부담금 "] : 0,
                         jsonData3[i]["담당자"],
                         jsonData3[i]["소속1"],
                         jsonData3[i]["소속2"],
                         jsonData3[i]["관리자메모"]
                     ]);
                 }
-                console.log(jsonData3[10]);
                 const valuePlaceholders3 = insertData3.map(row => `(${lastInsertId}, '${body.year}${body.month}', ${row.map(() => '?').join(',')})`).join(',');
 
                 const query3 = `insert into tb_upload_calculate_etc_log (upchaSeq, calYm, 구분, 내용, 상품구분, 계약구분, 중개사명, 결제일, 매출액, 본인부담금, 담당자, 소속1, 소속2, 관리자메모) value ${valuePlaceholders3}`;
