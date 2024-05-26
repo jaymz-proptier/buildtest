@@ -148,7 +148,7 @@ export default function AuthWrite({ data, me, searchParams }: { data: any, me: a
                             </ul>
                         </div>
                     </div>
-                    <div className={style.select_box}>
+                    {jojikCenter && <div className={style.select_box}>
                         <button type="button" aria-selected={openSelectBox==="jojikCenter"} onClick={() => setOpenSelectBox(openSelectBox==="jojikCenter" ? null : "jojikCenter")}>{jojikCenter?.data.find((item: any) => item.code===centerCode)?.title}</button>
                         <div className={style.select_box_list}>
                             <ul>
@@ -157,7 +157,7 @@ export default function AuthWrite({ data, me, searchParams }: { data: any, me: a
                                 ))}
                             </ul>
                         </div>
-                    </div>
+                    </div>}
                     {partCode && partCode.length > 0 && 
                     <div className={style.select_box}>
                         <button type="button" aria-selected={openSelectBox==="jojikCode"} onClick={() => setOpenSelectBox(openSelectBox==="jojikCode" ? null : "jojikCode")}>{partCode?.find((item: any) => item.code===jojikCode)?.title || "-"}</button>
@@ -170,7 +170,7 @@ export default function AuthWrite({ data, me, searchParams }: { data: any, me: a
                             </ul>
                         </div>
                     </div>}
-                    <div className={style.select_box}>
+                    {jobCodeList && <div className={style.select_box}>
                         <button type="button" aria-selected={openSelectBox==="jobCode"} onClick={() => setOpenSelectBox(openSelectBox==="jobCode" ? null : "jobCode")}>{jobCodeList?.data.find((item: any) => item.code===jobCode)?.title || "-"}</button>
                         <div className={style.select_box_list}>
                             <ul>
@@ -179,7 +179,7 @@ export default function AuthWrite({ data, me, searchParams }: { data: any, me: a
                                 ))}
                             </ul>
                         </div>
-                    </div>
+                    </div>}
                 </span>
             </div>
             <div className={style.input_div}>
