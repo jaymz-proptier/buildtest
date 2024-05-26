@@ -31,15 +31,17 @@ export default function SettlementMainPayment({ sawonCode }: { sawonCode: number
         staleTime: 60 * 1000, // fresh -> stale, 5분이라는 기준
         gcTime: 300 * 1000,
     });
-    const { data: sheet1 } = useQuery<Item, Object, Item, [_1: string, _2:string, _3: number, _4: string]>({
-        queryKey: ['member', 'settlement', sawonCode, (year +""+ month)],
+    const { data: sheet1 } = useQuery<Item, Object, Item, [_1: string, _2:string, _3: string, _4: string]>({
+        queryKey: ["member", "saveAs", "sheet1", (year +""+ month)],
         queryFn: getExcelSheet1,
         staleTime: 60 * 1000, // fresh -> stale, 5분이라는 기준
         gcTime: 300 * 1000,
     });
+
+    console.log(sheet1);
     
-    const { data: sheet2 } = useQuery<Item, Object, Item, [_1: string, _2:string, _3: number, _4: string]>({
-        queryKey: ['member', 'settlement', sawonCode, (year +""+ month)],
+    const { data: sheet2 } = useQuery<Item, Object, Item, [_1: string, _2:string, _3: string, _4: string]>({
+        queryKey: ["member", "saveAs", "sheet2", (year +""+ month)],
         queryFn: getExcelSheet2,
         staleTime: 60 * 1000, // fresh -> stale, 5분이라는 기준
         gcTime: 300 * 1000,

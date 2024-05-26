@@ -12,8 +12,8 @@ export async function GET(req: NextRequest) {
         const token = process.env.AUTH_SECRET ? jwt.verify(getToken, process.env.AUTH_SECRET) : "";
         const userData = token as jwt.JwtPayload;
         
-        const sql = `select 상품유형, 상품명, 회원번호, 상호명, 사업자번호, 대표자명, 휴대폰, 시도, 시군구, 읍면동, 상세주소, 계약구분, 결제일, 결제금액, 시작일, 종료일, 담당자, 상태, expireInfo as '탈락사유', cpName as '이동CP' from  tb_data_expirecontracts where sawonCode = ? and useYn = 'Y'`;
-        const result = await executeQuery(sql, [userData.sawonCode]) as any[];
+        const sql = `select a.상품유형, a.상품명, a.회원번호, a.상호명, a.사업자번호, a.대표자명, a.휴대폰, a.시도, a.시군구, a.읍면동, a.상세주소, a.계약구분, a.결제일, a.결제금액, a.시작일, a.종료일, a.담당자, a.상태, a.expireInfo as '탈락사유', a.cpName as '이동CP' from  tb_data_expirecontracts a where a.sawonCode = ? and a.upchaSeq = (select upchaSeq from tb_upload_log where dataGubun = '4' and statusGubun = 'Y' and useYn = 'Y' and calYm = ? order by upchaSeq limit 1) and a.useYn = 'Y'`;
+        const result = await executeQuery(sql, [userData.sawonCode, searchParams.get("calYm")]) as any[];
         return NextResponse.json({ status: "OK", data: result });
 
     } catch (error) {
