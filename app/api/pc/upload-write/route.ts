@@ -310,7 +310,7 @@ export async function POST(req: NextRequest) {
                         jsonData3[i]["상품구분"],
                         jsonData3[i]["계약구분"],
                         jsonData3[i]["중개사명"],
-                        jsonData3[i]["결제일"],
+                        jsonData3[i]["결제일"] ? jsonData3[i]["결제일"] : jsonData3[i][" 결제일 "],
                         jsonData3[i]["매출액"] ? jsonData2[i]["매출액"] : jsonData2[i][" 매출액 "] ? jsonData2[i][" 매출액 "] : 0,
                         jsonData3[i]["본인부담금"] ? jsonData2[i]["본인부담금"] : jsonData2[i][" 본인부담금 "] ? jsonData2[i][" 본인부담금 "] : 0,
                         jsonData3[i]["담당자"],
