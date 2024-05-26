@@ -4,7 +4,7 @@ interface Item {
 }
 export const getJojikCenter = async ({ queryKey }: { queryKey: [_1: string, _2: string ]}) => {
   const [_1, _2] = queryKey;
-  const res = await fetch(`/api/pc/jojik/center?sosok=${queryKey[1]}`, {
+  const res = await fetch(`/api/pc/jojik/center?sosok=${queryKey[1] ? queryKey[1] : "컨설턴트"}`, {
     next: {
       tags: ["jojikCenter", queryKey[1]],
     },
