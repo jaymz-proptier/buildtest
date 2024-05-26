@@ -102,7 +102,7 @@ export default function AuthWrite({ data, me, searchParams }: { data: any, me: a
     useEffect(() => {
         setCenterCode(data?.centerCode ? data.centerCode : jojikCenter?.data[0]?.code);
         setPartCode(centerPartData?.data);
-    }, [jojikCenter]);
+    }, [sosok, jojikCenter]);
     useEffect(() => {
         if(!isCenterPartDataLoading && centerPartData?.data) {
             //if(centerPartData?.data.length > 0 ) {
