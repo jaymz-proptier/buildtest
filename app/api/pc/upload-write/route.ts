@@ -133,7 +133,7 @@ export async function POST(req: NextRequest) {
                         jsonData[i]['상태']
                     ]);
                 }
-                console.log(jsonData[10]);
+                console.log(jsonData[10],jsonData[10]['결제금액'], jsonData[10][' 결제금액']);
                 /* await executeQuery("UPDATE tb_upload_log SET statusGubun='D', useYn='N' WHERE dataGubun='2' AND statusGubun='W' AND useYn='Y';", []);
                 await executeQuery("TRUNCATE TABLE tb_upload_sales_log;", []);
                 await executeQuery("UPDATE tb_upload_sales_log SET useYn='N' WHERE useYn='Y';", []);
