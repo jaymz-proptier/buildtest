@@ -186,7 +186,7 @@ export async function POST(req: NextRequest) {
                 const sheetName2 = workbook.SheetNames[1];
                 const sheet2 = workbook.Sheets[sheetName2];
                 const jsonData2 = XLSX.utils.sheet_to_json(sheet2) as any;
-                const sheetName3 = workbook.SheetNames[1];
+                const sheetName3 = workbook.SheetNames[2];
                 const sheet3 = workbook.Sheets[sheetName3];
                 const jsonData3 = XLSX.utils.sheet_to_json(sheet3) as any;
 
@@ -311,8 +311,8 @@ export async function POST(req: NextRequest) {
                         jsonData3[i]["계약구분"],
                         jsonData3[i]["중개사명"],
                         jsonData3[i]["결제일"] ? jsonData3[i]["결제일"] : jsonData3[i][" 결제일 "],
-                        jsonData3[i]["매출액"] ? jsonData2[i]["매출액"] : jsonData2[i][" 매출액 "] ? jsonData2[i][" 매출액 "] : 0,
-                        jsonData3[i]["본인부담금"] ? jsonData2[i]["본인부담금"] : jsonData2[i][" 본인부담금 "] ? jsonData2[i][" 본인부담금 "] : 0,
+                        jsonData3[i]["매출액"] ? jsonData3[i]["매출액"] : jsonData3[i][" 매출액 "] ? jsonData3[i][" 매출액 "] : 0,
+                        jsonData3[i]["본인부담금"] ? jsonData3[i]["본인부담금"] : jsonData3[i][" 본인부담금 "] ? jsonData3[i][" 본인부담금 "] : 0,
                         jsonData3[i]["담당자"],
                         jsonData3[i]["소속1"],
                         jsonData3[i]["소속2"],
