@@ -5,8 +5,8 @@ export async function GET(req: NextRequest) {
 
     try {
         const { searchParams } = new URL(req.url);
-        const sql = `select distinct centerName as title, centerCode as code from tb_pptn_jojikcode where useYn = 'Y' and sosok = ? order by centerName`;
-        const result = await executeQuery(sql, [searchParams.get("sosok")]) as unknown[];
+        const sql = `select distinct centerName as title, centerCode as code from tb_pptn_jojikcode where useYn = 'Y' order by centerName`;
+        const result = await executeQuery(sql, []) as unknown[];
         
         return NextResponse.json({ status: "OK", data: result });
 
