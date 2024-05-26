@@ -148,7 +148,7 @@ export default function AuthWrite({ data, me, searchParams }: { data: any, me: a
                             </ul>
                         </div>
                     </div>
-                    {jojikCenter && <div className={style.select_box}>
+                    {jojikCenter && jojikCenter?.data.length > 0 && <div className={style.select_box}>
                         <button type="button" aria-selected={openSelectBox==="jojikCenter"} onClick={() => setOpenSelectBox(openSelectBox==="jojikCenter" ? null : "jojikCenter")}>{jojikCenter?.data.find((item: any) => item.code===centerCode)?.title}</button>
                         <div className={style.select_box_list}>
                             <ul>
@@ -170,7 +170,7 @@ export default function AuthWrite({ data, me, searchParams }: { data: any, me: a
                             </ul>
                         </div>
                     </div>}
-                    {jobCodeList && <div className={style.select_box}>
+                    {jobCodeList && jobCodeList?.data.length > 0 && <div className={style.select_box}>
                         <button type="button" aria-selected={openSelectBox==="jobCode"} onClick={() => setOpenSelectBox(openSelectBox==="jobCode" ? null : "jobCode")}>{jobCodeList?.data.find((item: any) => item.code===jobCode)?.title || "-"}</button>
                         <div className={style.select_box_list}>
                             <ul>
