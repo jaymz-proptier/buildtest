@@ -27,7 +27,7 @@ export default function AuthWrite({ data, me, searchParams }: { data: any, me: a
 
     
     const {data: jobCodeList} = useQuery<Item, Object, Item, [_1: string, _2: string]>({
-        queryKey: ['jobCode', sosok],
+        queryKey: ['jobCode', sosok ? sosok : "컨설턴트"],
         queryFn: getJobCode,
         staleTime: 60 * 1000, // fresh -> stale, 5분이라는 기준
         gcTime: 300 * 1000,
