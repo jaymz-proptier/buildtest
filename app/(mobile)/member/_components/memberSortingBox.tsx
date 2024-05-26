@@ -18,7 +18,7 @@ export default function MemberSortingBox({ sawonCode }: { sawonCode: number }) {
         code: string,
         title: string
     }[] = [
-        { code: "contract", title: "계약일순"},
+        { code: "contract", title: "계약시작일순"},
         { code: "end", title: "종료일순"},
         { code: "coupon", title: "쿠폰사용률순"},
     ];

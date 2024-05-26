@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
             paramsArray.push(searchParams.get("noticeGubun"));
         }
 
-        const sql = `select bnSeq, noticeGubun, title, contents from tb_board_notice where dispYn = 'Y' and useYn = 'Y' ${sqlWhere} order by (case when topYn = 'Y' then 0 else 1 end), regDate desc`;
+        const sql = `select bnSeq, noticeGubun, title, contents from tb_board_notice where dispYn = 'Y' and useYn = 'Y' ${sqlWhere} order by (case when topYn = 'Y' then 0 else 99 end), regDate desc, title desc`;
         const result = await executeQuery(sql, paramsArray) as any[];
         return NextResponse.json({ status: "OK", data: result });
 
