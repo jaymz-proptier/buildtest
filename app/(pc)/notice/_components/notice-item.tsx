@@ -7,7 +7,7 @@ export default function UploadItem({ item }: { item: any }) {
         <td>{item.bnSeq}</td>
         <td>{item.noticeGubun}</td>
         <td className={style.title}>{item.title}</td>
-        <td>{item.regDate}</td>
+        <td>{item.regDateView}</td>
         <td>{item.viewCount}</td>        
     </tr>
 }
