@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
                         b.회원번호, b.상호명, left(b.사업자번호, 12), b.대표자명, b.휴대폰, 
                         b.시도, b.시군구, b.읍면동, b.상세주소, 
                         b.계약구분, b.결제일, left(b.시작일, 10), left(b.종료일, 10), 
-                        b.담당자, b.상태, 
+                        replace(replace(b.담당자, 'a', ''), 'b', '') as 담당자, b.상태, 
                         b.계약전송수, b.전송수, 
                         CASE WHEN b.전송수=0 OR b.계약전송수=0 THEN 0
                                 ELSE TRUNCATE((b.전송수/b.계약전송수)*100,2) END AS '계약전송율', 
@@ -85,7 +85,7 @@ export async function POST(req: NextRequest) {
                         b.회원번호, b.상호명, left(b.사업자번호, 12), b.대표자명, b.휴대폰, 
                         b.시도, b.시군구, b.읍면동, b.상세주소, 
                         b.계약구분, b.결제일, b.결제금액, left(b.시작일, 10), left(b.종료일, 10), left(b.환불일, 10), b.환불금액, 
-                        b.담당자, b.상태, b.계약단지, 
+                        replace(replace(b.담당자, 'a', ''), 'b', '') as 담당자, b.상태, b.계약단지, 
                         SYSDATE() '등록일', 
                         SYSDATE() '수정일',
                         'Y' AS '사용여부',
@@ -122,7 +122,7 @@ export async function POST(req: NextRequest) {
                     await executeQuery("delete from tb_data_calculate_etc where upchaSeq = ? and calYm = ? ", [body.upchaSeq, `${body.year}${body.month}`]);
                     const query = `insert into tb_data_calculate (upchaSeq, uploadSeq, calYm, title, 담당자, 월매출액, 매출_이실장, 매출_포커스, 매출_프리미엄, 매출_enote, 매출_동기화, 매출_네이버검색광고, 매출_네이트검색광고, 매출_홈페이지, 매출_e분양, 매출_입주탐방, 매출_도메인, 관리자_이실장, 관리자_이실장외, 영업_이실장, 영업_포커스, 영업_프리미엄, 영업_enote, 영업_동기화, 영업_네이버검색광고, 영업_네이트검색광고, 영업_홈페이지, 영업_e분양, 영업_입주탐방, 영업_도메인, 지원금_주차비, 지원금_디바이스구매지원, 지원금_영업지원금, 지원금_기타, 지원금_반반쿠폰, 정산액, 입금예정액, 지원금_기타사항, regDate, modDate, useYn, sawonCode)
                     select b.upchaSeq, b.uploadSeq,
-                    b.calYm, b.title, b.담당자, b.월매출액, b.매출_이실장, b.매출_포커스, b.매출_프리미엄, b.매출_enote, b.매출_동기화, b.매출_네이버검색광고, b.매출_네이트검색광고, b.매출_홈페이지, b.매출_e분양, b.매출_입주탐방, b.매출_도메인, b.관리자_이실장, b.관리자_이실장외, b.영업_이실장, b.영업_포커스, b.영업_프리미엄, b.영업_enote, b.영업_동기화, b.영업_네이버검색광고, b.영업_네이트검색광고, b.영업_홈페이지, b.영업_e분양, b.영업_입주탐방, b.영업_도메인, b.지원금_주차비, b.지원금_디바이스구매지원, b.지원금_영업지원금, b.지원금_기타, b.지원금_반반쿠폰, b.정산액, b.입금예정액, b.지원금_기타사항, 
+                    b.calYm, b.title, replace(replace(b.담당자, 'a', ''), 'b', '') as 담당자, b.월매출액, b.매출_이실장, b.매출_포커스, b.매출_프리미엄, b.매출_enote, b.매출_동기화, b.매출_네이버검색광고, b.매출_네이트검색광고, b.매출_홈페이지, b.매출_e분양, b.매출_입주탐방, b.매출_도메인, b.관리자_이실장, b.관리자_이실장외, b.영업_이실장, b.영업_포커스, b.영업_프리미엄, b.영업_enote, b.영업_동기화, b.영업_네이버검색광고, b.영업_네이트검색광고, b.영업_홈페이지, b.영업_e분양, b.영업_입주탐방, b.영업_도메인, b.지원금_주차비, b.지원금_디바이스구매지원, b.지원금_영업지원금, b.지원금_기타, b.지원금_반반쿠폰, b.정산액, b.입금예정액, b.지원금_기타사항, 
                         SYSDATE() '등록일', 
                         SYSDATE() '수정일',
                         'Y' AS '사용여부',
@@ -134,7 +134,7 @@ export async function POST(req: NextRequest) {
                     
                     const query2 = `insert into tb_data_calculate_sales (calSeq, upchaSeq, uploadSeq, calYm, 상품구분, 상품명, 계약단지, 계약구분, 중개사명, 결제일자, 매출액, 유치수수료, 관리수수료, 추가수수료, 결제수수료, 쿠폰원가, 정산수수료, 담당자, 소속1, 소속2, 관리자메모, regDate, modDate, useYn, sawonCode)
                     select b.upchaSeq, b.upchaSeq as upchaSeq2, b.uploadSeq,
-                    b.calYm, b.상품구분, b.상품명, b.계약단지, b.계약구분, b.중개사명, left(b.결제일자, 10), b.매출액, b.유치수수료, b.관리수수료, b.추가수수료, b.결제수수료, b.쿠폰원가, b.정산수수료, b.담당자, b.소속1, b.소속2, b.관리자메모, 
+                    b.calYm, b.상품구분, b.상품명, b.계약단지, b.계약구분, b.중개사명, left(b.결제일자, 10), b.매출액, b.유치수수료, b.관리수수료, b.추가수수료, b.결제수수료, b.쿠폰원가, b.정산수수료, replace(replace(b.담당자, 'a', ''), 'b', '') as 담당자, b.소속1, b.소속2, b.관리자메모, 
                         SYSDATE() '등록일', 
                         SYSDATE() '수정일',
                         'Y' AS '사용여부',
@@ -146,7 +146,7 @@ export async function POST(req: NextRequest) {
 
                     const query3 = `insert into tb_data_calculate_etc (calSeq, upchaSeq, uploadSeq, calYm, 구분, 내용, 상품구분, 계약구분, 중개사명, 결제일, 매출액, 본인부담금, 담당자, 소속1, 소속2, 관리자메모, regDate, modDate, useYn, sawonCode)
                     select b.upchaSeq, b.upchaSeq as upchaSeq2, b.uploadSeq,
-                    b.calYm, b.구분, b.내용, b.상품구분, b.계약구분, b.중개사명, left(b.결제일, 10), b.매출액, b.본인부담금, b.담당자, b.소속1, b.소속2, b.관리자메모, 
+                    b.calYm, b.구분, b.내용, b.상품구분, b.계약구분, b.중개사명, left(b.결제일, 10), b.매출액, b.본인부담금, replace(replace(b.담당자, 'a', ''), 'b', '') as 담당자, b.소속1, b.소속2, b.관리자메모, 
                         SYSDATE() '등록일', 
                         SYSDATE() '수정일',
                         'Y' AS '사용여부',
@@ -182,7 +182,7 @@ export async function POST(req: NextRequest) {
                     await executeQuery("delete from tb_data_expirecontracts where upchaSeq = ? ", [body.upchaSeq]);
                     const query = `insert into tb_data_newcontracts (upchaSeq, uploadSeq, 상품유형, 상품명, 회원번호, 상호명, 사업자번호, 대표자명, 휴대폰, 시도, 시군구, 읍면동, 상세주소, 계약구분, 결제일, 결제금액, 시작일, 종료일, 담당자, 상태, regDate, modDate, useYn, sawonCode)
                     select b.upchaSeq, b.uploadSeq,
-                    b.상품유형, b.상품명, b.회원번호, b.상호명, left(b.사업자번호, 12), b.대표자명, b.휴대폰, b.시도, b.시군구, b.읍면동, b.상세주소, b.계약구분, b.결제일, b.결제금액, left(b.시작일, 10), left(b.종료일, 10), b.담당자, b.상태, 
+                    b.상품유형, b.상품명, b.회원번호, b.상호명, left(b.사업자번호, 12), b.대표자명, b.휴대폰, b.시도, b.시군구, b.읍면동, b.상세주소, b.계약구분, b.결제일, b.결제금액, left(b.시작일, 10), left(b.종료일, 10), replace(replace(b.담당자, 'a', ''), 'b', '') as 담당자, b.상태, 
                         SYSDATE() '등록일', 
                         SYSDATE() '수정일',
                         'Y' AS '사용여부',
@@ -194,7 +194,7 @@ export async function POST(req: NextRequest) {
                     
                     const query2 = `insert into tb_data_expirecontracts (upchaSeq, uploadSeq, 상품유형, 상품명, 회원번호, 상호명, 사업자번호, 대표자명, 휴대폰, 시도, 시군구, 읍면동, 상세주소, 계약구분, 결제일, 결제금액, 시작일, 종료일, 담당자, 상태, regDate, modDate, useYn, sawonCode)
                     select b.upchaSeq, b.uploadSeq,
-                    b.상품유형, b.상품명, b.회원번호, b.상호명, left(b.사업자번호, 12), b.대표자명, b.휴대폰, b.시도, b.시군구, b.읍면동, b.상세주소, b.계약구분, b.결제일, b.결제금액, left(b.시작일, 10), left(b.종료일, 10), b.담당자, b.상태, 
+                    b.상품유형, b.상품명, b.회원번호, b.상호명, left(b.사업자번호, 12), b.대표자명, b.휴대폰, b.시도, b.시군구, b.읍면동, b.상세주소, b.계약구분, b.결제일, b.결제금액, left(b.시작일, 10), left(b.종료일, 10), replace(replace(b.담당자, 'a', ''), 'b', '') as 담당자, b.상태, 
                         SYSDATE() '등록일', 
                         SYSDATE() '수정일',
                         'Y' AS '사용여부',
