@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
         const countResult = await executeQuery(countSql, []) as unknown[];
         const totalCount = JSON.parse(JSON.stringify(countResult));
         
-        const sql = `select bnSeq, noticeGubun, title, viewCount, DATE_FORMAT(regDate, '%y.%m.%d') as regDateView from tb_board_notice where useYn = 'Y' order by (case when topYn = 'Y' then 0 else 99 end), regDate as ddd desc, title desc limit ?, 10`;
+        const sql = `select bnSeq, noticeGubun, title, viewCount, DATE_FORMAT(regDate, '%y.%m.%d') as regDateView from tb_board_notice where useYn = 'Y' order by (case when topYn = 'Y' then 0 else 99 end), regDate desc, title desc limit ?, 10`;
         const result = await executeQuery(sql, [((Number(searchParams.get("page") ? searchParams.get("page") : 1) - 1) * 10)]) as unknown[];
         
         return NextResponse.json({ status: "OK", data: result, total: totalCount[0].count });
