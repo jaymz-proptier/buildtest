@@ -87,7 +87,7 @@ export async function POST(req: NextRequest) {
                     setArray.push(ip);
                     setArray.push(lastInsertId.toString());
                     
-                    const query = `update tb_upload_log set ${sqlSet}, modDate = now() where upchaSeq = ?`;
+                    const query = `update tb_upload_log set ${sqlSet}, statusGubun = 'W', modDate = now() where upchaSeq = ?`;
                     await executeQuery(query, setArray);
                     await executeQuery("TRUNCATE TABLE tb_upload_member_log;", []);
                     await executeQuery("UPDATE tb_upload_member_log SET useYn='N' WHERE useYn='Y';", []);
@@ -160,7 +160,7 @@ export async function POST(req: NextRequest) {
                     setArray.push(ip);
                     setArray.push(lastInsertId.toString());
                     
-                    const query = `update tb_upload_log set ${sqlSet}, modDate = now() where upchaSeq = ?`;
+                    const query = `update tb_upload_log set ${sqlSet}, statusGubun = 'W', modDate = now() where upchaSeq = ?`;
                     await executeQuery(query, setArray);
                     await executeQuery("TRUNCATE TABLE tb_upload_sales_log;", []);
                     await executeQuery("UPDATE tb_upload_sales_log SET useYn='N' WHERE useYn='Y';", []);
@@ -252,7 +252,7 @@ export async function POST(req: NextRequest) {
                     setArray.push(ip);
                     setArray.push(lastInsertId.toString());
                     
-                    const query = `update tb_upload_log set ${sqlSet}, modDate = now() where upchaSeq = ?`;
+                    const query = `update tb_upload_log set ${sqlSet}, statusGubun = 'W', modDate = now() where upchaSeq = ?`;
                     await executeQuery(query, setArray);
                     await executeQuery("delete from tb_upload_calculate_log where upchaSeq = ? and calYm = ? ", [lastInsertId, `${body.year}${body.month}`]);
                     await executeQuery("delete from tb_upload_calculate_sales_log where upchaSeq = ? and calYm = ? ", [lastInsertId, `${body.year}${body.month}`]);
@@ -369,7 +369,7 @@ export async function POST(req: NextRequest) {
                     setArray.push(ip);
                     setArray.push(lastInsertId.toString());
                     
-                    const query = `update tb_upload_log set ${sqlSet}, modDate = now() where upchaSeq = ?`;
+                    const query = `update tb_upload_log set ${sqlSet}, statusGubun = 'W', modDate = now() where upchaSeq = ?`;
                     await executeQuery(query, setArray);
                     await executeQuery("delete from tb_upload_newcontracts_log where upchaSeq = ? ", [lastInsertId.toString()]);
                     await executeQuery("delete from tb_upload_expirecontracts_log where upchaSeq = ? ", [lastInsertId.toString()]);
