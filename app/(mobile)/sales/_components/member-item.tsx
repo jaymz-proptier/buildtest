@@ -31,20 +31,38 @@ export default function MemberItem({ data }: { data: any }) {
                 <table>
                     <thead>
                         <tr>
-                            <th>{data.환불일 ? "환불일" : "결제일"}</th>
-                            <th>{data.환불일 ? "환불금액" : "결제금액"}</th>
+                            <th>결제일</th>
+                            <th>결제금액</th>
                             <th>계약구분</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td>{data.환불일 ? data.환불일 : data.결제일}</td>
-                            <td>{data.환불일 ? Number(data.환불금액).toLocaleString() : Number(data.결제금액).toLocaleString()}</td>
+                            <td>{data.결제일}</td>
+                            <td>{Number(data.결제금액).toLocaleString()}</td>
                             <td>{data.계약구분}</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
+            {data.환불일 && <div className={style.table_wrap}>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>환불일</th>
+                            <th>환불금액</th>
+                            <th>상태</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{data.환불일}</td>
+                            <td>{Number(data.환불금액).toLocaleString()}</td>
+                            <td>{data.상태}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>}
         </div>
     </>
 }

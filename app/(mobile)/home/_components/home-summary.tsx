@@ -1,5 +1,6 @@
 import executeQuery from "@/lib/mysql";
 import style from "@/styles/mobile.module.css";
+import Link from "next/link";
 
 export default async function HomeSummary({ sawonCode }: { sawonCode: number }) {
 
@@ -15,10 +16,10 @@ export default async function HomeSummary({ sawonCode }: { sawonCode: number }) 
     return <div className={style.home_summary}>
         <div className={style.summary_wrap}>
         {getData.map((item: Item) => (
-            <div key={item.title} className={style.item_wrap}>
+            <Link href={`/member?filter=${item.title==="이실장" ? "이실장" : "포커스"}`} key={item.title} className={style.item_wrap}>
                 <h5 className={style.title}>{item.title}</h5>
                 <strong className={style.count}>{item.count}</strong>
-            </div>
+            </Link>
         ))}
         </div>
         <p className={style.info}>* 라이브 회원 현황으로 이동합니다.</p>

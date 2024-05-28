@@ -33,14 +33,14 @@ export default function MemberItem({ data }: { data: any }) {
                         <tr>
                             <th>계약구분</th>
                             <th>상태</th>
-                            <th>{data.상품유형==="프리미엄" ? "계약단지/지역" : data.상품유형==="포커스" ? "쿠폰사용현황" : ""}</th>
+                            <th>{data.상품유형==="프리미엄" ? "계약상품" : data.상품유형==="포커스" ? "쿠폰사용현황" : ""}</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td>{data.계약구분}</td>
                             <td>{data.상태}</td>
-                            <td>{data.상품유형==="프리미엄" ? ( data.계약단지명 ? data.계약단지명 : `${data.시도} ${data.시군구}` ) : data.상품유형==="포커스" ? `${data.계약전송수.toLocaleString()}/${data.전송수.toLocaleString()}` : ""}</td>
+                            <td className={style.overflow}>{data.상품유형==="프리미엄" ? `${data.읍면동} ${data.계약단지명}` : data.상품유형==="포커스" ? `${data.계약전송수.toLocaleString()}/${data.전송수.toLocaleString()}` : ""}</td>
                         </tr>
                     </tbody>
                 </table>

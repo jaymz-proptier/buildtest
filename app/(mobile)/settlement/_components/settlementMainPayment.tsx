@@ -37,8 +37,6 @@ export default function SettlementMainPayment({ sawonCode }: { sawonCode: number
         staleTime: 60 * 1000, // fresh -> stale, 5분이라는 기준
         gcTime: 300 * 1000,
     });
-
-    console.log(sheet1);
     
     const { data: sheet2 } = useQuery<Item, Object, Item, [_1: string, _2:string, _3: string, _4: string]>({
         queryKey: ["member", "saveAs", "sheet2", (year +""+ month)],
@@ -206,17 +204,17 @@ export default function SettlementMainPayment({ sawonCode }: { sawonCode: number
         </div>}
         {data?.data[0] ? <div className={style.message_info}>
             <ul>
-                <li>
+                <li className={style.message}>
                     <label>기타사항</label>
                     {data?.data[0]?.지원금_기타사항 ? data?.data[0]?.지원금_기타사항 : "-"}
                 </li>
                 <li>
                     <label>당월 총정산액</label>
-                    {Number(data?.data[0]?.정산액).toLocaleString()}
+                    {Number(data?.data[0]?.정산액).toLocaleString()}<span className={style.unit}>원</span>
                 </li>
                 <li>
                     <label>입금 예정액</label>
-                    {Number(data?.data[0]?.입금예정액).toLocaleString()}
+                    {Number(data?.data[0]?.입금예정액).toLocaleString()}<span className={style.unit}>원</span>
                 </li>
             </ul>
             <h5>귀하의 노고에 감사드립니다.</h5>

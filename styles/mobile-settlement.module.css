@@ -226,7 +226,7 @@
     text-align: center;
 }
 .message_info ul {
-    padding: 31px 16px;
+    padding: 10px 16px 31px 16px;
 }
 .message_info li {
     position: relative;
@@ -234,8 +234,41 @@
     font-size: 20px;
     font-weight: 700;
 }
+.message_info li.message {
+    padding: 35px 14px 14px;
+    line-height: 20px;
+    font-size: 16px;
+    font-weight: 500;
+    background-color: #fdfdfd;
+    border-radius: 6px;
+    box-shadow: 0 0 0 1px rgba(0,0,0,.08) ,0px 1px 1px rgba(0,0,0,.02),0px 4px 8px -4px rgba(0,0,0,.04),0px 16px 24px -8px rgba(0,0,0,.06);
+}
+.message_info li.message+li {
+    margin-top: 30px;
+}
 .message_info li label {
+    position: relative;
     margin-right: 10px;
+    padding-left: 10px;
+    font-size: 14px;
+}
+.message_info li label::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 4px;
+    height: 4px;
+    margin-top: -2px;
+    background-color: #707070;
+    border-radius: 50%;
+}
+.message_info li.message label {
+    position: absolute;
+    top: 8px;
+    left: 14px;
+}
+.message_info li .unit {
     font-size: 14px;
 }
 .no_data {

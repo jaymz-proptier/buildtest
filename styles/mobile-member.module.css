@@ -129,3 +129,8 @@
     background-color: #fff;
     border-bottom: 1px solid #ebeaea;
 }
+.list_contents .item_wrap .table_wrap table td.overflow {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
