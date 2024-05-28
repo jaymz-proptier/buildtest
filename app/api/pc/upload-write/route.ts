@@ -106,7 +106,7 @@ export async function POST(req: NextRequest) {
                 const query = `INSERT INTO tb_upload_member_log (upchaSeq, 상품유형, 상품명, 회원번호, 상호명, 사업자번호, 대표자명, 휴대폰, 시도, 시군구, 읍면동, 상세주소, 계약구분, 결제일, 시작일, 종료일, 담당자, 상태, 계약전송수, 전송수) VALUES ${valuePlaceholders}`;
                 await executeQuery(query, insertData.flat());
                 
-                await executeQuery(`update tb_upload_log set succeseCount = ( select count(*) from tb_upload_member_log where upchaSeq = ?) where upchaSeq = ?`, [lastInsertId, lastInsertId]);
+                //await executeQuery(`update tb_upload_log set succeseCount = ( select count(*) from tb_upload_member_log where upchaSeq = ?) where upchaSeq = ?`, [lastInsertId, lastInsertId]);
                 
             } else if(body.dataGubun==="2") {
                 for (let i = 0; i < jsonData.length; i++) {
@@ -179,7 +179,7 @@ export async function POST(req: NextRequest) {
                 const query = `INSERT INTO tb_upload_sales_log (upchaSeq, 상품유형, 상품명, 회원번호, 상호명, 사업자번호, 대표자명, 휴대폰, 시도, 시군구, 읍면동, 상세주소, 계약구분, 결제일, 결제금액, 시작일, 종료일, 환불일, 환불금액, 담당자, 상태) VALUES ${valuePlaceholders}`;
                 await executeQuery(query, insertData.flat());
 
-                await executeQuery(`update tb_upload_log set succeseCount = ( select count(*) from tb_upload_sales_log_test where upchaSeq = ?) where upchaSeq = ?`, [lastInsertId, lastInsertId]);
+                //await executeQuery(`update tb_upload_log set succeseCount = ( select count(*) from tb_upload_sales_log_test where upchaSeq = ?) where upchaSeq = ?`, [lastInsertId, lastInsertId]);
 
             } else if(body.dataGubun==="3") {
                 
@@ -270,7 +270,7 @@ export async function POST(req: NextRequest) {
                 const query = `INSERT INTO tb_upload_calculate_log (upchaSeq, calYm, title, 담당자, 월매출액, 매출_이실장, 매출_포커스, 매출_프리미엄, 매출_enote, 매출_동기화, 매출_네이버검색광고, 매출_네이트검색광고, 매출_홈페이지, 매출_e분양, 매출_입주탐방, 매출_도메인, 관리자_이실장, 관리자_이실장외, 영업_이실장, 영업_포커스, 영업_프리미엄, 영업_enote, 영업_동기화, 영업_네이버검색광고, 영업_네이트검색광고, 영업_홈페이지, 영업_e분양, 영업_입주탐방, 영업_도메인, 지원금_주차비, 지원금_디바이스구매지원, 지원금_영업지원금, 지원금_기타, 지원금_반반쿠폰, 정산액, 입금예정액, 지원금_기타사항, 센터, 파트) value ${valuePlaceholders}`;
                 await executeQuery(query, insertData.flat());
 
-                await executeQuery(`update tb_upload_log set succeseCount = ( select count(*) from tb_upload_sales_log_test where upchaSeq = ?) where upchaSeq = ?`, [lastInsertId, lastInsertId]);
+                //await executeQuery(`update tb_upload_log set succeseCount = ( select count(*) from tb_upload_sales_log_test where upchaSeq = ?) where upchaSeq = ?`, [lastInsertId, lastInsertId]);
 
                 
                 const insertData2 = [];
@@ -385,7 +385,7 @@ export async function POST(req: NextRequest) {
                 const query = `insert into tb_upload_newcontracts_log (upchaSeq, 상품유형, 상품명, 회원번호, 상호명, 사업자번호, 대표자명, 휴대폰, 시도, 시군구, 읍면동, 상세주소, 계약구분, 결제일, 결제금액, 시작일, 종료일, 담당자, 상태) value ${valuePlaceholders}`;
                 await executeQuery(query, insertData.flat());
 
-                await executeQuery(`update tb_upload_log set succeseCount = ( select count(*) from tb_upload_newcontracts_log where upchaSeq = ?) where upchaSeq = ?`, [lastInsertId, lastInsertId]);
+                //await executeQuery(`update tb_upload_log set succeseCount = ( select count(*) from tb_upload_newcontracts_log where upchaSeq = ?) where upchaSeq = ?`, [lastInsertId, lastInsertId]);
 
                 
                 const insertData2 = [];

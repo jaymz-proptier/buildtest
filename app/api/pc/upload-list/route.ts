@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
         const countResult = await executeQuery(countSql, []) as unknown[];
         const totalCount = JSON.parse(JSON.stringify(countResult));
         
-        const sql = `select a.upchaSeq, (case when a.dataGubun = '1' then '회원내역' when a.dataGubun = '2' then '매출내역' when a.dataGubun = '3' then '정산내역' when dataGubun = '4' then '계약관리' else '기타' end) as dataGubun, a.title, a.fileName, DATE_FORMAT(a.regDate, '%y.%m.%d') as regDate, a.statusGubun, b.name from tb_upload_log a inner join tb_pptn_sawon b on a.workSawonNo = b.sawonCode where a.useYn = 'Y' order by a.regDate desc limit ?, 10`;
+        const sql = `select a.upchaSeq, (case when a.dataGubun = '1' then '회원내역' when a.dataGubun = '2' then '매출내역' when a.dataGubun = '3' then '정산내역' when dataGubun = '4' then '계약관리' else '기타' end) as dataGubun, a.title, a.totalCount, a.succeseCount, a.fileName, DATE_FORMAT(a.regDate, '%y.%m.%d') as regDate, a.statusGubun, b.name from tb_upload_log a inner join tb_pptn_sawon b on a.workSawonNo = b.sawonCode where a.useYn = 'Y' order by a.regDate desc limit ?, 10`;
         const result = await executeQuery(sql, [((Number(searchParams.get("page") ? searchParams.get("page") : 1) - 1) * 10)]) as unknown[];
         return NextResponse.json({ status: "OK", data: result, total: totalCount[0].count });
 
