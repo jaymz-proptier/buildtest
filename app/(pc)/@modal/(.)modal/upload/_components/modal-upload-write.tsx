@@ -69,9 +69,12 @@ export default function UploadWrite({ data, me, searchParams }: { data: any, me:
             formData.append("contents", contents);
             return postItem(formData);
         },
-        async onSuccess() {   
-            queryClient.invalidateQueries({ queryKey: ["posts", "search"] });
-            router.back();
+        async onSuccess(data: any) {  
+            if(data.status==="Fail") alert(`오류: ${data.message.sqlMessage}`);
+            else { 
+                queryClient.invalidateQueries({ queryKey: ["posts", "search"] });
+                router.back();
+            }
         },
     });
 
