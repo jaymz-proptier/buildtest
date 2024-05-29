@@ -4,7 +4,7 @@ import Link from "next/link";
 
 
 export default async function HomeNoticeList() {
-    const sql = `select bnSeq, noticeGubun, title from tb_board_notice where dispYn = 'Y' and useYn = 'Y' order by (case when topYn = 'Y' then 0 else 99 end), regDate desc, title desc`;
+    const sql = `select bnSeq, noticeGubun, title from tb_board_notice where dispYn = 'Y' and useYn = 'Y' order by (case when topYn = 'Y' then 0 else 99 end), regDate desc, title desc limit 0, 5`;
     const result = await executeQuery(sql, []) as any;
     const getData = JSON.parse(JSON.stringify(result));
     

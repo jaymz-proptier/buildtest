@@ -30,6 +30,16 @@
     background-image: url(../public/images/pptn_gnb_logo_01.svg);
     background-size: 78px 34px;
 }
+.header .gnb_wrap .notice {
+    position: absolute;
+    top: 10px;
+    right: 41px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+}
 .header .gnb_wrap .logout {
     position: absolute;
     top: 10px;

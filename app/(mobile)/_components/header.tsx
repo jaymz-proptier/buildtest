@@ -3,6 +3,7 @@ import Link from "next/link";
 import style from "@/styles/mobile-header.module.css";
 import { signOut } from "next-auth/react";
 import { usePathname } from "next/navigation";
+import { NoticeIcon } from "./noticeIcon";
 
 export default function MobileHeader() {
     const path = usePathname();
@@ -11,6 +12,9 @@ export default function MobileHeader() {
         <div className={style.gnb_wrap}>
             <Link href="/" className={style.home_link}>
                 <i>프로퍼티파트너스</i>
+            </Link>
+            <Link href="/announce" className={style.notice}>
+                <NoticeIcon />
             </Link>
             <button className={style.logout} onClick={async (e) => { e.preventDefault(); await signOut(); }}><i>로그아웃</i></button>
             <ul className={style.menu}>                
