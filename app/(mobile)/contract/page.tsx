@@ -1,5 +1,5 @@
 import Footer from "@/app/components/footer";
-import MobileHeader from "../components/header";
+import MobileHeader from "../_components/header";
 import style from "@/styles/mobile.module.css";
 import { auth } from "@/auth";
 import RQProvider from "../_components/RQProvider";
