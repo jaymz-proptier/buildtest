@@ -98,7 +98,10 @@
     line-height: 17px; 
     font-size: 14px;
 }
-.list_contents .item_wrap .user .phone {
+.list_contents .item_wrap .user a {
+    text-decoration: none;
+}
+.list_contents .item_wrap .user a .phone {
     padding-left: 10px;
 }
 .list_contents .item_wrap .address {

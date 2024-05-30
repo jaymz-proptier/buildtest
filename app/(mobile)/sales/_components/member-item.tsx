@@ -6,7 +6,7 @@ export default function MemberItem({ data }: { data: any }) {
             <div className={style.company}>{data.상호명}({data.회원번호})</div>
             <div className={style.user}>
                 {data.대표자명}
-                <span className={style.phone}>{data.휴대폰}</span>
+                <a href={`tel:${data.휴대폰}`}><span className={style.phone}>{data.휴대폰}</span></a>
             </div>
             <div className={style.address}>{data.주소}</div>
             <div className={style.table_wrap}>

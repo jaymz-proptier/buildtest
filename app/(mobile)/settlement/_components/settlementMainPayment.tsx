@@ -152,7 +152,7 @@ export default function SettlementMainPayment({ sawonCode }: { sawonCode: number
                             <td>{data?.data[0]?.도메인_수수료율 ? `${Number(data?.data[0]?.도메인_수수료율).toLocaleString()}%` : "-"}</td>
                             <td>{Number(data?.data[0]?.영업_도메인).toLocaleString()}</td>
                         </tr>}
-                        <tr>
+                        <tr className={style.total}>
                             <td>합계</td>
                             <td>{Number(data?.data[0]?.매출합계).toLocaleString()}</td>
                             <td>{Number(data?.data[0]?.수수료합계).toLocaleString()}</td>
@@ -204,7 +204,7 @@ export default function SettlementMainPayment({ sawonCode }: { sawonCode: number
                         <tr>
                             <td>{Number(data?.data[0]?.지원금_기타).toLocaleString()}</td>
                             <td>{Number(data?.data[0]?.지원금_반반쿠폰).toLocaleString()}</td>
-                            <td colSpan={2}>{Number(data?.data[0]?.기타합계).toLocaleString()}</td>
+                            <td colSpan={2} className={style.total}>{Number(data?.data[0]?.기타합계).toLocaleString()}</td>
                         </tr>
                     </tbody>
                 </table>

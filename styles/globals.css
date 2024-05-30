@@ -188,7 +188,9 @@ input:-internal-autofill-selected {
     -webkit-box-shadow: 0 0 0px 1000px white inset !important;
 	background-color: white !important;
 }
-
+input, button, a {
+	color: #2e3233;
+}
 input:focus, button:focus {
 	outline: none;
 	color: #2e3233;
