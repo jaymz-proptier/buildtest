@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
         const token = process.env.AUTH_SECRET ? jwt.verify(getToken, process.env.AUTH_SECRET) : "";
         const userData = token as jwt.JwtPayload;
         
-        const sql = `select a.구분, a.내용, a.상품구분, a.계약구분, a.중개사명, a.결제일, a.매출액, a.본인부담금, a.담당자, a.소속1, a.소속2, a.관리자메모 from tb_data_calculate_etc a where a.sawonCode = ? and a.upchaSeq = (select upchaSeq from tb_upload_log where dataGubun = '3' and statusGubun = 'Y' and useYn = 'Y' and calYm = ? order by upchaSeq limit 1) and a.useYn = 'Y'`;
+        const sql = `select a.상품유형, a.상품명, a.회원번호, a.상호명, a.사업자번호, a.대표자명, a.휴대폰, a.시도, a.시군구, a.읍면동, a.상세주소, a.계약구분, a.결제일, a.결제금액, a.시작일, a.종료일, a.담당자, a.상태, a.expireInfo as '탈락사유', a.cpName as '이동CP' from  tb_data_expirecontracts a where a.sawonCode = ? and a.upchaSeq = (select upchaSeq from tb_upload_log where dataGubun = '4' and statusGubun = 'Y' and useYn = 'Y' and calYm = ? order by upchaSeq limit 1) and a.useYn = 'Y'`;
         const result = await executeQuery(sql, [userData.sawonCode, searchParams.get("calYm")]) as any[];
         return NextResponse.json({ status: "OK", data: result });
 
