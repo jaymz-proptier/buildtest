@@ -3,13 +3,13 @@ import { getSession } from "next-auth/react";
 interface Item {
     bnSeq: number;
 }
-export const getExcelSheet1 = async ({ queryKey }: { queryKey: [string, string, string, string ]}) => {
+export const getExcelSheet2 = async ({ queryKey }: { queryKey: [string, string, string, string ]}) => {
   const session = await getSession();
   const token = session?.accessToken;
     const [_1, _2, _3, calYm] = queryKey;
-    const res = await fetch(`/api/mobile/saveAs/sheet1?calYm=${queryKey[3]}`, {
+    const res = await fetch(`/api/pc/saveAs/sheet2?calYm=${queryKey[3]}`, {
       next: {
-        tags: ["member", "saveAs", "sheet1", queryKey[3]],
+        tags: ["member", "saveAs", "sheet2", queryKey[3]],
       },
       headers: {
           Authorization: `Bearer ${token}`,

@@ -7,7 +7,7 @@ export const getExcelSheet1 = async ({ queryKey }: { queryKey: [string, string, 
   const session = await getSession();
   const token = session?.accessToken;
     const [_1, _2, _3, calYm] = queryKey;
-    const res = await fetch(`/api/mobile/saveAs/sheet1?calYm=${queryKey[3]}`, {
+    const res = await fetch(`/api/pc/saveAs/sheet1?calYm=${queryKey[3]}`, {
       next: {
         tags: ["member", "saveAs", "sheet1", queryKey[3]],
       },

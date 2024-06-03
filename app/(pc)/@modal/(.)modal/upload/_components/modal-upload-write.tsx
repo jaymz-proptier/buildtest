@@ -1,12 +1,25 @@
 import style from "@/styles/pc-modal.module.css";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { saveAs } from "file-saver";
 import * as XLSX from "xlsx";
 import { checkItem } from "../_lib/checkItem";
 import { postItem } from "../_lib/postItem";
 import { postStatus } from "../_lib/postStatus";
+import { getExcelSheet1 } from "../_lib/getExcelSheet1";
+import { getExcelSheet2 } from "../_lib/getExcelSheet2";
+interface Item {
+    data: any,
+    status: string,
+    message: string,
+    total: number,
+    매출_이실장: number,
+    매출_포커스: number,
+    매출_프리미엄: number,
+    검색광고: number,
+    매출_e분양: number,
+}
 
 export default function UploadWrite({ data, me, searchParams }: { data: any, me: any, searchParams?: any }) {    
     const dataCode: {
@@ -123,21 +136,36 @@ export default function UploadWrite({ data, me, searchParams }: { data: any, me:
 
     const handleClose = () => {
         router.back();
-    }
+    }     
+    const { data: sheet1 } = useQuery<Item, Object, Item, [_1: string, _2:string, _3: string, _4: string]>({
+        queryKey: ["member", "saveAs", "sheet1", (year +""+ month)],
+        queryFn: getExcelSheet1,
+        staleTime: 60 * 1000, // fresh -> stale, 5분이라는 기준
+        gcTime: 300 * 1000,
+    });
+    
+    const { data: sheet2 } = useQuery<Item, Object, Item, [_1: string, _2:string, _3: string, _4: string]>({
+        queryKey: ["member", "saveAs", "sheet2", (year +""+ month)],
+        queryFn: getExcelSheet2,
+        staleTime: 60 * 1000, // fresh -> stale, 5분이라는 기준
+        gcTime: 300 * 1000,
+    });
 
     async function handleButtonClick() {
         try {
-            const response1 = await fetch(`/api/pc/saveAs/sheet1`);
+       
+
+            /* const response1 = await fetch(`/api/pc/saveAs/sheet1?calYm=${year}${month}`);
             const sheet1 = await response1.json();
-            const response2 = await fetch(`/api/pc/saveAs/sheet2`);
-            const sheet2 = await response2.json();
+            const response2 = await fetch(`/api/pc/saveAs/sheet2?calYm=${year}${month}`);
+            const sheet2 = await response2.json(); */
 
             const wb = XLSX.utils.book_new();
             const ws1 = XLSX.utils.json_to_sheet(sheet1?.data);
             const ws2 = XLSX.utils.json_to_sheet(sheet2?.data);
         
-            XLSX.utils.book_append_sheet(wb, ws1, "매출");
-            XLSX.utils.book_append_sheet(wb, ws2, "기타");
+            XLSX.utils.book_append_sheet(wb, ws1, "신규");
+            XLSX.utils.book_append_sheet(wb, ws2, "만기");
         
             const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
             const buf = new ArrayBuffer(wbout.length);
@@ -249,7 +277,7 @@ export default function UploadWrite({ data, me, searchParams }: { data: any, me:
             <div className={style.input_div}>
                 <label className={style.input_label}>구분</label>
                 {dataCode.find((item) => item.code===dataGubun)?.title} {data?.calYm ? `${data?.calYm.substr(0, 4)}년 ${data?.calYm.substr(4, 2)}월` : ""}
-                {data?.dataGubun==="3" && <button type="button" className={style.download} onClick={handleButtonClick}>{year}년{month}월 정산내역 다운로드</button>}
+                {data?.dataGubun==="4" && <button type="button" className={style.download} onClick={handleButtonClick}>{year}년{month}월 계약관리 다운로드</button>}
             </div>
             <div className={style.input_div}>
                 <label className={style.input_label}>제목</label>
