@@ -20,7 +20,7 @@ export default async function MobileHome() {
                 <h5 className={style.user_name}><strong>{userData.user.name}</strong>님, 반갑습니다.</h5>
                 <HomeSummary sawonCode={userData.user.sawonCode} />
                 <SalesProductSummary sawonCode={userData.user.sawonCode} />
-                <div className={style.home_summary2}>
+                {/* <div className={style.home_summary2}>
                     <div className={style.summary_wrap}>
                         <div className={style.item_wrap}>
                             <strong className={style.count}>이실장</strong>
@@ -31,7 +31,7 @@ export default async function MobileHome() {
                             <h5 className={style.title}>단말기 결제대기</h5>
                         </div>
                     </div>
-                </div>
+                </div> */}
                 <HomeNoticeList />
             </div>
             <Footer />

@@ -155,7 +155,7 @@ export default function SettlementMainPayment({ sawonCode }: { sawonCode: number
                         <tr className={style.total}>
                             <td>합계</td>
                             <td>{Number(data?.data[0]?.매출합계).toLocaleString()}</td>
-                            <td>{Number(data?.data[0]?.수수료합계).toLocaleString()}</td>
+                            <td></td>
                             <td>{Number(data?.data[0]?.영업합계).toLocaleString()}</td>
                         </tr>
                         {!data?.data[0] && <tr>
