@@ -220,7 +220,7 @@ export async function POST(req: NextRequest) {
                     SET    statusGubun = ?,
                         modDate     =SYSDATE()
                     WHERE  upchaSeq = ?
-                    AND    dataGubun='3'
+                    AND    dataGubun='4'
                     AND    useYn='Y'`, [body.status, body.upchaSeq]);
                 }
             }
