@@ -406,8 +406,8 @@ export async function POST(req: NextRequest) {
                         jsonData2[i]['계약구분'],
                         jsonData2[i]['결제일'],
                         jsonData2[i]['결제금액'],
-                        jsonData[i]['시작일'],
-                        jsonData[i]['종료일'],
+                        jsonData2[i]['시작일'],
+                        jsonData2[i]['종료일'],
                         jsonData2[i]['담당자'],
                         jsonData2[i]['상태']
                     ]);
