@@ -72,14 +72,19 @@ export default function AuthWrite({ data, me, searchParams }: { data: any, me: a
                 body: formData,
             });
         },
-        async onSuccess() {   
-            queryClient.invalidateQueries({ queryKey: ["posts", "search"] });
-            router.back();
+        async onSuccess(data: any) {   
+            if(data.status==="Fail") alert(`오류: ${data.message.sqlMessage}`);
+            else {
+                queryClient.invalidateQueries({ queryKey: ["posts", "search"] });
+                router.back();
+            }
         },
     });
 
     const handleSubmit = useCallback(async (e: any) => {
-        if(name===undefined || name==="") {
+        if(jojikCode===undefined || jojikCode==="") {
+            alert("조직코드를 선택해주세요.");
+        } else if(name===undefined || name==="") {
             alert("이름을 입력해주세요.");
         } else if(swId===undefined || swId==="") {
             alert("아이디를 입력해주세요.");

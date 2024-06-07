@@ -23,6 +23,8 @@ export async function POST(req: NextRequest) {
             setArray.push(body.jojikCode);            
             sqlSet += " jobCode = ?,";
             setArray.push(body.jobCode);
+            sqlSet += " sosok = ?,";
+            setArray.push(body.sosok);
             sqlSet += " swId = ?,";
             setArray.push(body.swId);   
             if(body.swPwd) {
@@ -39,8 +41,8 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ status: "OK", message: "정상적으로 등록했습니다." });
 
         } else {
-            const query = `INSERT INTO tb_pptn_sawon (swId, swPwd, jojikCode, jobCode, name, regDate) VALUES (?, SHA2(CONCAT(CONCAT('*', UPPER(SHA1(UNHEX(SHA1(?))))),'ribo20240408!@'),256), ?, ?, ?, now())`;
-            await executeQuery(query, [body.swId, body.swPwd, body.jojikCode, body.jobCode, body.name]);
+            const query = `INSERT INTO tb_pptn_sawon (sosok, swId, swPwd, jojikCode, jobCode, name, regDate) VALUES (?, ?, SHA2(CONCAT(CONCAT('*', UPPER(SHA1(UNHEX(SHA1(?))))),'ribo20240408!@'),256), ?, ?, ?, now())`;
+            await executeQuery(query, [body.sosok, body.swId, body.swPwd, body.jojikCode, body.jobCode, body.name]);
 
             return NextResponse.json({ status: "OK", message: "정상적으로 등록했습니다." });
         }
