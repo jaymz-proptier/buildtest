@@ -58,7 +58,7 @@ export default function AuthList({ searchParams }: { searchParams: any}) {
                             <tr key={item.sawonCode} onClick={() => router.push(`/modal/auth/${item.sawonCode}`)}>
                                 <td>{item.name}</td>
                                 <td>{item.centerName}</td>
-                                <td>{item.centerName}</td>
+                                <td>{item.partName}</td>
                                 <td>{item.jobName}</td>
                                 <td>{item.swId}</td>
                                 <td>{item.regDate ? item.regDate : "-"}</td>
