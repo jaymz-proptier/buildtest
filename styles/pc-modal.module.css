@@ -84,7 +84,7 @@
 }
 .write_form .input_div .select_box {
     position: relative;
-    z-index: 3;
+    z-index: 6;
     display: inline-block;
     margin-right: 4px;
 }
@@ -107,6 +107,7 @@
 }
 .select_box .select_box_list {
     position: absolute;
+    z-index: 4;
     display: none;
     top: 100%;
     left: 0;
