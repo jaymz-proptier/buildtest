@@ -174,6 +174,15 @@ export async function POST(req: NextRequest) {
                     WHERE  upchaSeq = ?
                     AND    dataGubun='3'
                     AND    useYn='Y'`, [body.status, body.upchaSeq]);
+
+                    if(body.status==="D") {
+                        await executeQuery("delete from tb_upload_calculate_log where upchaSeq = ? ", [body.upchaSeq]);
+                        await executeQuery("delete from tb_upload_calculate_sales_log where upchaSeq = ? ", [body.upchaSeq]);
+                        await executeQuery("delete from tb_upload_calculate_etc_log where upchaSeq = ? ", [body.upchaSeq]);
+                        await executeQuery("delete from tb_data_calculate where upchaSeq = ? ", [body.upchaSeq]);
+                        await executeQuery("delete from tb_data_calculate_sales where upchaSeq = ? ", [body.upchaSeq]);
+                        await executeQuery("delete from tb_data_calculate_etc where upchaSeq = ? ", [body.upchaSeq]);
+                    }
                 }
             } else if(body.dataGubun==="4") {
                 if(body.status==="Y") {
@@ -222,6 +231,12 @@ export async function POST(req: NextRequest) {
                     WHERE  upchaSeq = ?
                     AND    dataGubun='4'
                     AND    useYn='Y'`, [body.status, body.upchaSeq]);
+                    if(body.status==="D") {
+                        await executeQuery("delete from tb_upload_newcontracts_log where upchaSeq = ? ", [body.upchaSeq]);
+                        await executeQuery("delete from tb_upload_expirecontracts_log where upchaSeq = ? ", [body.upchaSeq]);
+                        await executeQuery("delete from tb_data_newcontracts where upchaSeq = ? ", [body.upchaSeq]);
+                        await executeQuery("delete from tb_data_expirecontracts where upchaSeq = ? ", [body.upchaSeq]);
+                    }
                 }
             }
 
