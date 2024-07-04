@@ -126,7 +126,7 @@ export default function SettlementMainPayment({ sawonCode }: { sawonCode: number
                         </tr>}
                         {data?.data[0]?.매출_홈페이지 > 0 &&
                         <tr>
-                            <td>홈페이지</td>
+                            <td>블로그</td>
                             <td>{Number(data?.data[0]?.매출_홈페이지).toLocaleString()}</td>
                             <td>{data?.data[0]?.홈페이지_수수료율 ? `${Number(data?.data[0]?.홈페이지_수수료율).toLocaleString()}%` : "-"}</td>
                             <td>{Number(data?.data[0]?.영업_홈페이지).toLocaleString()}</td>
