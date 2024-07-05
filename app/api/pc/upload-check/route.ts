@@ -22,11 +22,11 @@ export async function POST(req: NextRequest) {
             } else if(body.dataGubun==="2") {
 
             } else if(body.dataGubun==="3") {
-                const result = await executeQuery(`select upchaSeq, (case when statusGubun = 'W' then '처리대기' when statusGubun = 'Y' then '처리완료' when statusGubun = 'N' then '처리실패' end) as statusGubun from tb_upload_log where dataGubun = '3' and calYm = ? and statusGubun <> '삭제' `, [`${body.year}${body.month}`]) as any[];
+                const result = await executeQuery(`select upchaSeq, (case when statusGubun = 'W' then '처리대기' when statusGubun = 'Y' then '처리완료' when statusGubun = 'N' then '처리실패' end) as statusGubun from tb_upload_log where dataGubun = '3' and calYm = ? and statusGubun <> 'D' `, [`${body.year}${body.month}`]) as any[];
 
                 return NextResponse.json({ status: "OK", data: result });
             } else if(body.dataGubun==="4") {
-              const result = await executeQuery(`select upchaSeq, (case when statusGubun = 'W' then '처리대기' when statusGubun = 'Y' then '처리완료' when statusGubun = 'N' then '처리실패' end) as statusGubun from tb_upload_log where dataGubun = '4' and calYm = ? and statusGubun <> '삭제' `, [`${body.year}${body.month}`]) as any[];
+              const result = await executeQuery(`select upchaSeq, (case when statusGubun = 'W' then '처리대기' when statusGubun = 'Y' then '처리완료' when statusGubun = 'N' then '처리실패' end) as statusGubun from tb_upload_log where dataGubun = '4' and calYm = ? and statusGubun <> 'D' `, [`${body.year}${body.month}`]) as any[];
 
               return NextResponse.json({ status: "OK", data: result });
           }
