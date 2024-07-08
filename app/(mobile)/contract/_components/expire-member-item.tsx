@@ -15,6 +15,13 @@ export default function MemberItem({ data }: { data: any }) {
         { code: "시스템불안정", title: "시스템불안정"},
         { code: "서비스불만족", title: "서비스불만족"},
         { code: "가격불만", title: "가격불만"},
+        { code: "경기불황", title: "경기불황"},
+        { code: "폐업", title: "폐업"},
+        { code: "휴업", title: "휴업"},
+        { code: "사업자변경", title: "사업자변경"},
+        { code: "통화불가(연락두절)", title: "통화불가(연락두절)"},
+        { code: "추후진행예정", title: "추후진행예정"},
+        { code: "단순변심", title: "단순변심"},
         { code: "기타", title: "기타"},
     ];
     const cpCode: {
