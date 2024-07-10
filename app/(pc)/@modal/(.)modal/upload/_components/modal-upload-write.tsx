@@ -287,14 +287,21 @@ export default function UploadWrite({ data, me, searchParams }: { data: any, me:
                 <label className={style.input_label}>내용</label>
                 {data?.contents}
             </div>
+            {(dataGubun==="3" || dataGubun==="4") &&
+            <div className={style.input_div}>
+                <label className={style.input_label}>결과</label>
+                {<textarea className={style.textarea} value={contents} onChange={handleInputChange}></textarea>}
+            </div>}
             <div className={style.input_div}>
                 <label className={style.input_label}>첨부파일</label>
                 {data?.fileName}
             </div>
             <div className={style.input_div}>
                 <label className={style.input_label}>처리결과</label>
-                <span className={style.item}>자료총건수: {data?.totalCount.toLocaleString()}</span> 
+                {(dataGubun==="3" || dataGubun==="4") ? <span className={style.item}>{data?.result}</span> : <>
+                <span className={style.item}>자료총건수: {data?.totalCount.toLocaleString()}</span>
                 <span className={style.item}>성공건수: {data?.succeseCount.toLocaleString()}</span>
+                </>}
                 <span className={style.item}>진행상태: {data?.statusGubunName}</span>
                 <div className={style.function_wrap} ref={selectBoxRef}>
                     <button type="button" className={style.function} aria-selected={openSelectBox==="function"} onClick={() => setOpenSelectBox("function")}>
