@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
         when a.dataGubun = '3' then concat('정산: ',
         (select count(uploadSeq) from tb_data_calculate where a.upchaSeq = upchaSeq and useYn = 'Y'), '건 / 매출: ', 
         (select count(uploadSeq) from tb_data_calculate_sales where a.upchaSeq = upchaSeq and useYn = 'Y'), '건 / 기타: ', 
-        (select count(uploadSeq) from tb_data_calculate_etc where a.upchaSeq = upchaSeq and useYn = 'Y'), '건') else '' end) as result from tb_upload_log a where a.upchaSeq = ?`;
+        (select count(uploadSeq) from tb_data_calculate_etc where a.upchaSeq = upchaSeq and useYn = 'Y'), '건') else '' end) as resultStatus from tb_upload_log a where a.upchaSeq = ?`;
         const result = await executeQuery(sql, [searchParams.get("upchaSeq")]) as unknown[];
         
         return NextResponse.json({ status: "OK", data: result[0] });

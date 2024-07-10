@@ -293,7 +293,7 @@ export default function UploadWrite({ data, me, searchParams }: { data: any, me:
             </div>
             <div className={style.input_div}>
                 <label className={style.input_label}>처리결과</label>
-                {(data?.dataGubun==="3" || data?.dataGubun==="4") ? <span className={style.item}>{data?.result}</span> : <>
+                {(data?.dataGubun==="3" || data?.dataGubun==="4") ? <span className={style.item}>{data?.resultStatus}</span> : <>
                 <span className={style.item}>자료총건수: {data?.totalCount.toLocaleString()}</span>
                 <span className={style.item}>성공건수: {data?.succeseCount.toLocaleString()}</span>
                 </>}
