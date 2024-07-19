@@ -15,7 +15,7 @@ export default async function SalesPerformanceSummary({ sawonCode }: { sawonCode
         where 
             sawonCode = ? 
             and useYn = 'Y' 
-            and 결제금액 > '') union all
+            and 결제금액 > '' and 상품유형 = '이실장') union all
         (select 
             '환불건수' as title,
             sum(case when 계약구분 = '순수신규' and 환불금액 > '' then 1 else 0 end) as new,
@@ -27,7 +27,7 @@ export default async function SalesPerformanceSummary({ sawonCode }: { sawonCode
         where 
             sawonCode = ? 
             and useYn = 'Y' 
-            and 환불금액 > '')
+            and 환불금액 > '' and 상품유형 = '이실장')
             ) a `;
     const result = await executeQuery(sql, [sawonCode, sawonCode]) as any;
     const getData = JSON.parse(JSON.stringify(result));
