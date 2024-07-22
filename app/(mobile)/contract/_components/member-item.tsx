@@ -10,14 +10,15 @@ export default function MemberItem({ data }: { data: any }) {
         title: string
     }[] = [
         { code: "", title: "기존CP 선택" },
-        { code: "매경", title: "매경"},
-        { code: "써브", title: "써브"},
-        { code: "뱅크", title: "뱅크"},
-        { code: "한경", title: "한경"},
-        { code: "부동산114", title: "부동산114"},
-        { code: "아실", title: "아실"},
-        { code: "선방", title: "선방"},
-        { code: "기타", title: "기타"},
+        { code: "매경", title: "매경" },
+        { code: "써브", title: "써브" },
+        { code: "뱅크", title: "뱅크" },
+        { code: "한경", title: "한경" },
+        { code: "부동산114", title: "부동산114" },
+        { code: "아실", title: "아실" },
+        { code: "선방", title: "선방" },
+        { code: "신규개설", title: "신규개설" },
+        { code: "기타", title: "기타" },
     ];
     const sendDataToServer = async (newContSeq: string, cpName: string) => {
         try {

@@ -36,7 +36,6 @@ export default function MemberItem({ data }: { data: any }) {
         { code: "부동산114", title: "부동산114" },
         { code: "아실", title: "아실" },
         { code: "선방", title: "선방" },
-        { code: "신규개설", title: "신규개설" },
         { code: "기타", title: "기타" },
     ];
     const sendDataToServer = async (expireContSeq: string, type: string, value: string) => {
