@@ -11,32 +11,33 @@ export default function MemberItem({ data }: { data: any }) {
         title: string
     }[] = [
         { code: "", title: "탈락사유선택" },
-        { code: "타사이동", title: "타사이동"},
-        { code: "시스템불안정", title: "시스템불안정"},
-        { code: "서비스불만족", title: "서비스불만족"},
-        { code: "가격불만", title: "가격불만"},
-        { code: "경기불황", title: "경기불황"},
-        { code: "폐업", title: "폐업"},
-        { code: "휴업", title: "휴업"},
-        { code: "사업자변경", title: "사업자변경"},
-        { code: "통화불가(연락두절)", title: "통화불가(연락두절)"},
-        { code: "추후진행예정", title: "추후진행예정"},
-        { code: "단순변심", title: "단순변심"},
-        { code: "기타", title: "기타"},
+        { code: "타사이동", title: "타사이동" },
+        { code: "시스템불안정", title: "시스템불안정" },
+        { code: "서비스불만족", title: "서비스불만족" },
+        { code: "가격불만", title: "가격불만" },
+        { code: "경기불황", title: "경기불황" },
+        { code: "폐업", title: "폐업" },
+        { code: "휴업", title: "휴업" },
+        { code: "사업자변경", title: "사업자변경" },
+        { code: "통화불가(연락두절)", title: "통화불가(연락두절)" },
+        { code: "추후진행예정", title: "추후진행예정" },
+        { code: "단순변심", title: "단순변심" },
+        { code: "기타", title: "기타" },
     ];
     const cpCode: {
         code: string,
         title: string
     }[] = [
         { code: "", title: "이동CP 선택" },
-        { code: "매경", title: "매경"},
-        { code: "써브", title: "써브"},
-        { code: "뱅크", title: "뱅크"},
-        { code: "한경", title: "한경"},
-        { code: "부동산114", title: "부동산114"},
-        { code: "아실", title: "아실"},
-        { code: "선방", title: "선방"},
-        { code: "기타", title: "기타"},
+        { code: "매경", title: "매경" },
+        { code: "써브", title: "써브" },
+        { code: "뱅크", title: "뱅크" },
+        { code: "한경", title: "한경" },
+        { code: "부동산114", title: "부동산114" },
+        { code: "아실", title: "아실" },
+        { code: "선방", title: "선방" },
+        { code: "신규개설", title: "신규개설" },
+        { code: "기타", title: "기타" },
     ];
     const sendDataToServer = async (expireContSeq: string, type: string, value: string) => {
         try {
