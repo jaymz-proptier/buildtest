@@ -132,9 +132,9 @@ export async function POST(req: NextRequest) {
                     where  a.dataGubun='3' and a.statusGubun='W' and a.useYn='Y' and a.upchaSeq = ? and not exists (select 'Y' from tb_data_calculate where upchaSeq=a.upchaSeq and uploadSeq=b.uploadSeq and useYn='Y')`;
                     await executeQuery(query, [body.upchaSeq]);
                     
-                    const query2 = `insert into tb_data_calculate_sales (calSeq, upchaSeq, uploadSeq, calYm, 상품구분, 상품명, 계약단지, 계약구분, 중개사명, 대표자명, 연락처, 결제일자, 만료일자, 매출액, 유치수수료, 관리수수료, 추가수수료, 결제수수료, 쿠폰원가, 정산수수료, 담당자, 소속1, 소속2, 관리자메모, regDate, modDate, useYn, sawonCode)
+                    const query2 = `insert into tb_data_calculate_sales (calSeq, upchaSeq, uploadSeq, calYm, 상품구분, 상품명, 계약단지, 계약구분, 중개사명, 대표자명, 연락처, 시도, 구시군, 읍면동, 결제일자, 만료일자, 매출액, 유치수수료, 관리수수료, 추가수수료, 결제수수료, 쿠폰원가, 정산수수료, 담당자, 소속1, 소속2, 관리자메모, regDate, modDate, useYn, sawonCode)
                     select b.upchaSeq, b.upchaSeq as upchaSeq2, b.uploadSeq,
-                    b.calYm, b.상품구분, b.상품명, b.계약단지, b.계약구분, b.중개사명, b.대표자명, b.연락처, left(b.결제일자, 10), left(b.만료일자, 10), b.매출액, b.유치수수료, b.관리수수료, b.추가수수료, b.결제수수료, b.쿠폰원가, b.정산수수료, replace(replace(b.담당자, 'a', ''), 'b', '') as 담당자, b.소속1, b.소속2, b.관리자메모, 
+                    b.calYm, b.상품구분, b.상품명, b.계약단지, b.계약구분, b.중개사명, b.대표자명, b.연락처, b.시도, b.구시군, b.읍면동, left(b.결제일자, 10), left(b.만료일자, 10), b.매출액, b.유치수수료, b.관리수수료, b.추가수수료, b.결제수수료, b.쿠폰원가, b.정산수수료, replace(replace(b.담당자, 'a', ''), 'b', '') as 담당자, b.소속1, b.소속2, b.관리자메모, 
                         SYSDATE() '등록일', 
                         SYSDATE() '수정일',
                         'Y' AS '사용여부',
