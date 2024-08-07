@@ -140,7 +140,7 @@ export default function SettlementMainPayment({ sawonCode }: { sawonCode: number
                         </tr>}
                         {data?.data[0]?.매출_입주탐방 > 0 &&
                         <tr>
-                            <td>입주탐방</td>
+                            <td>VR촬영</td>
                             <td>{Number(data?.data[0]?.매출_입주탐방).toLocaleString()}</td>
                             <td>{data?.data[0]?.입주탐방_수수료율 ? `${Number(data?.data[0]?.입주탐방_수수료율).toLocaleString()}%` : "-"}</td>
                             <td>{Number(data?.data[0]?.영업_입주탐방).toLocaleString()}</td>
