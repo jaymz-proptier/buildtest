@@ -23,11 +23,11 @@ export async function POST(req: NextRequest) {
 
                     await executeQuery("truncate table tb_data_member;", []);
                     
-                    const query = `INSERT INTO tb_data_member (upchaSeq, uploadSeq, 상품유형, 상품명, 회원번호, 상호명, 사업자번호, 대표자명, 휴대폰, 시도, 시군구, 읍면동, 상세주소, 계약구분, 결제일, 시작일, 종료일, 담당자, 상태, 계약전송수, 전송수, 계약전송율, 계약단지명, regDate, modDate, useYn, sawonCode)
+                    const query = `INSERT INTO tb_data_member (upchaSeq, uploadSeq, 상품유형, 상품명, 회원번호, 상호명, 사업자번호, 대표자명, 휴대폰, 시도, 시군구, 읍면동, 상세주소, 소재지, 계약구분, 결제일, 시작일, 종료일, 담당자, 상태, 계약전송수, 전송수, 계약전송율, 계약단지명, regDate, modDate, useYn, sawonCode)
                     SELECT b.upchaSeq, b.uploadSeq,
                         b.상품유형, b.상품명, 
                         b.회원번호, b.상호명, left(b.사업자번호, 12), b.대표자명, b.휴대폰, 
-                        b.시도, b.시군구, b.읍면동, b.상세주소, 
+                        b.시도, b.시군구, b.읍면동, b.상세주소, b.소재지,
                         b.계약구분, b.결제일, left(b.시작일, 10), left(b.종료일, 10), 
                         replace(replace(b.담당자, 'a', ''), 'b', '') as 담당자, b.상태, 
                         b.계약전송수, b.전송수, 
@@ -79,11 +79,11 @@ export async function POST(req: NextRequest) {
 
                     await executeQuery("truncate table tb_data_sales;", []);
                     
-                    const query = `insert into tb_data_sales (upchaSeq, uploadSeq, 상품유형, 상품명, 회원번호, 상호명, 사업자번호, 대표자명, 휴대폰, 시도, 시군구, 읍면동, 상세주소, 계약구분, 결제일, 결제금액, 시작일, 종료일, 환불일, 환불금액, 담당자, 상태, 계약단지, regDate, modDate, useYn, sawonCode)
+                    const query = `insert into tb_data_sales (upchaSeq, uploadSeq, 상품유형, 상품명, 회원번호, 상호명, 사업자번호, 대표자명, 휴대폰, 시도, 시군구, 읍면동, 상세주소, 소재지, 계약구분, 결제일, 결제금액, 시작일, 종료일, 환불일, 환불금액, 담당자, 상태, 계약단지, regDate, modDate, useYn, sawonCode)
                     select b.upchaSeq, b.uploadSeq,
                         b.상품유형, b.상품명, 
                         b.회원번호, b.상호명, left(b.사업자번호, 12), b.대표자명, b.휴대폰, 
-                        b.시도, b.시군구, b.읍면동, b.상세주소, 
+                        b.시도, b.시군구, b.읍면동, b.상세주소, b.소재지,
                         b.계약구분, b.결제일, b.결제금액, left(b.시작일, 10), left(b.종료일, 10), left(b.환불일, 10), b.환불금액, 
                         replace(replace(b.담당자, 'a', ''), 'b', '') as 담당자, b.상태, b.계약단지, 
                         SYSDATE() '등록일', 
