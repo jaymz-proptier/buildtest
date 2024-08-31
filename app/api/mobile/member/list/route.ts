@@ -21,7 +21,7 @@ export async function GET(req: NextRequest) {
             paramsArray.push(searchParams.get("product_type"));
         }
         if(searchParams.has("query") && searchParams.get("query")!=="") {
-            sqlWhere += " and (상호명 like concat('%', ?, '%') or 휴대폰 like concat('%', ?, '%') or 시도 like concat('%', ?, '%') or 시군구 like concat('%', ?, '%') or 읍면동 like concat('%', ?, '%'))";
+            sqlWhere += " and (상호명 like concat('%', ?, '%') or 휴대폰 like concat('%', ?, '%') or 시도 like concat('%', ?, '%') or 시군구 like concat('%', ?, '%') or 읍면동 like concat('%', ?, '%') or 상세주소 like concat('%', ?, '%'))";
             paramsArray.push(searchParams.get("query"), searchParams.get("query"), searchParams.get("query"), searchParams.get("query"), searchParams.get("query"));
         }
         let sqlOrderBy = " 시작일 desc";
@@ -32,7 +32,7 @@ export async function GET(req: NextRequest) {
         const countResult = await executeQuery(countSql, paramsArray) as unknown[];
         const totalCount = JSON.parse(JSON.stringify(countResult));
 
-        const sql = `select (${Number(searchParams.get("page") && searchParams.get("page")!=="0" ? searchParams.get("page") : 1)} + 1) as page, memSeq, 회원번호, 상품유형, 상호명, 대표자명, 휴대폰, concat(시도, ' ', (case when 시군구 = '세종시' then '' else 시군구 end), ' ',  읍면동, ' ', 상세주소) as 주소, 시도, 시군구, 읍면동, 상품명, 계약구분, 결제일, DATE_FORMAT(시작일, '%y.%m.%d') as 시작일, DATE_FORMAT(종료일, '%y.%m.%d') as 종료일, 상태, 계약전송수, 전송수, 계약단지명 from tb_data_member where useYn = 'Y'${sqlWhere} order by ${sqlOrderBy} limit ?, 10`;
+        const sql = `select (${Number(searchParams.get("page") && searchParams.get("page")!=="0" ? searchParams.get("page") : 1)} + 1) as page, memSeq, 회원번호, 상품유형, 상호명, 대표자명, 휴대폰, (case when 상품유형 = '이실장' then 상세주소 else concat(시도, ' ', (case when 시군구 = '세종시' then '' else 시군구 end), ' ',  읍면동, ' ', 상세주소) end) as 주소, 시도, 시군구, 읍면동, 상품명, 계약구분, 결제일, DATE_FORMAT(시작일, '%y.%m.%d') as 시작일, DATE_FORMAT(종료일, '%y.%m.%d') as 종료일, 상태, 계약전송수, 전송수, 계약단지명 from tb_data_member where useYn = 'Y'${sqlWhere} order by ${sqlOrderBy} limit ?, 10`;
         const result = await executeQuery(sql, [...paramsArray, page]) as unknown[];
 
         return NextResponse.json({ status: "OK", data: result, total: totalCount[0].count });

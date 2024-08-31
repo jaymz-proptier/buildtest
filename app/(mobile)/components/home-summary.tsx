@@ -11,7 +11,7 @@ export default async function HomeSummary({ sawonCode }: { sawonCode: number }) 
     const sql = "select * from ( select '이실장' as title, count(*) as count from tb_data_member where 상품유형 = '이실장' and sawonCode = ? and useYn = 'Y' union all select '매경' as title, count(*) as count from tb_data_member where 상품유형 <> '이실장' and sawonCode = ? and useYn = 'Y' ) as a";
     const result = await executeQuery(sql, [sawonCode, sawonCode]) as unknown[];
     const getData = JSON.parse(JSON.stringify(result));
-    console.log(getData);
+    
     return <div className={style.home_summary}>
         <div className={style.summary_wrap}>
         {getData.map((item: Item) => (
