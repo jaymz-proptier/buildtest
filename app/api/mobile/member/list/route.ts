@@ -21,8 +21,8 @@ export async function GET(req: NextRequest) {
             paramsArray.push(searchParams.get("product_type"));
         }
         if(searchParams.has("query") && searchParams.get("query")!=="") {
-            sqlWhere += " and (상호명 like concat('%', ?, '%') or 휴대폰 like concat('%', ?, '%') or 시도 like concat('%', ?, '%') or 시군구 like concat('%', ?, '%') or 읍면동 like concat('%', ?, '%') or 상세주소 like concat('%', ?, '%'))";
-            paramsArray.push(searchParams.get("query"), searchParams.get("query"), searchParams.get("query"), searchParams.get("query"), searchParams.get("query"));
+            sqlWhere += " and (상호명 like concat('%', ?, '%') or 휴대폰 like concat('%', ?, '%') or 시도 like concat('%', ?, '%') or 시군구 like concat('%', ?, '%') or 읍면동 like concat('%', ?, '%') or 상세주소 like concat('%', ?, '%') or 소재지 like concat('%', ?, '%'))";
+            paramsArray.push(searchParams.get("query"), searchParams.get("query"), searchParams.get("query"), searchParams.get("query"), searchParams.get("query"), searchParams.get("query"), searchParams.get("query"));
         }
         let sqlOrderBy = " 시작일 desc";
         if(searchParams.has("sort") && searchParams.get("sort")==="end") sqlOrderBy = " 종료일 asc";
