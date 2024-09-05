@@ -23,7 +23,6 @@ export const authConfig = {
         return false; // '/login' 경로로 강제이동
       } else if (isLoggedIn) {
         // 홈페이지로 이동
-        console.log(Response.redirect(new URL('/', nextUrl)));
         return Response.redirect(new URL('/', nextUrl));
       }
       return true;
