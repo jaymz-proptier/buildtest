@@ -82,76 +82,76 @@ export default function SettlementMainPayment({ sawonCode }: { sawonCode: number
                         </tr>
                     </thead>
                     <tbody>
-                        {data?.data[0]?.매출_이실장 > 0 &&
+                        {data?.data[0]?.매출_이실장 && data?.data[0]?.매출_이실장!==0 ?
                         <tr>
                             <td>이실장</td>
                             <td>{Number(data?.data[0]?.매출_이실장).toLocaleString()}</td>
                             <td>{data?.data[0]?.이실장_수수료율 ? `${Number(data?.data[0]?.이실장_수수료율).toLocaleString()}%` : "-"}</td>
                             <td>{Number(data?.data[0]?.영업_이실장).toLocaleString()}</td>
-                        </tr>}
-                        {data?.data[0]?.매출_포커스 > 0 &&
+                        </tr> : ""}
+                        {data?.data[0]?.매출_포커스 && data?.data[0]?.매출_포커스!==0 ?
                         <tr>
                             <td>매경포커스</td>
                             <td>{Number(data?.data[0]?.매출_포커스).toLocaleString()}</td>
                             <td>{data?.data[0]?.포커스_수수료율 ? `${Number(data?.data[0]?.포커스_수수료율).toLocaleString()}%` : "-"}</td>
                             <td>{Number(data?.data[0]?.영업_포커스).toLocaleString()}</td>
-                        </tr>}
-                        {data?.data[0]?.매출_프리미엄 > 0 &&
+                        </tr> : ""}
+                        {data?.data[0]?.매출_프리미엄 && data?.data[0]?.매출_프리미엄!==0 ?
                         <tr>
                             <td>매경프리미엄</td>
                             <td>{Number(data?.data[0]?.매출_프리미엄).toLocaleString()}</td>
                             <td>{data?.data[0]?.프리미엄_수수료율 ? `${Number(data?.data[0]?.프리미엄_수수료율).toLocaleString()}%` : "-"}</td>
                             <td>{Number(data?.data[0]?.영업_프리미엄).toLocaleString()}</td>
-                        </tr>}
-                        {data?.data[0]?.매출_enote > 0 &&
+                        </tr> : ""}
+                        {data?.data[0]?.매출_enote && data?.data[0]?.매출_enote!==0 ?
                         <tr>
                             <td>enote</td>
                             <td>{Number(data?.data[0]?.매출_enote).toLocaleString()}</td>
                             <td>{data?.data[0]?.enote_수수료율 ? `${Number(data?.data[0]?.enote_수수료율).toLocaleString()}%` : "-"}</td>
                             <td>{Number(data?.data[0]?.영업_enote).toLocaleString()}</td>
-                        </tr>}
-                        {data?.data[0]?.매출_동기화 > 0 &&
+                        </tr> : ""}
+                        {data?.data[0]?.매출_동기화 && data?.data[0]?.매출_동기화!==0 ?
                         <tr>
                             <td>동기화</td>
                             <td>{Number(data?.data[0]?.매출_동기화).toLocaleString()}</td>
                             <td>{data?.data[0]?.동기화_수수료율 ? `${Number(data?.data[0]?.동기화_수수료율).toLocaleString()}%` : "-"}</td>
                             <td>{Number(data?.data[0]?.영업_동기화).toLocaleString()}</td>
-                        </tr>}
-                        {data?.data[0]?.검색광고 > 0 &&
+                        </tr> : ""}
+                        {data?.data[0]?.검색광고 && data?.data[0]?.검색광고!==0 ?
                         <tr>
                             <td>검색광고</td>
                             <td>{Number(data?.data[0]?.검색광고).toLocaleString()}</td>
                             <td>{data?.data[0]?.검색광고_수수료율 ? `${Number(data?.data[0]?.검색광고_수수료율).toLocaleString()}%` : "-"}</td>
                             <td>{Number(data?.data[0]?.영업_검색광고).toLocaleString()}</td>
-                        </tr>}
-                        {data?.data[0]?.매출_홈페이지 > 0 &&
+                        </tr> : ""}
+                        {data?.data[0]?.매출_홈페이지 && data?.data[0]?.매출_홈페이지!==0 ?
                         <tr>
                             <td>블로그</td>
                             <td>{Number(data?.data[0]?.매출_홈페이지).toLocaleString()}</td>
                             <td>{data?.data[0]?.홈페이지_수수료율 ? `${Number(data?.data[0]?.홈페이지_수수료율).toLocaleString()}%` : "-"}</td>
                             <td>{Number(data?.data[0]?.영업_홈페이지).toLocaleString()}</td>
-                        </tr>}
-                        {data?.data[0]?.매출_e분양 > 0 &&
+                        </tr> : ""}
+                        {data?.data[0]?.매출_e분양 && data?.data[0]?.매출_e분양!==0 ?
                         <tr>
                             <td>e분양</td>
                             <td>{Number(data?.data[0]?.매출_e분양).toLocaleString()}</td>
                             <td>{data?.data[0]?.e분양_수수료율 ? `${Number(data?.data[0]?.e분양_수수료율).toLocaleString()}%` : "-"}</td>
                             <td>{Number(data?.data[0]?.영업_e분양).toLocaleString()}</td>
-                        </tr>}
-                        {data?.data[0]?.매출_입주탐방 > 0 &&
+                        </tr> : ""}
+                        {data?.data[0]?.매출_입주탐방 && data?.data[0]?.매출_입주탐방!==0 ?
                         <tr>
                             <td>VR촬영</td>
                             <td>{Number(data?.data[0]?.매출_입주탐방).toLocaleString()}</td>
                             <td>{data?.data[0]?.입주탐방_수수료율 ? `${Number(data?.data[0]?.입주탐방_수수료율).toLocaleString()}%` : "-"}</td>
                             <td>{Number(data?.data[0]?.영업_입주탐방).toLocaleString()}</td>
-                        </tr>}
-                        {data?.data[0]?.매출_도메인 > 0 &&
+                        </tr> : ""}
+                        {data?.data[0]?.매출_도메인 && data?.data[0]?.매출_도메인!==0 ?
                         <tr>
                             <td>도메인</td>
                             <td>{Number(data?.data[0]?.매출_도메인).toLocaleString()}</td>
                             <td>{data?.data[0]?.도메인_수수료율 ? `${Number(data?.data[0]?.도메인_수수료율).toLocaleString()}%` : "-"}</td>
                             <td>{Number(data?.data[0]?.영업_도메인).toLocaleString()}</td>
-                        </tr>}
+                        </tr> : ""}
                         <tr className={style.total}>
                             <td>합계</td>
                             <td>{Number(data?.data[0]?.매출합계).toLocaleString()}</td>
