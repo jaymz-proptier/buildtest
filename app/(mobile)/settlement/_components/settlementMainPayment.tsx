@@ -124,6 +124,13 @@ export default function SettlementMainPayment({ sawonCode }: { sawonCode: number
                             <td>{data?.data[0]?.검색광고_수수료율 ? `${Number(data?.data[0]?.검색광고_수수료율).toLocaleString()}%` : "-"}</td>
                             <td>{Number(data?.data[0]?.영업_검색광고).toLocaleString()}</td>
                         </tr> : ""}
+                        {data?.data[0]?.검색광고 && data?.data[0]?.검색광고!==0 ?
+                        <tr>
+                            <td>안심케어</td>
+                            <td>{Number(data?.data[0]?.안심케어).toLocaleString()}</td>
+                            <td>{data?.data[0]?.안심케어_수수료율 ? `${Number(data?.data[0]?.안심케어_수수료율).toLocaleString()}%` : "-"}</td>
+                            <td>{Number(data?.data[0]?.영업_안심케어).toLocaleString()}</td>
+                        </tr> : ""}
                         {data?.data[0]?.매출_홈페이지 && data?.data[0]?.매출_홈페이지!==0 ?
                         <tr>
                             <td>블로그</td>
