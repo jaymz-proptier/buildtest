@@ -3,7 +3,8 @@
 import {createContext, ReactNode, useEffect, useState} from "react";
 
 const currentYear = new Date().getFullYear();
-const currentMonth = new Date().getMonth() + 1;
+const currentMonth = new Date();
+currentMonth.setMonth(currentMonth.getMonth() - 1);
 
 export const FilterContext = createContext({
     year: currentYear,
@@ -16,8 +17,8 @@ type Props = { children: ReactNode };
 
 export default function FilterProvider({ children }: Props) {
     
-    const [ year, setYear ] = useState(currentYear);
-    const [ month, setMonth ] = useState(currentMonth.toString().padStart(2, "0"));
+    const [ year, setYear ] = useState(currentMonth.getFullYear());
+    const [ month, setMonth ] = useState((currentMonth.getMonth() + 1).toString().padStart(2, "0"));
     return (
         <FilterContext.Provider value={{ year, setYear, month, setMonth }}>
             {children}
