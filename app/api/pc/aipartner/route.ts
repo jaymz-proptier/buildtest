@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
             const countResult = await executeQuery(countSql, [body.sawonCode]) as unknown[];
             const totalCount = JSON.parse(JSON.stringify(countResult));
 
-            const sql = `select a.memSeq, a.회원번호, a.상호명, a.대표자명, a.휴대폰, concat(a.시도, ' ', (case when a.시군구 = '세종시' then '' else a.시군구 end), ' ',  a.읍면동, ' ', a.상세주소) as 주소, a.시도, a.시군구, a.읍면동, a.상세주소, a.상품명, a.계약구분, a.결제일, DATE_FORMAT(a.시작일, '%y.%m.%d') as 시작일, DATE_FORMAT(a.종료일, '%y.%m.%d') as 종료일, a.상태, a.계약전송수, a.전송수, a.담당자 from tb_data_member a where ${typeWhere} and a.sawonCode =? and a.useYn = 'Y' limit ?, 10`;
+            const sql = `select a.memSeq, a.회원번호, a.상호명, a.대표자명, a.휴대폰, a.소재지, a.시도, a.시군구, a.읍면동, a.상세주소, a.상품명, a.계약구분, a.결제일, DATE_FORMAT(a.시작일, '%y.%m.%d') as 시작일, DATE_FORMAT(a.종료일, '%y.%m.%d') as 종료일, a.상태, a.계약전송수, a.전송수, a.담당자 from tb_data_member a where ${typeWhere} and a.sawonCode =? and a.useYn = 'Y' limit ?, 10`;
             const result = await executeQuery(sql, [body.sawonCode, page]) as any[];
 
             return NextResponse.json({ status: "OK", data: result, total: totalCount[0].count });

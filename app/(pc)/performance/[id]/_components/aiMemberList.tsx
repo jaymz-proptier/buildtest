@@ -32,10 +32,7 @@ export default function AiMemberList() {
                     <col />
                     <col width="80px" />
                     <col width="100px" />
-                    <col width="50px" />
-                    <col width="70px" />
-                    <col width="70px" />
-                    <col width="100px" />
+                    <col width="200px" />
                     <col width="100px" />
                     <col width="80px" />
                     <col width="80px" />
@@ -49,10 +46,7 @@ export default function AiMemberList() {
                         <th>상호명</th>
                         <th>대표자명</th>
                         <th>휴대폰</th>
-                        <th>시/도</th>
-                        <th>시군구</th>
-                        <th>읍면동</th>
-                        <th>상세주소</th>
+                        <th>소재지</th>
                         <th>계약구분</th>
                         <th>시작일</th>
                         <th>종료일</th>
@@ -69,10 +63,7 @@ export default function AiMemberList() {
                             <td>{item.상호명}</td>
                             <td>{item.대표자명}</td>
                             <td>{item.휴대폰}</td>
-                            <td>{item.시도}</td>
-                            <td>{item.시군구}</td>
-                            <td>{item.읍면동}</td>
-                            <td>{item.상세주소}</td>
+                            <td>{item.소재지}</td>
                             <td>{item.계약구분}</td>
                             <td>{item.시작일}</td>
                             <td>{item.종료일}</td>
