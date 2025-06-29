@@ -23,7 +23,6 @@ export default function SalesList({ sawonCode }: { sawonCode: number }) {
         queryFn: getSales,
         initialPageParam: 0,
         getNextPageParam: (lastPage) => {
-            console.log("lastPage", lastPage);
             return lastPage.at(-1)?.page;
         },
         staleTime: 60 * 1000, // fresh -> stale, 5분이라는 기준
