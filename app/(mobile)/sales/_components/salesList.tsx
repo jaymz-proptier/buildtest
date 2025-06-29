@@ -35,7 +35,6 @@ export default function SalesList({ sawonCode }: { sawonCode: number }) {
     });
     useEffect(() => {
         if(inView) {
-            console.log(data);
             !isFetching && hasNextPage && fetchNextPage();
         }
     }, [inView, isFetching, hasNextPage, fetchNextPage, filter]);

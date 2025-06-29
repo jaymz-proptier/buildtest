@@ -9,7 +9,6 @@ export async function GET(req: NextRequest) {
     
     const { searchParams } = new URL(req.url);
     const session = await auth();
-    console.log("session", session, req.headers.get('cookie'), searchParams);
     const paramsArray = [searchParams.get("sawonCode")];
     let sqlWhere = " and sawonCode = ? ";
     if (searchParams.has("product_type") && searchParams.get("product_type")!=="") {
@@ -30,6 +29,6 @@ export async function GET(req: NextRequest) {
 
     } catch (error) {
         console.error("읽기 오류 : ", error);
-        NextResponse.json({ status: "Fail", message: '데이터 업로드 중 오류가 발생했습니다.' });
+        NextResponse.json({ status: "Fail", message: error });
     }
 }

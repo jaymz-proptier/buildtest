@@ -12,6 +12,25 @@
 .table_summury_wrap .home_header {
     margin-top: 10px;
 }
+.table_summury_wrap .header {    
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+.table_summury_wrap .header a {
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 8px;
+    line-height: 20px;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    background-color: #e95c20;
+    border-radius: 6px;
+}
 .table_summury_wrap .header[aria-label="상품별매출내역"]::before, .table_summury_wrap .home_header[aria-label="상품별매출내역"]::before {
     content: "";
     position: absolute;

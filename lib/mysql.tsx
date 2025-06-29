@@ -37,7 +37,7 @@ pool = registerService('mysql', () =>
 pool.getConnection((err, conn) => {
     if (err) console.log('Error connecting to db...')
     else {
-        console.log('Connected to db...!')
+        //console.log('Connected to db...!')
         conn.release()
     }
 })
@@ -50,7 +50,7 @@ const executeQuery = (query: string, arrParams: any[]) => {
                     console.log('Error in executing the query')
                     reject(err)
                 }
-                console.log('------db.jsx------')
+                //console.log('------db.jsx------')
                 //console.log(data)
                 resolve(data)
             })

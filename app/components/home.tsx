@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
-import PcHome from "../(pc)/page";
 import MobileHome from "../(mobile)/mobile-home";
+import PcHome from "../(pc)/notice/page";
 
 export default async function Home({ searchParams }: { searchParams: any }) {
     const session = await auth();
