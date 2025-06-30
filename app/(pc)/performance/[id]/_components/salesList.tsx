@@ -1,5 +1,5 @@
 import Pagination from "@/app/(pc)/_components/pagination";
-import style from "@/styles/pc.module.css";
+import style from "../../pc.module.css";
 import { useQuery } from "@tanstack/react-query";
 import LoadingSpinner from "@/app/(pc)/_components/loading";
 import { useSearchParams } from "next/navigation";

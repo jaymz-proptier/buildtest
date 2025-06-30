@@ -1,5 +1,5 @@
 "use client";
-import style from "@/styles/pc.module.css";
+import style from "../../pc.module.css";
 import { useContext } from "react";
 import { filterContext } from "../../providers/filterProvider";
 import { useRouter, useSearchParams } from "next/navigation";

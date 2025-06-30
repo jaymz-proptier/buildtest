@@ -1,5 +1,5 @@
 "use client";
-import style from "@/styles/pc.module.css";
+import style from "../pc.module.css";
 import Link from "next/link";
 import Pagination from "@/app/(pc)/_components/pagination";
 import { useQuery, useQueryClient } from "@tanstack/react-query";

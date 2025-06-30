@@ -1,5 +1,5 @@
 import { auth } from "@/auth";
-import style from "@/styles/pc.module.css";
+import style from "./pc.module.css";
 import Footer from "../../components/footer";
 import Header from "./_components/header";
 import MemberList from "./_components/member-list";

@@ -1,4 +1,4 @@
-import style from "@/styles/pc.module.css";
+import style from "../../pc.module.css";
 import { sales } from "../../_lib/getList";
 import { useQuery } from "@tanstack/react-query";
 import { useContext } from "react";

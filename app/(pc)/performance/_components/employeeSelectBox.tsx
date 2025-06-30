@@ -1,5 +1,5 @@
 "use client";
-import style from "@/styles/pc.module.css";
+import style from "../pc.module.css";
 import { useQuery } from "@tanstack/react-query";
 import { getEmployeeList } from "../_lib/getList";
 import { useContext, useEffect, useState } from "react";

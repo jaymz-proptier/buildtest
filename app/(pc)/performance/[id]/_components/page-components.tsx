@@ -1,5 +1,5 @@
 "use client";
-import style from "@/styles/pc.module.css";
+import style from "../../pc.module.css";
 import EmployeeSelectBox from "../../_components/employeeSelectBox";
 import { useContext, useEffect } from "react";
 import { filterContext } from "../../providers/filterProvider";
