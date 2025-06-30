@@ -52,7 +52,7 @@
     left: 11px;
     width: 20px;
     height: 20px;
-    background-image: url(../../public/images/search_icon_02.svg);
+    background-image: url(../../../public/images/search_icon_02.svg);
 }
 .list_wrap .list_header .input_box input {
     width: 186px;
@@ -91,7 +91,7 @@
     width: 20px;
     height: 20px;
     margin-top: -10px;
-    background-image: url(../../public/images/write_icon_01.svg);
+    background-image: url(../../../public/images/write_icon_01.svg);
 }
 .list_contents .table_wrap table {
     table-layout: fixed;
@@ -149,7 +149,7 @@
     display: block;
     width: 20px;
     height: 20px;
-    background-image: url(../../public/images/arrow_left_icon_01.svg);
+    background-image: url(../../../public/images/arrow_left_icon_01.svg);
     background-size: 9px 17px;
     background-position: center center;
     background-repeat: no-repeat;
@@ -201,7 +201,7 @@
     width: 20px;
     height: 20px;
     transform: rotate(180deg);
-    background-image: url(../../public/images/arrow_left_icon_01.svg);
+    background-image: url(../../../public/images/arrow_left_icon_01.svg);
     background-size: 9px 17px;
     background-position: center center;
     background-repeat: no-repeat;
@@ -238,7 +238,7 @@
     width: 10px;
     height: 8px;
     margin-top: -4px;
-    background-image: url(../../public/images/arrow_down_icon_01.svg);
+    background-image: url(../../../public/images/arrow_down_icon_01.svg);
 }
 .select_box .select_box_list {
     position: absolute;
