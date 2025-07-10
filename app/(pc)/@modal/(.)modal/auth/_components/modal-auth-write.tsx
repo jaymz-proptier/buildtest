@@ -77,6 +77,7 @@ export default function AuthWrite({ data, me, searchParams }: { data: any, me: a
             else {
                 queryClient.invalidateQueries({ queryKey: ["posts", "search"] });
                 queryClient.invalidateQueries({ queryKey: ["admin", "auth"] });
+                queryClient.invalidateQueries({ queryKey: ["authLoad"] });
                 router.back();
             }
         },
