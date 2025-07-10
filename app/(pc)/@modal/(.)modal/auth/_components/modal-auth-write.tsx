@@ -76,6 +76,7 @@ export default function AuthWrite({ data, me, searchParams }: { data: any, me: a
             if(data.status==="Fail") alert(`오류: ${data.message.sqlMessage}`);
             else {
                 queryClient.invalidateQueries({ queryKey: ["posts", "search"] });
+                queryClient.invalidateQueries({ queryKey: ["admin", "auth"] });
                 router.back();
             }
         },
