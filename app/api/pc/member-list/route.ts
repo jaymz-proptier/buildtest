@@ -35,7 +35,7 @@ export async function GET(req: NextRequest) {
         const sql = `select a.sawonCode, a.name, b.centerName, b.partName, coalesce(c.member1, 0) as member1, coalesce(c.member2, 0) as member2, coalesce(d.sales1, 0) as sales1, coalesce(d.sales2, 0) as sales2, coalesce(d.sales3, 0) as sales3, coalesce(d.sales4, 0) as sales4 
         from tb_pptn_sawon a inner join tb_pptn_jojikcode b on a.jojikCode = b.jojikCode left join (
         select sawonCode, sum(상품유형 = '이실장') as member1, sum(상품유형 <> '이실장') as member2 from tb_data_member where useYn = 'Y' group by sawonCode ) c on a.sawonCode = c.sawonCode left join (
-        select sawonCode, sum(상품유형 = '이실장' and 계약구분 in ('순수신규', '기존신규') and 결제금액 > '') as sales1, sum(상품유형 = '이실장' and 계약구분 in ('만기재계약', '이월재계약') and 결제금액 > '') as sales2, sum(상품유형 <> '이실장' and 계약구분 in ('순수신규', '기존신규') and 결제금액 > '') as sales3, sum(상품유형 <> '이실장' and 계약구분 in ('만기재계약', '이월재계약') and 결제금액 > '') as sales4 
+        select sawonCode, sum(상품유형 = '이실장' and 계약구분 in ('순수신규', '기존신규') and 결제금액 > '') as sales1, sum(상품유형 = '이실장' and 계약구분 in ('만기재계약', '이월재계약', '소진재계약') and 결제금액 > '') as sales2, sum(상품유형 <> '이실장' and 계약구분 in ('순수신규', '기존신규') and 결제금액 > '') as sales3, sum(상품유형 <> '이실장' and 계약구분 in ('만기재계약', '이월재계약', '소진재계약') and 결제금액 > '') as sales4 
         from tb_data_sales where useYn = 'Y' group by sawonCode) d on a.sawonCode = d.sawonCode 
         where a.useYn = 'Y' and a.jojikCode > '200' ${sqlWhere} limit ?, 10`;
         const result = await executeQuery(sql, paramsArray) as unknown[];
